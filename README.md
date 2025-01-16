@@ -1,15 +1,14 @@
-
+﻿
 # azulejo-gl-3dmodeler
 
 ![GL3DModeler.png](./GL3DModeler.png)
 
-## How to Play
+## Disclaimer
 
-+ `s` yaw left
-+ `f` yaw right
-+ `e` thrust
-+ `j` fire
-+ `x` reset
+⚠️ **Notice:** This is package is not yet using Modern C++. 
+⚠️ **Notice:** This codebase is not fully integrated with [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib). 
+
+Please be patient while we refactor this codebase.
 
 ## Prerequisites
 
