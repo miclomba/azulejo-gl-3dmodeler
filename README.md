@@ -3,10 +3,11 @@
 
 ![GL3DModeler.png](./GL3DModeler.png)
 
-## Disclaimer
+## ⚠️ Warning
 
-⚠️ **Notice:** This is package is not yet using Modern C++. 
-⚠️ **Notice:** This codebase is not fully integrated with [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib). 
+This package contains a legacy code port that needs developer attention until further notice.
++ Not entirely using Modern C++.
++ Not fully integrated with [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib). 
 
 Please be patient while we refactor this codebase.
 
