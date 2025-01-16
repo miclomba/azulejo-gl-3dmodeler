@@ -48,7 +48,7 @@ add_executable("${PROJECT_NAME}"
 "GLEntityTask.cpp"
 "Modeler.cpp"
 "Object.cpp"
-)
+ "Grid.cpp" "Grid.h" "MeshEditor.cpp" "MeshEditor.h" "PointLight.cpp" "PointLight.h" "UserInterface.cpp" "UserInterface.h")
 
 if (MSVC)
 target_link_libraries("${PROJECT_NAME}" 

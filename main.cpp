@@ -5,9 +5,11 @@
 
 #include "Modeler.h"
 #include "GLGame.h"
+#include "MeshEditor.h"
 
 using _3dmodeler::Modeler;
 using _3dmodeler::GLGame;
+using _3dmodeler::MeshEditor;
 using events::EventChannel;
 
 namespace
@@ -40,13 +42,16 @@ void RegisterEvents(Modeler& modeler, GLGame& game, EventChannel& channel)
 
 int main(int _argc, char* _argv[]) 
 {
-	GLGame game(_argc,_argv);
-    glutTimerFunc(TIME,game.TimerCallback,VAL);
+	//GLGame game(_argc,_argv);
+	//glutTimerFunc(TIME,game.TimerCallback,VAL);
 
-	Modeler modeler;
-	EventChannel channel;
+	//Modeler modeler;
+	//EventChannel channel;
 
-	RegisterEvents(modeler, game, channel);
+	//RegisterEvents(modeler, game, channel);
 
-    game.Run();
+	//game.Run();
+
+	MeshEditor editor(_argc, _argv);
+	editor.run();
 }
