@@ -256,9 +256,13 @@ void GLGame::KeyboardUpdateState()
 			case 'z':
 				zEmitter_->Signal()(); break;
 			case 't':
-				tEmitter_->Signal()(); break;
+				tEmitter_->Signal()(); 
+				keysPressed_[i] = false;
+				break;
 			case 'l':
-				lEmitter_->Signal()(); break;
+				lEmitter_->Signal()();
+				keysPressed_[i] = false;
+				break;
 			case 'X':
 				xCapEmitter_->Signal()(); break;
 			case 'Y':
@@ -266,9 +270,13 @@ void GLGame::KeyboardUpdateState()
 			case 'Z':
 				zCapEmitter_->Signal()(); break;
 			case 'T':
-				tCapEmitter_->Signal()(); break;
+				tCapEmitter_->Signal()(); 
+				keysPressed_[i] = false;
+				break;
 			case 'L':
-				lCapEmitter_->Signal()(); break;
+				lCapEmitter_->Signal()(); 
+				keysPressed_[i] = false;
+				break;
 			default:
 				break;
 			}
