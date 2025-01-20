@@ -18,7 +18,6 @@ public:
     void displayControlPoints(GLenum _mode);
 
 private:
-    friend class MeshEditor;
     friend class Modeler;
 
     void initGridPoints();

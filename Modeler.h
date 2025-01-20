@@ -113,10 +113,10 @@ private:
 
 	std::shared_ptr<events::EventConsumer<void(void)>> runConsumer_;
 
-	// refactor here
-	Grid* grid_;
-	PointLight* lights_;
-	UserInterface* userInterf_;
+	// geometry members
+	std::unique_ptr<Grid> grid_;
+	std::unique_ptr<PointLight> lights_;
+	std::unique_ptr<UserInterface> userInterf_;
 
 	bool toggleLights_;
 	bool toggleTextures_;

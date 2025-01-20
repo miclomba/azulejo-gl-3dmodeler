@@ -48,6 +48,7 @@ Modeler::Modeler() :
 {
 	SetKey(_3DMODELER_KEY);
 
+	// TODO: Dummy place holder object that will be replaced by Grid, PointLight, and UI
 	AggregateMember(Object::ObjectKey());
 	SharedEntity& obj = GetObj();
 	obj = std::make_shared<Object>(Object::ObjectKey());
@@ -106,9 +107,9 @@ Modeler::Modeler() :
 	runConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->Run(); });
 
 	// refactor here
-	grid_ = new Grid();
-	lights_ = new PointLight();
-	userInterf_ = new UserInterface();
+	grid_ = std::make_unique<Grid>();
+	lights_ = std::make_unique<PointLight>();
+	userInterf_ = std::make_unique<UserInterface>();
 
 	toggleLights_ = true;
 	toggleTextures_ = true;
@@ -164,7 +165,7 @@ void Modeler::DrawGLEntities()
 	if (obj)
 	{
 		GLEntity* glObj = dynamic_cast<GLEntity*>(obj.get());
-		GLEntityTask task([glObj, this]() { /*UpdateShipTask(ship, bulletFutures);*/ return glObj; });
+		GLEntityTask task([glObj, this]() { return glObj; });
 		futures.push_back(task.GetFuture());
 
 		boost::asio::post(threadPool_, task);
@@ -426,14 +427,11 @@ void Modeler::Mouse(const int _button, const int _state, const int _x, const int
 			curViewport_ = "front";
 			Pick(_x, _y, _h, "front");
 		}
-
-		glutPostRedisplay();
 	}
 	else if (picking_ == true && dragging_ == true &&
 		_button == GLUT_LEFT_BUTTON && _state == GLUT_UP) {
 		dragging_ = false;
 		curViewport_ = "";
-		glutPostRedisplay();
 	}
 	else if (moving_ == true &&
 		_button == GLUT_LEFT_BUTTON && _state == GLUT_DOWN) {
@@ -467,8 +465,6 @@ void Modeler::Mouse(const int _button, const int _state, const int _x, const int
 			xo_ = frontX_;
 			yo_ = frontZ_;
 		}
-
-		glutPostRedisplay();
 	}
 	else if (moving_ == true && dragging_ == true &&
 		_button == GLUT_LEFT_BUTTON && _state == GLUT_UP) {
@@ -478,8 +474,6 @@ void Modeler::Mouse(const int _button, const int _state, const int _x, const int
 		xf_ = 0;
 		yf_ = 0;
 		curViewport_ = "";
-
-		glutPostRedisplay();
 	}
 }
 
@@ -533,8 +527,6 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 				glLightfv(GL_LIGHT0, GL_POSITION, lights_->position_[0]);
 				glLightfv(GL_LIGHT1, GL_POSITION, lights_->position_[1]);
 			}
-
-			glutPostRedisplay();
 		}
 		//========================= Quadrant 3 Motion ==========================
 		else if (curViewport_ == "top" &&
@@ -579,8 +571,6 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 				glLightfv(GL_LIGHT0, GL_POSITION, lights_->position_[0]);
 				glLightfv(GL_LIGHT1, GL_POSITION, lights_->position_[1]);
 			}
-
-			glutPostRedisplay();
 		}
 		//========================= Quadrant 4 Motion ==========================
 		else if (curViewport_ == "front" &&
@@ -626,8 +616,6 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 				glLightfv(GL_LIGHT0, GL_POSITION, lights_->position_[0]);
 				glLightfv(GL_LIGHT1, GL_POSITION, lights_->position_[1]);
 			}
-
-			glutPostRedisplay();
 		}
 	}
 	else if (moving_ == true && dragging_ == true) {
@@ -635,8 +623,6 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 		yf_ = _y;
 		panX_ = xf_ - xi_;
 		panY_ = yf_ - yi_;
-
-		glutPostRedisplay();
 	}
 }
 
@@ -649,8 +635,6 @@ void Modeler::ActionMenu(const int _index) {
 			i_ = 0;
 			j_ = 0;
 		}
-
-		glutPostRedisplay();
 		break;
 	case 1:
 		exit(1);
@@ -702,12 +686,11 @@ void Modeler::Z(const bool isLowerCase) {
 void Modeler::T(const bool isLowerCase) {
 	if (isLowerCase) {
 		toggleTextures_ = !toggleTextures_;
-		glutPostRedisplay();
 	}
 	else {
 		grid_->changeTextures();
-		glutPostRedisplay();
 	}
+	glutPostRedisplay();
 }
 
 void Modeler::L() {
