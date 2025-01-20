@@ -67,16 +67,17 @@ Object& Object::operator=(Object&&) = default;
 
 void Object::Draw()
 {
-	glPushMatrix();
+	// TODO: Draw Grid, PointLight, and UI instead
+	//glPushMatrix();
 
-	glVertexPointer(3, GL_FLOAT, 0, objectVertices_.Data());
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glLoadIdentity();
-	glTranslatef(GetFrame().GetData(0,0), GetFrame().GetData(1,0), GetFrame().GetData(2,0));
-	//glRotatef(orientationAngle_*(180.0f / M_PI), 0.0f, 0.0f, 1.0f);
-	glDrawElements(GL_LINE_LOOP, 24, GL_UNSIGNED_BYTE, objectIndices_.Data());
+	//glVertexPointer(3, GL_FLOAT, 0, objectVertices_.Data());
+	//glColor3f(0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//glTranslatef(GetFrame().GetData(0,0), GetFrame().GetData(1,0), GetFrame().GetData(2,0));
+	////glRotatef(orientationAngle_*(180.0f / M_PI), 0.0f, 0.0f, 1.0f);
+	//glDrawElements(GL_LINE_LOOP, 24, GL_UNSIGNED_BYTE, objectIndices_.Data());
 
-    glPopMatrix();
+	//glPopMatrix();
 }
 
 const Resource2DGLfloat& Object::GetObjectVertices() const

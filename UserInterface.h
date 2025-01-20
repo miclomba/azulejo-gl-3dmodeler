@@ -14,7 +14,7 @@ public:
     virtual ~UserInterface() = default;
     void display(GLint _w, GLint _h);
 private:
-    friend class MeshEditor;
+    friend class Modeler;
 
     GLint w_ = 0;
     GLint h_ = 0;
