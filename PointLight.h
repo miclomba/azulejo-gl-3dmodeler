@@ -17,6 +17,8 @@ public:
 
 private:
     friend class MeshEditor;
+    friend class Modeler;
+
     GLfloat position_[2][4];
 };
 

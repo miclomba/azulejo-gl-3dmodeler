@@ -19,6 +19,7 @@ public:
 
 private:
     friend class MeshEditor;
+    friend class Modeler;
 
     void initGridPoints();
     void makeTexImage1();

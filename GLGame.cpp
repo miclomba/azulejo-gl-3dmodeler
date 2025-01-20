@@ -48,15 +48,48 @@ GLGame::GLGame(int _argc, char* _argv[])
 	std::fill(keysPressed_.begin(), keysPressed_.end(), false);
 
 	InitGlut(_argc, _argv);
+	InitActionMenu();
 	RegisterCallbacks();
 	InitServer();
 	InitClient();
 
-	leftArrowEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	rightArrowEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	xEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	yEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	zEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	tEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	lEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
 
-	drawEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	xCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	yCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	zCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	tCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+	lCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+
+	drawEmitter_ = std::make_shared<events::EventEmitter<
+		void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
+	>>();
+	pickEmitter_ = std::make_shared<events::EventEmitter<
+		void(const int _x, const int _y, const int _h, const std::string & _viewport)
+	>>();
+	mouseEmitter_ = std::make_shared<events::EventEmitter<
+		void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
+	>>();
+	mouseMotionEmitter_ = std::make_shared<events::EventEmitter<
+		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
+	>>();
+	actionMenuEmitter_ = std::make_shared<events::EventEmitter<
+		void(const int _index)
+	>>();
 	runEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
+
+	// window and projection
+	w_ = WIN_WIDTH;
+	h_ = WIN_HEIGHT;
+
+	for (int i = 0; i < 16; i++) {
+		projOrtho_[i] = 0;
+		projPerspective_[i] = 0;
+	}
 }
 
 void GLGame::Run()
@@ -72,6 +105,8 @@ void GLGame::RegisterCallbacks() const
 	glutReshapeFunc(ReshapeWrapper);
 	glutKeyboardFunc(KeyboardWrapper); 
 	glutKeyboardUpFunc(KeyboardUpWrapper);
+	glutMouseFunc(MouseWrapper);
+	glutMotionFunc(MouseMotionWrapper);
 }
 
 void GLGame::InitGlut(int _argc, char* _argv[]) const
@@ -83,17 +118,26 @@ void GLGame::InitGlut(int _argc, char* _argv[]) const
 	glutCreateWindow(_3DMODELER_TITLE.c_str());
 }
 
+void GLGame::InitActionMenu() const
+{
+	glutCreateMenu(ActionMenuWrapper);
+		glutAddMenuEntry("Toggle Pick/Pan", 0);
+		glutAddMenuEntry("Quit", 1);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
 void GLGame::InitServer() const
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glShadeModel(GL_SMOOTH);
+	glEnable(GL_SCISSOR_TEST);
 	glEnable(GL_DEPTH_TEST);
-	glDepthRange(0, 1);
+		glDepthRange(0, 1);
 	glEnable(GL_AUTO_NORMAL);
-	glEnable(GL_NORMALIZE);
+		glEnable(GL_NORMALIZE);
 	glFrontFace(GL_CCW);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
+			glCullFace(GL_BACK);
 }
 
 void GLGame::InitClient() const
@@ -121,33 +165,67 @@ void GLGame::KeyboardUpWrapper(const unsigned char _chr, const int _x, const int
 	callbackInstance_->KeyboardUp(_chr, _x, _y);
 }
 
+void GLGame::PickWrapper(const int _x, const int _y, const std::string& _viewport) {
+	callbackInstance_->Pick(_x, _y, callbackInstance_->h_, _viewport);
+}
+
+void GLGame::MouseWrapper(const int _button, const int _state, const int _x, const int _y) {
+	callbackInstance_->Mouse(_button, _state, _x, _y, callbackInstance_->w_, callbackInstance_->h_);
+}
+
+void GLGame::MouseMotionWrapper(const int _x, const int _y) {
+	callbackInstance_->MouseMotion(_x, _y, callbackInstance_->w_, callbackInstance_->h_, callbackInstance_->projOrtho_);
+}
+
+void GLGame::ActionMenuWrapper(const int _index) {
+	callbackInstance_->ActionMenu(_index);
+}
+
 void GLGame::Display()
 {
 	KeyboardUpdateState();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	drawEmitter_->Signal()();
+	drawEmitter_->Signal()(w_, h_, projOrtho_, projPerspective_);
 
 	// RENDER
 	glFlush();
 	glutSwapBuffers();
 }
 
-void GLGame::Reshape(const int _w, const int _h) const
+void GLGame::Reshape(const int _w, const int _h)
 {
+	w_ = _w;
+	h_ = _h;
+
+	GLint i;
+	GLdouble projection[16];
+
 	//========================= DEFINE VIEWPORT ==============================*/
-	glViewport(0, 0, _w, _h);
+	//glViewport(0, 0, _w, _h);
 	/*========================= ORTHO PROJECTION =============================*/
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	if (_w <= _h)
-		glOrtho(-10.0, 10.0, -10.0*((GLfloat)_h / (GLfloat)_w),
-			10.0*((GLfloat)_h / (GLfloat)_w), 10, -10);
+	if (_w / 2 <= _h / 2)
+		glOrtho(-5.0, 5.0, -5.0 * ((GLfloat)(_h / 2) / (GLfloat)(_w / 2)),
+			5.0 * ((GLfloat)(_h / 2) / (GLfloat)(_w / 2)), 10.0, -200.0);
 	else
-		glOrtho(-10.0*((GLfloat)_w / (GLfloat)_h),
-			10.0*((GLfloat)_w / (GLfloat)_h), -10.0, 10.0, 10, -10);
+		glOrtho(-5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)),
+			5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)), -5.0, 5.0, 10.0, -200.0);
+
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	for (i = 0; i < 16; i++) projOrtho_[i] = projection[i];
+
+	glLoadIdentity();
+	//========================= Perspective Projection =====================
+	gluPerspective(40.0, (GLdouble)_w / (GLdouble)_h, 0.5, 200.0);
+
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	for (i = 0; i < 16; i++) projPerspective_[i] = projection[i];
+	glLoadIdentity();
+
 	/*========================= REDISPLAY ====================================*/
 	glMatrixMode(GL_MODELVIEW);
 	glutPostRedisplay();
@@ -171,10 +249,26 @@ void GLGame::KeyboardUpdateState()
 		{
 			switch (i)
 			{
-			case 's':
-				leftArrowEmitter_->Signal()(); break;
-			case 'f':
-				rightArrowEmitter_->Signal()(); break;
+			case 'x':
+				xEmitter_->Signal()(); break;
+			case 'y':
+				yEmitter_->Signal()(); break;
+			case 'z':
+				zEmitter_->Signal()(); break;
+			case 't':
+				tEmitter_->Signal()(); break;
+			case 'l':
+				lEmitter_->Signal()(); break;
+			case 'X':
+				xCapEmitter_->Signal()(); break;
+			case 'Y':
+				yCapEmitter_->Signal()(); break;
+			case 'Z':
+				zCapEmitter_->Signal()(); break;
+			case 'T':
+				tCapEmitter_->Signal()(); break;
+			case 'L':
+				lCapEmitter_->Signal()(); break;
 			default:
 				break;
 			}
@@ -182,19 +276,105 @@ void GLGame::KeyboardUpdateState()
 	}
 }
 
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetLeftArrowEmitter()
-{
-	return leftArrowEmitter_;
+void GLGame::Pick(const int _x, const int _y, const int _h, const std::string& _viewport) {
+	pickEmitter_->Signal()(_x, _y, _h, _viewport);
 }
 
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetRightArrowEmitter()
-{
-	return rightArrowEmitter_;
+void GLGame::Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h) {
+	mouseEmitter_->Signal()(_button, _state, _x, _y, _w, _h);
 }
 
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetDrawEmitter()
+void GLGame::MouseMotion(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho) {
+	mouseMotionEmitter_->Signal()(_x, _y, _w, _h, _projOrtho);
+}
+
+void GLGame::ActionMenu(const int _index) {
+	actionMenuEmitter_->Signal()(_index);
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetXEmitter()
+{
+	return xEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetYEmitter()
+{
+	return yEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetZEmitter()
+{
+	return zEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetTEmitter()
+{
+	return tEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetLEmitter()
+{
+	return lEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetXCapEmitter()
+{
+	return xCapEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetYCapEmitter()
+{
+	return yCapEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetZCapEmitter()
+{
+	return zCapEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetTCapEmitter()
+{
+	return tCapEmitter_;
+}
+
+std::shared_ptr<EventEmitter<void(void)>> GLGame::GetLCapEmitter()
+{
+	return lCapEmitter_;
+}
+
+std::shared_ptr<EventEmitter<
+	void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
+>> GLGame::GetDrawEmitter()
 {
 	return drawEmitter_;
+}
+
+std::shared_ptr<EventEmitter<
+	void(const int _x, const int _y, const int _h, const std::string& _viewport)
+>> GLGame::GetPickEmitter()
+{
+	return pickEmitter_;
+}
+
+std::shared_ptr<EventEmitter<
+	void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
+	>> GLGame::GetMouseEmitter()
+{
+	return mouseEmitter_;
+}
+
+std::shared_ptr<EventEmitter<
+	void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
+	>> GLGame::GetMouseMotionEmitter()
+{
+	return mouseMotionEmitter_;
+}
+
+std::shared_ptr<EventEmitter<
+	void(const int _index)
+	>> GLGame::GetActionMenuEmitter()
+{
+	return actionMenuEmitter_;
 }
 
 std::shared_ptr<EventEmitter<void(void)>> GLGame::GetRunEmitter()
