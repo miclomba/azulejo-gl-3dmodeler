@@ -42,9 +42,6 @@ public:
 	void Run();
 
 private:
-	SharedEntity& GetObj();
-
-	void DrawGLEntities();
 	void DrawGameInfo();
 
 	boost::asio::thread_pool threadPool_;

@@ -17,6 +17,8 @@ public:
 
     std::array<std::array<GLfloat, 4>, 2>& GetPosition();
 
+    static std::string PointLightKey();
+
 private:
     std::array<std::array<GLfloat, 4>, 2> position_;
 };

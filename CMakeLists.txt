@@ -47,7 +47,7 @@ add_executable("${PROJECT_NAME}"
 "GLEntity.cpp" 
 "GLEntityTask.cpp"
 "Modeler.cpp"
-"Object.cpp"
+
  "Grid.cpp" "Grid.h"   "PointLight.cpp" "PointLight.h" "UserInterface.cpp" "UserInterface.h" "GLGameEmitters.h" "GLGameEmitters.cpp" "ModelerConsumers.h" "ModelerConsumers.cpp" "GLGameWindow.h" "GLGameWindow.cpp")
 
 if (MSVC)
