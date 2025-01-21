@@ -1,26 +1,23 @@
 #ifndef _3dmodeler_userinterface_h
 #define	_3dmodeler_userinterface_h
 
-#include <stdlib.h>
-#include <iostream>
-#include <stdio.h>
-
 #include "config.h"
+
+#include "Entities/Entity.h"
 
 namespace _3dmodeler {
 
-class _3DMODELER_DLL_EXPORT UserInterface {
+class _3DMODELER_DLL_EXPORT UserInterface : public entity::Entity {
 public:
+    UserInterface();
     virtual ~UserInterface() = default;
-    void display(GLint _w, GLint _h);
+    void Draw(GLint _w, GLint _h);
 private:
-    friend class Modeler;
-
     GLint w_ = 0;
     GLint h_ = 0;
 
-    void drawWindows();
-    void drawLabelAxis();
+    void DrawWindows();
+    void DrawLabelAxis();
 
 };
 

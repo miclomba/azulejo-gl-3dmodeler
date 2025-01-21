@@ -126,7 +126,7 @@ void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_
     glDisable(GL_TEXTURE_2D);
 
     //===================== Display a user interface ===========================
-    userInterf_->display(w_, h_);
+    userInterf_->Draw(w_, h_);
 
     glEnable(GL_SCISSOR_TEST);
 
@@ -145,12 +145,12 @@ void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_
     gluLookAt(topX_, topY_, 1, topX_, topY_, 0, 0, 1, 0);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
-    lights_->display(renderMode_);
+    lights_->Draw(renderMode_);
     if (toggleLights_ == true)
         glEnable(GL_LIGHTING);
     if (toggleTextures_ == true)
         glEnable(GL_TEXTURE_2D);
-    grid_->display(renderMode_);
+    grid_->Draw(renderMode_);
     glLoadIdentity();
 
     //===================== Draw top left viewport =========================
@@ -168,12 +168,12 @@ void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_
     gluLookAt(-1, sideY_, sideZ_, 0, sideY_, sideZ_, 0, 1, 0);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
-    lights_->display(renderMode_);
+    lights_->Draw(renderMode_);
     if (toggleLights_ == true)
         glEnable(GL_LIGHTING);
     if (toggleTextures_ == true)
         glEnable(GL_TEXTURE_2D);
-    grid_->display(renderMode_);
+    grid_->Draw(renderMode_);
     glLoadIdentity();
 
     //===================== Draw bottom right viewport =====================
@@ -191,12 +191,12 @@ void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_
     gluLookAt(frontX_, -1, frontZ_, frontX_, 0, frontZ_, 0, 0, 1);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
-    lights_->display(renderMode_);
+    lights_->Draw(renderMode_);
     if (toggleLights_ == true)
         glEnable(GL_LIGHTING);
     if (toggleTextures_ == true)
         glEnable(GL_TEXTURE_2D);
-    grid_->display(renderMode_);
+    grid_->Draw(renderMode_);
     glLoadIdentity();
 
     //===================== Draw top right viewport ========================
@@ -213,12 +213,12 @@ void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_
     glRotatef(xPsi_, 1.0f, 0.0f, 0.0f);
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
-    lights_->display(renderMode_);
+    lights_->Draw(renderMode_);
     if (toggleLights_ == true)
         glEnable(GL_LIGHTING);
     if (toggleTextures_ == true)
         glEnable(GL_TEXTURE_2D);
-    grid_->display(renderMode_);
+    grid_->Draw(renderMode_);
     glLoadIdentity();
 
     glDisable(GL_SCISSOR_TEST);
@@ -264,8 +264,8 @@ void Modeler::Pick(const int _x, const int _y, const int _h, const std::string& 
 	}
 	glInitNames();
 	glPushName(0);
-	grid_->displayControlPoints(renderMode_);
-	lights_->display(renderMode_);
+	grid_->DrawControlPoints(renderMode_);
+	lights_->Draw(renderMode_);
 	glLoadIdentity();
 
 	glMatrixMode(GL_PROJECTION);
@@ -448,14 +448,14 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 			}
 
 			if (k_ == -1) {
-				grid_->controlPoints_[i_][j_][1] = (GLfloat)mouseY;
-				grid_->controlPoints_[i_][j_][2] = (GLfloat)mouseZ;
+				grid_->SetControlPoint((GLfloat)mouseY, i_, j_, 1);
+				grid_->SetControlPoint((GLfloat)mouseZ, i_, j_, 2);
 			}
 			else {
-				lights_->position_[k_][1] = (GLfloat)mouseY;
-				lights_->position_[k_][2] = (GLfloat)mouseZ;
-				glLightfv(GL_LIGHT0, GL_POSITION, lights_->position_[0]);
-				glLightfv(GL_LIGHT1, GL_POSITION, lights_->position_[1]);
+				lights_->GetPosition()[k_][1] = (GLfloat)mouseY;
+				lights_->GetPosition()[k_][2] = (GLfloat)mouseZ;
+				glLightfv(GL_LIGHT0, GL_POSITION, lights_->GetPosition()[0].data());
+				glLightfv(GL_LIGHT1, GL_POSITION, lights_->GetPosition()[1].data());
 			}
 		}
 		//========================= Quadrant 3 Motion ==========================
@@ -492,14 +492,14 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 			}
 
 			if (k_ == -1) {
-				grid_->controlPoints_[i_][j_][0] = (GLfloat)mouseX;
-				grid_->controlPoints_[i_][j_][1] = (GLfloat)mouseY;
+				grid_->SetControlPoint((GLfloat)mouseX, i_, j_, 0);
+				grid_->SetControlPoint((GLfloat)mouseY, i_, j_, 1);
 			}
 			else {
-				lights_->position_[k_][0] = (GLfloat)mouseX;
-				lights_->position_[k_][1] = (GLfloat)mouseY;
-				glLightfv(GL_LIGHT0, GL_POSITION, lights_->position_[0]);
-				glLightfv(GL_LIGHT1, GL_POSITION, lights_->position_[1]);
+				lights_->GetPosition()[k_][0] = (GLfloat)mouseX;
+				lights_->GetPosition()[k_][1] = (GLfloat)mouseY;
+				glLightfv(GL_LIGHT0, GL_POSITION, lights_->GetPosition()[0].data());
+				glLightfv(GL_LIGHT1, GL_POSITION, lights_->GetPosition()[1].data());
 			}
 		}
 		//========================= Quadrant 4 Motion ==========================
@@ -537,14 +537,14 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 			}
 
 			if (k_ == -1) {
-				grid_->controlPoints_[i_][j_][0] = (GLfloat)mouseX;
-				grid_->controlPoints_[i_][j_][2] = (GLfloat)mouseZ;
+				grid_->SetControlPoint((GLfloat)mouseX, i_, j_, 0);
+				grid_->SetControlPoint((GLfloat)mouseZ, i_, j_, 2);
 			}
 			else {
-				lights_->position_[k_][0] = (GLfloat)mouseX;
-				lights_->position_[k_][2] = (GLfloat)mouseZ;
-				glLightfv(GL_LIGHT0, GL_POSITION, lights_->position_[0]);
-				glLightfv(GL_LIGHT1, GL_POSITION, lights_->position_[1]);
+				lights_->GetPosition()[k_][0] = (GLfloat)mouseX;
+				lights_->GetPosition()[k_][2] = (GLfloat)mouseZ;
+				glLightfv(GL_LIGHT0, GL_POSITION, lights_->GetPosition()[0].data());
+				glLightfv(GL_LIGHT1, GL_POSITION, lights_->GetPosition()[1].data());
 			}
 		}
 	}
@@ -618,7 +618,7 @@ void Modeler::T(const bool isLowerCase) {
 		toggleTextures_ = !toggleTextures_;
 	}
 	else {
-		grid_->changeTextures();
+		grid_->ChangeTextures();
 	}
 	glutPostRedisplay();
 }
