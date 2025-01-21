@@ -1,8 +1,20 @@
 #include "PointLight.h"
 
-using _3dmodeler::PointLight;
+#include <array>
+#include <string>
 
-void PointLight::display(GLenum _renderMode) {
+using _3dmodeler::PointLight;
+using entity::Entity;
+
+namespace {
+const std::string POINT_LIGHT_KEY = "PointLight";
+}
+
+std::array<std::array<GLfloat, 4>, 2>& PointLight::GetPosition() {
+    return position_;
+}
+
+void PointLight::Draw(GLenum _renderMode) {
     glPointSize(7.0);
     glColor3f(1.0f,1.0f,0.0f);
 
@@ -19,7 +31,9 @@ void PointLight::display(GLenum _renderMode) {
     glEnd();
 }
 
-PointLight::PointLight() {
+PointLight::PointLight() : Entity() {
+    SetKey(POINT_LIGHT_KEY);
+
     position_[0][0] = -3;
     position_[0][1] = 3;
     position_[0][2] = 1;
@@ -31,8 +45,8 @@ PointLight::PointLight() {
     position_[1][3] = 1;
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-    glLightfv(GL_LIGHT0, GL_POSITION, position_[0]);
-    glLightfv(GL_LIGHT1, GL_POSITION, position_[1]);
+    glLightfv(GL_LIGHT0, GL_POSITION, position_[0].data());
+    glLightfv(GL_LIGHT1, GL_POSITION, position_[1].data());
 
     GLfloat specular[] = {0.0f, 0.0f, 1.0f };
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular);

@@ -1,15 +1,26 @@
 #include "UserInterface.h"
 
-using _3dmodeler::UserInterface;
+#include "Entities/Entity.h"
 
-void UserInterface::display(GLint _w, GLint _h) {
-    w_ = _w;
-    h_ = _h;
-    drawWindows();
-    drawLabelAxis();
+using _3dmodeler::UserInterface;
+using entity::Entity;
+
+namespace {
+const std::string UI_KEY = "UI";
 }
 
-void UserInterface::drawWindows() {
+UserInterface::UserInterface() : Entity() {
+    SetKey(UI_KEY);
+}
+
+void UserInterface::Draw(GLint _w, GLint _h) {
+    w_ = _w;
+    h_ = _h;
+    DrawWindows();
+    DrawLabelAxis();
+}
+
+void UserInterface::DrawWindows() {
     glViewport(0, 0, w_, h_);
     glColor3f(1.0f, 1.0f, 1.0f);
     glMatrixMode(GL_PROJECTION);
@@ -25,7 +36,7 @@ void UserInterface::drawWindows() {
     glEnd();
 }
 
-void UserInterface::drawLabelAxis() {
+void UserInterface::DrawLabelAxis() {
     //=============== Draw labels for the "top" viewport =======================
     glColor3f(1.0f,1.0f,1.0f);
     glBegin(GL_LINES);

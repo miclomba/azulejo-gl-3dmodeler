@@ -1,32 +1,43 @@
 #include "Grid.h"
 
+#include <math.h>
+#include <string>
+
+#include "Entities/Entity.h"
+
 using _3dmodeler::Grid;
+using entity::Entity;
 
 namespace {
+const std::string GRID_KEY = "Grid";
 const int MAX_TEXTURES = 2;
 #ifndef M_PI
 #define M_PI (3.14159265358979323846)
 #endif
 }
 
-void Grid::display(GLenum _mode) {
+void Grid::SetControlPoint(const GLfloat val, const int i, const int j, const int k) {
+    controlPoints_[i][j][k] = val;
+}
+
+void Grid::Draw(GLenum _mode) {
     //===================== Draw Bezier Surface ================================
 
     glColor3f(1.0, 1.0, 1.0);
 
     if (curTexture_ == 1)
-        makeTexImage1();
+        MakeTexImage1();
     else if (curTexture_ == 2)
-        makeTexImage2();
+        MakeTexImage2();
 
     //===================== Apply material properties ==========================
-    glMaterialfv(GL_FRONT, GL_AMBIENT,  gold_Ka_);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,  gold_Kd_);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, gold_Ks_);
+    glMaterialfv(GL_FRONT, GL_AMBIENT,  gold_Ka_.data());
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,  gold_Kd_.data());
+    glMaterialfv(GL_FRONT, GL_SPECULAR, gold_Ks_.data());
     glMaterialf(GL_FRONT, GL_SHININESS, gold_Ke_);
-    glMaterialfv(GL_BACK, GL_AMBIENT,  silver_Ka_);
-    glMaterialfv(GL_BACK, GL_DIFFUSE,  silver_Kd_);
-    glMaterialfv(GL_BACK, GL_SPECULAR, silver_Ks_);
+    glMaterialfv(GL_BACK, GL_AMBIENT,  silver_Ka_.data());
+    glMaterialfv(GL_BACK, GL_DIFFUSE,  silver_Kd_.data());
+    glMaterialfv(GL_BACK, GL_SPECULAR, silver_Ks_.data());
     glMaterialf(GL_BACK, GL_SHININESS, silver_Ke_);
 
     //===================== Apply textures properties ==========================
@@ -37,15 +48,15 @@ void Grid::display(GLenum _mode) {
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
     glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
     glTexImage2D(GL_TEXTURE_2D,0,3,IMG_WIDTH,IMG_HEIGHT,
-                 0,GL_RGB,GL_UNSIGNED_BYTE,image_);
+                 0,GL_RGB,GL_UNSIGNED_BYTE,image_.data());
 
     //=================== Create an evaluator for the grid =====================
     glMap2f(GL_MAP2_VERTEX_3,uRangeLow_,uRangeHigh_,uStride_,uOrder_,
                              vRangeLow_,vRangeHigh_,vStride_,vOrder_,
-                             (GLfloat*)controlPoints_);
+                             controlPoints_[0][0].data());
     glMap2f(GL_MAP2_TEXTURE_COORD_2,0,1,2,2,
                                     0,1,4,2,
-                                    (GLfloat*)texturePoints_);
+                                    texturePoints_[0][0].data());
 
     //=========== Apply a grid subdivision of u and v to all evaluators ========
     glMapGrid2f(gridSubdivs_, uRangeLow_, uRangeHigh_,
@@ -55,10 +66,10 @@ void Grid::display(GLenum _mode) {
     glEvalMesh2(GL_LINE, 0, gridSubdivs_, 0, gridSubdivs_);
 
     
-    displayControlPoints(_mode);
+    DrawControlPoints(_mode);
 }
 
-void Grid::displayControlPoints(GLenum _mode) {
+void Grid::DrawControlPoints(GLenum _mode) {
 
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
@@ -74,13 +85,13 @@ void Grid::displayControlPoints(GLenum _mode) {
                 glLoadName(i*4 + j + 1);
             }
             glBegin(GL_POINTS);
-                glVertex3fv(controlPoints_[i][j]);
+                glVertex3fv(controlPoints_[i][j].data());
             glEnd();
         }
     }
 }
 
-void Grid::initGridPoints() {
+void Grid::InitGridPoints() {
 
     GLfloat controlPoints[4][4][3] = {   {{-2.0, -2.0, 0.0},
                                           {-0.5, -2.0, 0.0},
@@ -121,7 +132,7 @@ void Grid::initGridPoints() {
     }
 }
 
-void Grid::makeTexImage1() {
+void Grid::MakeTexImage1() {
     GLint i, j;
     GLfloat ti, tj;
 
@@ -136,7 +147,7 @@ void Grid::makeTexImage1() {
     }
 }
 
-void Grid::makeTexImage2() {
+void Grid::MakeTexImage2() {
     GLint i, j;
     GLfloat ti, tj;
 
@@ -151,20 +162,22 @@ void Grid::makeTexImage2() {
     }
 }
 
-void Grid::changeTextures() {
+void Grid::ChangeTextures() {
     if (curTexture_ < MAX_TEXTURES)
         curTexture_ += 1;
     else
         curTexture_ = 1;
 }
 
-Grid::Grid() {
+Grid::Grid() : Entity() {
+    SetKey(GRID_KEY);
+
     glEnable(GL_MAP2_VERTEX_3);
 
     //================== Create textures and init mesh points ==================
-    makeTexImage1();
-    makeTexImage2();
-    initGridPoints();
+    MakeTexImage1();
+    MakeTexImage2();
+    InitGridPoints();
 
     //===================== Initialize member variables ========================
 
