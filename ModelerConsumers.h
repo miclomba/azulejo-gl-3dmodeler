@@ -1,6 +1,7 @@
 #ifndef _3dmodeler_modeler_consumers_h
 #define	_3dmodeler_modeler_consumers_h
 
+#include <array>
 #include <memory>
 #include <string>
 
@@ -34,7 +35,7 @@ public:
 	std::shared_ptr<events::EventConsumer<void(void)>> GetLCapConsumer();
 
 	std::shared_ptr<events::EventConsumer<
-		void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
+		void(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_)
 	>> GetDrawConsumer();
 	std::shared_ptr<events::EventConsumer<
 		void(const int _x, const int _y, const int _h, const std::string& _viewport)
@@ -43,7 +44,7 @@ public:
 		void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
 	>> GetMouseConsumer();
 	std::shared_ptr<events::EventConsumer<
-		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
+		void(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho)
 	>> GetMouseMotionConsumer();
 	std::shared_ptr<events::EventConsumer<
 		void(const int _index)
@@ -65,7 +66,7 @@ private:
 	std::shared_ptr<events::EventConsumer<void(void)>> lCapConsumer_;
 
 	std::shared_ptr<events::EventConsumer<
-		void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
+		void(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_)
 	>> drawConsumer_;
 	std::shared_ptr<events::EventConsumer<
 		void(const int _x, const int _y, const int _h, const std::string& _viewport)
@@ -74,7 +75,7 @@ private:
 		void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
 	>> mouseConsumer_;
 	std::shared_ptr<events::EventConsumer<
-		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
+		void(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho)
 	>> mouseMotionConsumer_;
 	std::shared_ptr<events::EventConsumer<
 		void(const int _index)

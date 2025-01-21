@@ -5,11 +5,13 @@
 
 #include "Entities/Entity.h"
 #include "GLGameEmitters.h"
+#include "GLGameWindow.h"
 
 using entity::Entity;
 
 using _3dmodeler::GLGame;
 using _3dmodeler::GLGameEmitters;
+using _3dmodeler::GLGameWindow;
 
 namespace
 {
@@ -54,15 +56,6 @@ GLGame::GLGame(int _argc, char* _argv[]) : Entity()
 	RegisterCallbacks();
 	InitServer();
 	InitClient();
-
-	// window and projection
-	w_ = WIN_WIDTH;
-	h_ = WIN_HEIGHT;
-
-	for (int i = 0; i < 16; i++) {
-		projOrtho_[i] = 0;
-		projPerspective_[i] = 0;
-	}
 }
 
 void GLGame::Run()
@@ -74,6 +67,10 @@ void GLGame::Run()
 
 GLGameEmitters& GLGame::GetEmitters() {
 	return emitters_;
+}
+
+GLGameWindow& GLGame::GetGameWindow() {
+	return gameWindow_;
 }
 
 void GLGame::RegisterCallbacks() const
@@ -143,15 +140,15 @@ void GLGame::KeyboardUpWrapper(const unsigned char _chr, const int _x, const int
 }
 
 void GLGame::PickWrapper(const int _x, const int _y, const std::string& _viewport) {
-	callbackInstance_->Pick(_x, _y, callbackInstance_->h_, _viewport);
+	callbackInstance_->Pick(_x, _y, callbackInstance_->GetGameWindow().GetHeight(), _viewport);
 }
 
 void GLGame::MouseWrapper(const int _button, const int _state, const int _x, const int _y) {
-	callbackInstance_->Mouse(_button, _state, _x, _y, callbackInstance_->w_, callbackInstance_->h_);
+	callbackInstance_->Mouse(_button, _state, _x, _y, callbackInstance_->GetGameWindow().GetWidth(), callbackInstance_->GetGameWindow().GetHeight());
 }
 
 void GLGame::MouseMotionWrapper(const int _x, const int _y) {
-	callbackInstance_->MouseMotion(_x, _y, callbackInstance_->w_, callbackInstance_->h_, callbackInstance_->projOrtho_);
+	callbackInstance_->MouseMotion(_x, _y, callbackInstance_->GetGameWindow().GetWidth(), callbackInstance_->GetGameWindow().GetHeight(), callbackInstance_->GetGameWindow().GetProjOrthoMatrix());
 }
 
 void GLGame::ActionMenuWrapper(const int _index) {
@@ -164,7 +161,7 @@ void GLGame::Display()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	emitters_.GetDrawEmitter()->Signal()(w_, h_, projOrtho_, projPerspective_);
+	emitters_.GetDrawEmitter()->Signal()(GetGameWindow().GetWidth(), GetGameWindow().GetHeight(), GetGameWindow().GetProjOrthoMatrix(), GetGameWindow().GetProjPerspectiveMatrix());
 
 	// RENDER
 	glFlush();
@@ -173,8 +170,8 @@ void GLGame::Display()
 
 void GLGame::Reshape(const int _w, const int _h)
 {
-	w_ = _w;
-	h_ = _h;
+	GetGameWindow().SetWidth(_w);
+	GetGameWindow().SetHeight(_h);
 
 	GLint i;
 	GLdouble projection[16];
@@ -193,14 +190,14 @@ void GLGame::Reshape(const int _w, const int _h)
 			5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)), -5.0, 5.0, 10.0, -200.0);
 
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	for (i = 0; i < 16; i++) projOrtho_[i] = projection[i];
+	for (i = 0; i < 16; i++) GetGameWindow().SetProjOrthoMatrix(projection[i], i);
 
 	glLoadIdentity();
 	//========================= Perspective Projection =====================
 	gluPerspective(40.0, (GLdouble)_w / (GLdouble)_h, 0.5, 200.0);
 
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	for (i = 0; i < 16; i++) projPerspective_[i] = projection[i];
+	for (i = 0; i < 16; i++) GetGameWindow().SetProjPerspectiveMatrix(projection[i], i);
 	glLoadIdentity();
 
 	/*========================= REDISPLAY ====================================*/
@@ -269,7 +266,7 @@ void GLGame::Mouse(const int _button, const int _state, const int _x, const int 
 	emitters_.GetMouseEmitter()->Signal()(_button, _state, _x, _y, _w, _h);
 }
 
-void GLGame::MouseMotion(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho) {
+void GLGame::MouseMotion(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho) {
 	emitters_.GetMouseMotionEmitter()->Signal()(_x, _y, _w, _h, _projOrtho);
 }
 

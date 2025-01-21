@@ -1,5 +1,6 @@
 #include "GLGameEmitters.h"
 
+#include <array>
 #include <memory>
 #include <string>
 
@@ -34,7 +35,7 @@ GLGameEmitters::GLGameEmitters() : Entity()
 	lCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
 
 	drawEmitter_ = std::make_shared<events::EventEmitter<
-		void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
+		void(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_)
 	>>();
 	pickEmitter_ = std::make_shared<events::EventEmitter<
 		void(const int _x, const int _y, const int _h, const std::string & _viewport)
@@ -43,7 +44,7 @@ GLGameEmitters::GLGameEmitters() : Entity()
 		void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
 	>>();
 	mouseMotionEmitter_ = std::make_shared<events::EventEmitter<
-		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
+		void(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho)
 	>>();
 	actionMenuEmitter_ = std::make_shared<events::EventEmitter<
 		void(const int _index)
@@ -102,7 +103,7 @@ std::shared_ptr<EventEmitter<void(void)>> GLGameEmitters::GetLCapEmitter()
 }
 
 std::shared_ptr<EventEmitter<
-	void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
+	void(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_)
 >> GLGameEmitters::GetDrawEmitter()
 {
 	return drawEmitter_;
@@ -123,7 +124,7 @@ std::shared_ptr<EventEmitter<
 }
 
 std::shared_ptr<EventEmitter<
-	void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
+	void(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho)
 	>> GLGameEmitters::GetMouseMotionEmitter()
 {
 	return mouseMotionEmitter_;
