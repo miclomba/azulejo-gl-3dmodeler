@@ -1,13 +1,17 @@
-#include <stdlib.h>
+#include <memory>
 #include <string>
 
 #include "Events/EventChannel.h"
 
 #include "Modeler.h"
+#include "ModelerConsumers.h"
 #include "GLGame.h"
+#include "GLGameEmitters.h"
 
 using _3dmodeler::Modeler;
+using _3dmodeler::ModelerConsumers;
 using _3dmodeler::GLGame;
+using _3dmodeler::GLGameEmitters;
 using events::EventChannel;
 
 namespace
@@ -49,54 +53,56 @@ const std::string RUN_EVENT = "run_event";
 const std::string RUN_ACTION = "run_action";
 }
 
-void RegisterEvents(Modeler& modeler, GLGame& game, EventChannel& channel)
+void RegisterEvents(ModelerConsumers& consumers, GLGameEmitters& emitters, EventChannel& channel)
 {
-	channel.RegisterEmitter(X_EVENT, game.GetXEmitter());
-	channel.RegisterConsumer(X_ACTION, X_EVENT, modeler.GetXConsumer());
-	channel.RegisterEmitter(Y_EVENT, game.GetYEmitter());
-	channel.RegisterConsumer(Y_ACTION, Y_EVENT, modeler.GetYConsumer());
-	channel.RegisterEmitter(Z_EVENT, game.GetZEmitter());
-	channel.RegisterConsumer(Z_ACTION, Z_EVENT, modeler.GetZConsumer());
-	channel.RegisterEmitter(T_EVENT, game.GetTEmitter());
-	channel.RegisterConsumer(T_ACTION, T_EVENT, modeler.GetTConsumer());
-	channel.RegisterEmitter(L_EVENT, game.GetLEmitter());
-	channel.RegisterConsumer(L_ACTION, L_EVENT, modeler.GetLConsumer());
+	channel.RegisterEmitter(X_EVENT, emitters.GetXEmitter());
+	channel.RegisterConsumer(X_ACTION, X_EVENT, consumers.GetXConsumer());
+	channel.RegisterEmitter(Y_EVENT, emitters.GetYEmitter());
+	channel.RegisterConsumer(Y_ACTION, Y_EVENT, consumers.GetYConsumer());
+	channel.RegisterEmitter(Z_EVENT, emitters.GetZEmitter());
+	channel.RegisterConsumer(Z_ACTION, Z_EVENT, consumers.GetZConsumer());
+	channel.RegisterEmitter(T_EVENT, emitters.GetTEmitter());
+	channel.RegisterConsumer(T_ACTION, T_EVENT, consumers.GetTConsumer());
+	channel.RegisterEmitter(L_EVENT, emitters.GetLEmitter());
+	channel.RegisterConsumer(L_ACTION, L_EVENT, consumers.GetLConsumer());
 
-	channel.RegisterEmitter(X_CAP_EVENT, game.GetXCapEmitter());
-	channel.RegisterConsumer(X_CAP_ACTION, X_CAP_EVENT, modeler.GetXCapConsumer());
-	channel.RegisterEmitter(Y_CAP_EVENT, game.GetYCapEmitter());
-	channel.RegisterConsumer(Y_CAP_ACTION, Y_CAP_EVENT, modeler.GetYCapConsumer());
-	channel.RegisterEmitter(Z_CAP_EVENT, game.GetZCapEmitter());
-	channel.RegisterConsumer(Z_CAP_ACTION, Z_CAP_EVENT, modeler.GetZCapConsumer());
-	channel.RegisterEmitter(T_CAP_EVENT, game.GetTCapEmitter());
-	channel.RegisterConsumer(T_CAP_ACTION, T_CAP_EVENT, modeler.GetTCapConsumer());
-	channel.RegisterEmitter(L_CAP_EVENT, game.GetLCapEmitter());
-	channel.RegisterConsumer(L_CAP_ACTION, L_CAP_EVENT, modeler.GetLCapConsumer());
+	channel.RegisterEmitter(X_CAP_EVENT, emitters.GetXCapEmitter());
+	channel.RegisterConsumer(X_CAP_ACTION, X_CAP_EVENT, consumers.GetXCapConsumer());
+	channel.RegisterEmitter(Y_CAP_EVENT, emitters.GetYCapEmitter());
+	channel.RegisterConsumer(Y_CAP_ACTION, Y_CAP_EVENT, consumers.GetYCapConsumer());
+	channel.RegisterEmitter(Z_CAP_EVENT, emitters.GetZCapEmitter());
+	channel.RegisterConsumer(Z_CAP_ACTION, Z_CAP_EVENT, consumers.GetZCapConsumer());
+	channel.RegisterEmitter(T_CAP_EVENT, emitters.GetTCapEmitter());
+	channel.RegisterConsumer(T_CAP_ACTION, T_CAP_EVENT, consumers.GetTCapConsumer());
+	channel.RegisterEmitter(L_CAP_EVENT, emitters.GetLCapEmitter());
+	channel.RegisterConsumer(L_CAP_ACTION, L_CAP_EVENT, consumers.GetLCapConsumer());
 
-	channel.RegisterEmitter(DRAW_EVENT, game.GetDrawEmitter());
-	channel.RegisterConsumer(DRAW_ACTION, DRAW_EVENT, modeler.GetDrawConsumer());
-	channel.RegisterEmitter(PICK_EVENT, game.GetPickEmitter());
-	channel.RegisterConsumer(PICK_ACTION, PICK_EVENT, modeler.GetPickConsumer());
-	channel.RegisterEmitter(MOUS_EVENT, game.GetMouseEmitter());
-	channel.RegisterConsumer(MOUS_ACTION, MOUS_EVENT, modeler.GetMouseConsumer());
-	channel.RegisterEmitter(MOUSE_MOTION_EVENT, game.GetMouseMotionEmitter());
-	channel.RegisterConsumer(MOUSE_MOTION_ACTION, MOUSE_MOTION_EVENT, modeler.GetMouseMotionConsumer());
-	channel.RegisterEmitter(ACTION_MENU_EVENT, game.GetActionMenuEmitter());
-	channel.RegisterConsumer(ACTION_MENU_ACTION, ACTION_MENU_EVENT, modeler.GetActionMenuConsumer());
+	channel.RegisterEmitter(DRAW_EVENT, emitters.GetDrawEmitter());
+	channel.RegisterConsumer(DRAW_ACTION, DRAW_EVENT, consumers.GetDrawConsumer());
+	channel.RegisterEmitter(PICK_EVENT, emitters.GetPickEmitter());
+	channel.RegisterConsumer(PICK_ACTION, PICK_EVENT, consumers.GetPickConsumer());
+	channel.RegisterEmitter(MOUS_EVENT, emitters.GetMouseEmitter());
+	channel.RegisterConsumer(MOUS_ACTION, MOUS_EVENT, consumers.GetMouseConsumer());
+	channel.RegisterEmitter(MOUSE_MOTION_EVENT, emitters.GetMouseMotionEmitter());
+	channel.RegisterConsumer(MOUSE_MOTION_ACTION, MOUSE_MOTION_EVENT, consumers.GetMouseMotionConsumer());
+	channel.RegisterEmitter(ACTION_MENU_EVENT, emitters.GetActionMenuEmitter());
+	channel.RegisterConsumer(ACTION_MENU_ACTION, ACTION_MENU_EVENT, consumers.GetActionMenuConsumer());
 
-	channel.RegisterEmitter(RUN_EVENT, game.GetRunEmitter());
-	channel.RegisterConsumer(RUN_ACTION, RUN_EVENT, modeler.GetRunConsumer());
+	channel.RegisterEmitter(RUN_EVENT, emitters.GetRunEmitter());
+	channel.RegisterConsumer(RUN_ACTION, RUN_EVENT, consumers.GetRunConsumer());
 }
 
 int main(int _argc, char* _argv[]) 
 {
 	GLGame game(_argc,_argv);
 	glutTimerFunc(TIME,game.TimerCallback,VAL);
+	GLGameEmitters& emitters = game.GetEmitters();
 
-	Modeler modeler;
+	auto modeler = std::make_shared<Modeler>();
+	ModelerConsumers consumers(modeler);
 	EventChannel channel;
 
-	RegisterEvents(modeler, game, channel);
+	RegisterEvents(consumers, game.GetEmitters(), channel);
 
 	game.Run();
 }

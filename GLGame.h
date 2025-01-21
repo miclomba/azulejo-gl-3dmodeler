@@ -4,17 +4,19 @@
 #include <array>
 #include <memory>
 
-#include "Events/EventEmitter.h"
+#include "Entities/Entity.h"
 
 #include "config.h"
 
+#include "GLGameEmitters.h"
+
 namespace _3dmodeler {
 
-class _3DMODELER_DLL_EXPORT GLGame
+class _3DMODELER_DLL_EXPORT GLGame : public entity::Entity
 {
 public:
 	GLGame(int _argc, char* _argv[]);
-	~GLGame();
+	virtual ~GLGame();
 	GLGame(const GLGame&) = delete;
 	GLGame(GLGame&&) = delete;
 	GLGame& operator=(const GLGame&) = delete;
@@ -23,37 +25,13 @@ public:
 	void Run();
 	static void TimerCallback(int _idx);
 
-	std::shared_ptr<events::EventEmitter<void(void)>> GetXEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetYEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetZEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetTEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetLEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetXCapEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetYCapEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetZCapEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetTCapEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetLCapEmitter();
-
-	std::shared_ptr<events::EventEmitter<
-		void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
-	>> GetDrawEmitter();
-	std::shared_ptr<events::EventEmitter<
-		void(const int _x, const int _y, const int _h, const std::string& _viewport)
-	>> GetPickEmitter();
-	std::shared_ptr<events::EventEmitter<
-		void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
-	>> GetMouseEmitter();
-	std::shared_ptr<events::EventEmitter<
-		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
-	>> GetMouseMotionEmitter();
-	std::shared_ptr<events::EventEmitter<
-		void(const int _index)
-	>> GetActionMenuEmitter();
-	std::shared_ptr<events::EventEmitter<void(void)>> GetRunEmitter();
+	GLGameEmitters& GetEmitters();
 
 	static GLGame* callbackInstance_;
 
 private:
+	GLGameEmitters emitters_;
+
 	// GLUT Initialization
 	void InitGlut(int _argc, char* _argv[]) const;
 	void InitActionMenu() const;
@@ -89,37 +67,6 @@ private:
 
 	// helper functions
 	void KeyboardUpdateState();
-
-	// keyboard input emitters
-	std::shared_ptr<events::EventEmitter<void(void)>> xEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> yEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> zEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> tEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> lEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> xCapEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> yCapEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> zCapEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> tCapEmitter_;
-	std::shared_ptr<events::EventEmitter<void(void)>> lCapEmitter_;
-
-	// other emitters
-	std::shared_ptr<events::EventEmitter<
-		void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
-	>> drawEmitter_;
-	std::shared_ptr<events::EventEmitter<
-		void(const int _x, const int _y, const int _h, const std::string& _viewport)
-	>> pickEmitter_;
-	std::shared_ptr<events::EventEmitter<
-		void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
-	>> mouseEmitter_;
-	std::shared_ptr<events::EventEmitter<
-		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
-	>> mouseMotionEmitter_;
-	std::shared_ptr<events::EventEmitter<
-		void(const int _index)
-	>> actionMenuEmitter_;
-
-	std::shared_ptr<events::EventEmitter<void(void)>> runEmitter_;
 
 	// members
 	std::array<bool, 256> keysPressed_;
