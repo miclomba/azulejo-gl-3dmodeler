@@ -9,6 +9,7 @@
 #include "config.h"
 
 #include "GLGameEmitters.h"
+#include "GLGameWindow.h"
 
 namespace _3dmodeler {
 
@@ -26,6 +27,7 @@ public:
 	static void TimerCallback(int _idx);
 
 	GLGameEmitters& GetEmitters();
+	GLGameWindow& GetGameWindow();
 
 	static GLGame* callbackInstance_;
 
@@ -59,7 +61,7 @@ private:
 	void Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h);
 	static void MouseWrapper(const int _button, const int _state, const int _x, const int _y);
 
-	void MouseMotion(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho);
+	void MouseMotion(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho);
 	static void MouseMotionWrapper(const int _x, const int _y);
 
 	void ActionMenu(const int _index);
@@ -69,13 +71,9 @@ private:
 	void KeyboardUpdateState();
 
 	// members
-	std::array<bool, 256> keysPressed_;
+	GLGameWindow gameWindow_;
 
-	// window and projection
-	GLint w_;
-	GLint h_;
-	GLfloat projOrtho_[16];
-	GLfloat projPerspective_[16];
+	std::array<bool, 256> keysPressed_;
 };
 
 } // end _3dmodeler

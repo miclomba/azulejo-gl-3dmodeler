@@ -1,5 +1,6 @@
 #include "ModelerConsumers.h"
 
+#include <array>
 #include <memory>
 #include <string>
 
@@ -35,9 +36,9 @@ ModelerConsumers::ModelerConsumers(std::shared_ptr<Modeler> modeler) : Entity()
 	lCapConsumer_ = std::make_shared<EventConsumer<void(void)>>([this, modeler]() { modeler->L(); });
 
 	drawConsumer_ = std::make_shared<EventConsumer<
-        void(GLint w_, GLint h_, GLfloat * projOrtho_, GLfloat * projPerspective_)
+        void(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat,16>& projPerspective_)
     >>(
-        [this, modeler](GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_) { 
+        [this, modeler](GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_) { 
             modeler->Draw(w_, h_, projOrtho_, projPerspective_); 
         }
     );
@@ -59,9 +60,9 @@ ModelerConsumers::ModelerConsumers(std::shared_ptr<Modeler> modeler) : Entity()
 	);
 
 	mouseMotionConsumer_ = std::make_shared<EventConsumer<
-		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
+		void(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho)
 	>>(
-		[this, modeler](const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho) {
+		[this, modeler](const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho) {
 			modeler->MouseMotion(_x, _y, _w, _h, _projOrtho);
 		}
 	);
@@ -130,7 +131,7 @@ std::shared_ptr<EventConsumer<void(void)>> ModelerConsumers::GetLCapConsumer()
 }
 
 std::shared_ptr<EventConsumer<
-    void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
+    void(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_)
 >> ModelerConsumers::GetDrawConsumer()
 {
 	return drawConsumer_;
@@ -151,7 +152,7 @@ std::shared_ptr<EventConsumer<
 }
 
 std::shared_ptr<EventConsumer<
-	void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
+	void(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho)
 	>> ModelerConsumers::GetMouseMotionConsumer()
 {
 	return mouseMotionConsumer_;

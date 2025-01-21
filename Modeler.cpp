@@ -1,5 +1,6 @@
 #include "Modeler.h"
 
+#include <array>
 #include <future>
 #include <memory>
 #include <string>
@@ -116,7 +117,7 @@ void Modeler::DrawGameInfo()
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, reset[i]);
 }
 
-void Modeler::Draw(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
+void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_)
 {
 	DrawGLEntities();
 	DrawGameInfo();
@@ -134,7 +135,7 @@ void Modeler::Draw(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspec
     glScissor(0, 0, w_ / 2, h_ / 2);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glLoadMatrixf(projOrtho_);
+    glLoadMatrixf(projOrtho_.data());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     if (moving_ == true && dragging_ == true && curViewport_ == "top") {
@@ -157,7 +158,7 @@ void Modeler::Draw(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspec
     glScissor(0, h_ / 2 + 1, w_ / 2, h_ / 2);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glLoadMatrixf(projOrtho_);
+    glLoadMatrixf(projOrtho_.data());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     if (moving_ == true && dragging_ == true && curViewport_ == "side") {
@@ -180,7 +181,7 @@ void Modeler::Draw(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspec
     glScissor(w_ / 2 + 1, 0, w_ / 2, h_ / 2);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glLoadMatrixf(projOrtho_);
+    glLoadMatrixf(projOrtho_.data());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     if (moving_ == true && dragging_ == true && curViewport_ == "front") {
@@ -203,7 +204,7 @@ void Modeler::Draw(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspec
     glScissor(w_ / 2 + 1, h_ / 2 + 1, w_ / 2, h_ / 2);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glLoadMatrixf(projPerspective_);
+    glLoadMatrixf(projPerspective_.data());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(-10, 0, -10, 0, 0, 0, 0, 1, 0);
@@ -406,7 +407,7 @@ void Modeler::Mouse(const int _button, const int _state, const int _x, const int
 	}
 }
 
-void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho) {
+void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho) {
 	if (picking_ == true && dragging_ == true) {
 		//========================= Quadrant 1 Motion ==========================
 		if (_x > _w / 2 && _y < _h / 2) {
@@ -419,7 +420,7 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 			glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
 
 			glMatrixMode(GL_PROJECTION);
-			glLoadMatrixf(_projOrtho);
+			glLoadMatrixf(_projOrtho.data());
 			GLdouble projection[16];
 			glGetDoublev(GL_PROJECTION_MATRIX, projection);
 			glLoadIdentity();
@@ -464,7 +465,7 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 			glViewport(0, 0, _w / 2, _h / 2);
 
 			glMatrixMode(GL_PROJECTION);
-			glLoadMatrixf(_projOrtho);
+			glLoadMatrixf(_projOrtho.data());
 			GLdouble projection[16];
 			glGetDoublev(GL_PROJECTION_MATRIX, projection);
 			glLoadIdentity();
@@ -508,7 +509,7 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 			glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
 
 			glMatrixMode(GL_PROJECTION);
-			glLoadMatrixf(_projOrtho);
+			glLoadMatrixf(_projOrtho.data());
 			GLdouble projection[16];
 			glGetDoublev(GL_PROJECTION_MATRIX, projection);
 			glLoadIdentity();

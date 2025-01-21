@@ -1,6 +1,7 @@
 #ifndef _3dmodeler_modeler_h
 #define	_3dmodeler_modeler_h
 
+#include <array>
 #include <memory>
 #include <string>
 
@@ -25,10 +26,10 @@ public:
 	Modeler & operator=(const Modeler&) = delete;
 	Modeler & operator=(Modeler&&) = delete;
 
-	void Draw(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_);
+	void Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_);
 	void Pick(const int _x, const int _y, const int _h, const std::string& _viewport);
 	void Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h);
-	void MouseMotion(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho);
+	void MouseMotion(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho);
 	void ActionMenu(const int _index);
 	void ProcessPicks(const GLint _hits, GLuint* _slct_bff);
 
