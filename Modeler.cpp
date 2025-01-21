@@ -1,41 +1,22 @@
 #include "Modeler.h"
 
-#include <algorithm>
-#include <cstdlib>
 #include <future>
 #include <memory>
-#include <stdio.h>
 #include <string>
 #include <thread>
-#include <utility>
 #include <vector>
-#include "filesystem.hpp"
 
 #include <boost/asio/packaged_task.hpp>
 #include <boost/asio/post.hpp>
 #include <boost/asio/thread_pool.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
-
-#include "Events/EventConsumer.h"
-#include "test_filesystem_adapters/ContainerResource2D.h"
 
 #include "Common.h"
 #include "GLEntityTask.h"
 #include "Object.h"
 
-using boost::property_tree::ptree;
-
 using _3dmodeler::Modeler;
 using _3dmodeler::GLEntityTask;
-using events::EventConsumer;
 using entity::Entity;
-
-namespace pt = boost::property_tree;
 
 namespace
 {
@@ -44,6 +25,7 @@ const int NUMBER_KEYS = 256;
 } // end namespace
 
 Modeler::Modeler() :
+	GLEntity(),
 	threadPool_(std::thread::hardware_concurrency() > 1 ? std::thread::hardware_concurrency() - 1 : 1)
 {
 	SetKey(_3DMODELER_KEY);
@@ -52,59 +34,6 @@ Modeler::Modeler() :
 	AggregateMember(Object::ObjectKey());
 	SharedEntity& obj = GetObj();
 	obj = std::make_shared<Object>(Object::ObjectKey());
-
-	xConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->X(true); });
-	yConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->Y(true); });
-	zConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->Z(true); });
-	tConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->T(true); });
-	lConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->L(); });
-	xCapConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->X(false); });
-	yCapConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->Y(false); });
-	zCapConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->Z(false); });
-	tCapConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->T(false); });
-	lCapConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->L(); });
-
-	drawConsumer_ = std::make_shared<EventConsumer<
-        void(GLint w_, GLint h_, GLfloat * projOrtho_, GLfloat * projPerspective_)
-    >>(
-        [this](GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_) { 
-            this->Draw(w_, h_, projOrtho_, projPerspective_); 
-        }
-    );
-
-	pickConsumer_ = std::make_shared<EventConsumer<
-		void(const int _x, const int _y, const int _h, const std::string & _viewport)
-	>>(
-		[this](const int _x, const int _y, const int _h, const std::string& _viewport) {
-			this->Pick(_x, _y, _h, _viewport);
-		}
-	);
-
-	mouseConsumer_ = std::make_shared<EventConsumer<
-		void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
-	>>(
-		[this](const int _button, const int _state, const int _x, const int _y, const int _w, const int _h) {
-			this->Mouse(_button, _state, _x, _y, _w, _h);
-		}
-	);
-
-	mouseMotionConsumer_ = std::make_shared<EventConsumer<
-		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
-	>>(
-		[this](const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho) {
-			this->MouseMotion(_x, _y, _w, _h, _projOrtho);
-		}
-	);
-
-	actionMenuConsumer_ = std::make_shared<EventConsumer<
-		void(const int _index)
-	>>(
-		[this](const int _index) {
-			this->ActionMenu(_index);
-		}
-	);
-
-	runConsumer_ = std::make_shared<EventConsumer<void(void)>>([this]() { this->Run(); });
 
 	// refactor here
 	grid_ = std::make_unique<Grid>();
@@ -698,92 +627,3 @@ void Modeler::L() {
 	glutPostRedisplay();
 }
 
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetXConsumer()
-{
-	return xConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetYConsumer()
-{
-	return yConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetZConsumer()
-{
-	return zConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetTConsumer()
-{
-	return tConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetLConsumer()
-{
-	return lConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetXCapConsumer()
-{
-	return xCapConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetYCapConsumer()
-{
-	return yCapConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetZCapConsumer()
-{
-	return zCapConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetTCapConsumer()
-{
-	return tCapConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetLCapConsumer()
-{
-	return lCapConsumer_;
-}
-
-std::shared_ptr<EventConsumer<
-    void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
->> Modeler::GetDrawConsumer()
-{
-	return drawConsumer_;
-}
-
-std::shared_ptr<EventConsumer<
-	void(const int _x, const int _y, const int _h, const std::string& _viewport)
-	>> Modeler::GetPickConsumer()
-{
-	return pickConsumer_;
-}
-
-std::shared_ptr<EventConsumer<
-	void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
-	>> Modeler::GetMouseConsumer()
-{
-	return mouseConsumer_;
-}
-
-std::shared_ptr<EventConsumer<
-	void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
-	>> Modeler::GetMouseMotionConsumer()
-{
-	return mouseMotionConsumer_;
-}
-
-std::shared_ptr<EventConsumer<
-	void(const int _index)
-	>> Modeler::GetActionMenuConsumer()
-{
-	return actionMenuConsumer_;
-}
-
-std::shared_ptr<EventConsumer<void(void)>> Modeler::GetRunConsumer()
-{
-	return runConsumer_;
-}

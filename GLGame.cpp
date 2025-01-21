@@ -1,15 +1,15 @@
 #include "GLGame.h"
 
 #include <algorithm>
-#include <memory>
 #include <string>
-#include <utility>
 
-#include "Events/EventEmitter.h"
+#include "Entities/Entity.h"
+#include "GLGameEmitters.h"
 
-using events::EventEmitter;
+using entity::Entity;
 
 using _3dmodeler::GLGame;
+using _3dmodeler::GLGameEmitters;
 
 namespace
 {
@@ -40,8 +40,10 @@ void GLGame::TimerCallback(int _idx)
 	}
 }
 
-GLGame::GLGame(int _argc, char* _argv[])
+GLGame::GLGame(int _argc, char* _argv[]) : Entity()
 {
+	SetKey(_3DMODELER_TITLE);
+
 	if (!callbackInstance_)
 		callbackInstance_ = this;
 
@@ -52,35 +54,6 @@ GLGame::GLGame(int _argc, char* _argv[])
 	RegisterCallbacks();
 	InitServer();
 	InitClient();
-
-	xEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	yEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	zEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	tEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	lEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-
-	xCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	yCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	zCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	tCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-	lCapEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
-
-	drawEmitter_ = std::make_shared<events::EventEmitter<
-		void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
-	>>();
-	pickEmitter_ = std::make_shared<events::EventEmitter<
-		void(const int _x, const int _y, const int _h, const std::string & _viewport)
-	>>();
-	mouseEmitter_ = std::make_shared<events::EventEmitter<
-		void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
-	>>();
-	mouseMotionEmitter_ = std::make_shared<events::EventEmitter<
-		void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
-	>>();
-	actionMenuEmitter_ = std::make_shared<events::EventEmitter<
-		void(const int _index)
-	>>();
-	runEmitter_ = std::make_shared<events::EventEmitter<void(void)>>();
 
 	// window and projection
 	w_ = WIN_WIDTH;
@@ -94,10 +67,14 @@ GLGame::GLGame(int _argc, char* _argv[])
 
 void GLGame::Run()
 {
-	runEmitter_->Signal()();
+	emitters_.GetRunEmitter()->Signal()();
 
 	glutMainLoop();
 };
+
+GLGameEmitters& GLGame::GetEmitters() {
+	return emitters_;
+}
 
 void GLGame::RegisterCallbacks() const
 {
@@ -187,7 +164,7 @@ void GLGame::Display()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	drawEmitter_->Signal()(w_, h_, projOrtho_, projPerspective_);
+	emitters_.GetDrawEmitter()->Signal()(w_, h_, projOrtho_, projPerspective_);
 
 	// RENDER
 	glFlush();
@@ -250,31 +227,31 @@ void GLGame::KeyboardUpdateState()
 			switch (i)
 			{
 			case 'x':
-				xEmitter_->Signal()(); break;
+				emitters_.GetXEmitter()->Signal()(); break;
 			case 'y':
-				yEmitter_->Signal()(); break;
+				emitters_.GetYEmitter()->Signal()(); break;
 			case 'z':
-				zEmitter_->Signal()(); break;
+				emitters_.GetZEmitter()->Signal()(); break;
 			case 't':
-				tEmitter_->Signal()(); 
+				emitters_.GetTEmitter()->Signal()(); 
 				keysPressed_[i] = false;
 				break;
 			case 'l':
-				lEmitter_->Signal()();
+				emitters_.GetLEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			case 'X':
-				xCapEmitter_->Signal()(); break;
+				emitters_.GetXCapEmitter()->Signal()(); break;
 			case 'Y':
-				yCapEmitter_->Signal()(); break;
+				emitters_.GetYCapEmitter()->Signal()(); break;
 			case 'Z':
-				zCapEmitter_->Signal()(); break;
+				emitters_.GetZCapEmitter()->Signal()(); break;
 			case 'T':
-				tCapEmitter_->Signal()(); 
+				emitters_.GetTCapEmitter()->Signal()(); 
 				keysPressed_[i] = false;
 				break;
 			case 'L':
-				lCapEmitter_->Signal()(); 
+				emitters_.GetLCapEmitter()->Signal()(); 
 				keysPressed_[i] = false;
 				break;
 			default:
@@ -285,107 +262,17 @@ void GLGame::KeyboardUpdateState()
 }
 
 void GLGame::Pick(const int _x, const int _y, const int _h, const std::string& _viewport) {
-	pickEmitter_->Signal()(_x, _y, _h, _viewport);
+	emitters_.GetPickEmitter()->Signal()(_x, _y, _h, _viewport);
 }
 
 void GLGame::Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h) {
-	mouseEmitter_->Signal()(_button, _state, _x, _y, _w, _h);
+	emitters_.GetMouseEmitter()->Signal()(_button, _state, _x, _y, _w, _h);
 }
 
 void GLGame::MouseMotion(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho) {
-	mouseMotionEmitter_->Signal()(_x, _y, _w, _h, _projOrtho);
+	emitters_.GetMouseMotionEmitter()->Signal()(_x, _y, _w, _h, _projOrtho);
 }
 
 void GLGame::ActionMenu(const int _index) {
-	actionMenuEmitter_->Signal()(_index);
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetXEmitter()
-{
-	return xEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetYEmitter()
-{
-	return yEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetZEmitter()
-{
-	return zEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetTEmitter()
-{
-	return tEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetLEmitter()
-{
-	return lEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetXCapEmitter()
-{
-	return xCapEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetYCapEmitter()
-{
-	return yCapEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetZCapEmitter()
-{
-	return zCapEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetTCapEmitter()
-{
-	return tCapEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetLCapEmitter()
-{
-	return lCapEmitter_;
-}
-
-std::shared_ptr<EventEmitter<
-	void(GLint w_, GLint h_, GLfloat* projOrtho_, GLfloat* projPerspective_)
->> GLGame::GetDrawEmitter()
-{
-	return drawEmitter_;
-}
-
-std::shared_ptr<EventEmitter<
-	void(const int _x, const int _y, const int _h, const std::string& _viewport)
->> GLGame::GetPickEmitter()
-{
-	return pickEmitter_;
-}
-
-std::shared_ptr<EventEmitter<
-	void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
-	>> GLGame::GetMouseEmitter()
-{
-	return mouseEmitter_;
-}
-
-std::shared_ptr<EventEmitter<
-	void(const int _x, const int _y, const int _w, const int _h, GLfloat* const _projOrtho)
-	>> GLGame::GetMouseMotionEmitter()
-{
-	return mouseMotionEmitter_;
-}
-
-std::shared_ptr<EventEmitter<
-	void(const int _index)
-	>> GLGame::GetActionMenuEmitter()
-{
-	return actionMenuEmitter_;
-}
-
-std::shared_ptr<EventEmitter<void(void)>> GLGame::GetRunEmitter()
-{
-	return runEmitter_;
+	emitters_.GetActionMenuEmitter()->Signal()(_index);
 }

@@ -1,12 +1,6 @@
 #ifndef _3dmodeler_glentity_h 
 #define _3dmodeler_glentity_h	
 
-#include <array>
-#include <math.h>
-#include <string>
-
-#include <boost/property_tree/ptree.hpp>
-
 #include "config.h"
 
 #include "Entities/Entity.h"

@@ -1,17 +1,11 @@
-#include <algorithm>
-#include <array>
-#include <numeric>
 #include <string>
-#include "filesystem.hpp"
-
-#include <boost/property_tree/ptree.hpp>
 
 #include "test_filesystem_adapters/ContainerResource2D.h"
 
 #include "Common.h"
 #include "GLEntity.h"
 
-using boost::property_tree::ptree;
+using entity::Entity;
 using _3dmodeler::GLEntity;
 
 using Resource2DGLfloat = ContainerResource2D<GLfloat>;
@@ -24,7 +18,7 @@ const std::string T_KEY = "T";
 const std::string R_KEY = "R";
 } // end namespace
 
-GLEntity::GLEntity()
+GLEntity::GLEntity() : Entity()
 {
 	frame_ = Resource2DGLfloat({
 		{0.0,0.0,0.0,0.0},
