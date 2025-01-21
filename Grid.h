@@ -19,6 +19,8 @@ public:
 
     void SetControlPoint(const GLfloat val, const int i, const int j, const int k);
 
+    static std::string GridKey();
+
 private:
     void InitGridPoints();
     void MakeTexImage1();

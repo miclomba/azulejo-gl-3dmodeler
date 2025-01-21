@@ -16,6 +16,11 @@ const int MAX_TEXTURES = 2;
 #endif
 }
 
+std::string Grid::GridKey()
+{
+    return GRID_KEY;
+}
+
 void Grid::SetControlPoint(const GLfloat val, const int i, const int j, const int k) {
     controlPoints_[i][j][k] = val;
 }

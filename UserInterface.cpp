@@ -9,6 +9,11 @@ namespace {
 const std::string UI_KEY = "UI";
 }
 
+std::string UserInterface::UserInterfaceKey()
+{
+    return UI_KEY;
+}
+
 UserInterface::UserInterface() : Entity() {
     SetKey(UI_KEY);
 }

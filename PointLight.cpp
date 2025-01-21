@@ -10,6 +10,11 @@ namespace {
 const std::string POINT_LIGHT_KEY = "PointLight";
 }
 
+std::string PointLight::PointLightKey()
+{
+    return POINT_LIGHT_KEY;
+}
+
 std::array<std::array<GLfloat, 4>, 2>& PointLight::GetPosition() {
     return position_;
 }

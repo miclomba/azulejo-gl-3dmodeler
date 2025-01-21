@@ -13,7 +13,6 @@
 
 #include "Common.h"
 #include "GLEntityTask.h"
-#include "Object.h"
 
 using _3dmodeler::Modeler;
 using _3dmodeler::GLEntityTask;
@@ -30,11 +29,6 @@ Modeler::Modeler() :
 	threadPool_(std::thread::hardware_concurrency() > 1 ? std::thread::hardware_concurrency() - 1 : 1)
 {
 	SetKey(_3DMODELER_KEY);
-
-	// TODO: Dummy place holder object that will be replaced by Grid, PointLight, and UI
-	AggregateMember(Object::ObjectKey());
-	SharedEntity& obj = GetObj();
-	obj = std::make_shared<Object>(Object::ObjectKey());
 
 	// refactor here
 	grid_ = std::make_unique<Grid>();
@@ -82,29 +76,6 @@ void Modeler::Run()
 {
 }
 
-Modeler::SharedEntity& Modeler::GetObj()
-{
-	return GetAggregatedMember(Object::ObjectKey());
-}
-
-void Modeler::DrawGLEntities()
-{
-	std::vector<std::future<GLEntity*>> futures;
-
-	SharedEntity& obj = GetObj();
-	if (obj)
-	{
-		GLEntity* glObj = dynamic_cast<GLEntity*>(obj.get());
-		GLEntityTask task([glObj, this]() { return glObj; });
-		futures.push_back(task.GetFuture());
-
-		boost::asio::post(threadPool_, task);
-	}
-
-	for (std::future<GLEntity*>& future : futures)
-		future.get()->Draw();
-}
-
 void Modeler::DrawGameInfo()
 {
 	glColor3f(0.0f, 1.0f, 1.0f);
@@ -119,7 +90,6 @@ void Modeler::DrawGameInfo()
 
 void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_)
 {
-	DrawGLEntities();
 	DrawGameInfo();
 
     glDisable(GL_LIGHTING);

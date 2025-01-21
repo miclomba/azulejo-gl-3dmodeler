@@ -12,6 +12,9 @@ public:
     UserInterface();
     virtual ~UserInterface() = default;
     void Draw(GLint _w, GLint _h);
+
+    static std::string UserInterfaceKey();
+
 private:
     GLint w_ = 0;
     GLint h_ = 0;
