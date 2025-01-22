@@ -7,6 +7,17 @@
 
 Checkout [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib) adjacent to this package.
 
+## How to Play
+
++ Use the `LMB` to drag control points, lights, and pan the viewport
++ Use the `RMB` to access the Pick/Pan/Quit menu.
++ `x` and `X` rotate about the x-axis clockwise
++ `y` and `Y` rotate about the y-axis clockwise
++ `z` and `Z` rotate about the z-axis clockwise
++ `t` toggle textures
++ `T` toggle textures on and off
++ `l` and `L` toggle lights on and off
+
 ## Install Dependencies
 
 Install [vcpkg](https://github.com/microsoft/vcpkg). Then run:
