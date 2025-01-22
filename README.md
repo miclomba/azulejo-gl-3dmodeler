@@ -3,13 +3,6 @@
 
 ![GL3DModeler.png](./GL3DModeler.png)
 
-## ⚠️ Warning
-
-This package contains a legacy code port that needs developer attention on monolithic functions.
-+ Not yet using all features of [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib). 
-
-Please be patient while we refactor this codebase.
-
 ## Prerequisites
 
 Checkout [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib) adjacent to this package.

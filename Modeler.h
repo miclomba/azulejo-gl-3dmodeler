@@ -42,14 +42,13 @@ public:
 	void Run();
 
 private:
+	PointLight* const GetPointLight();
+	UserInterface* GetUserInterface();
+	Grid* GetGrid();
+
 	void DrawGameInfo();
 
 	boost::asio::thread_pool threadPool_;
-
-	// geometry members
-	std::unique_ptr<Grid> grid_;
-	std::unique_ptr<PointLight> lights_;
-	std::unique_ptr<UserInterface> userInterf_;
 
 	bool toggleLights_;
 	bool toggleTextures_;
