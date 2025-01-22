@@ -60,7 +60,7 @@ GLGame::GLGame(int _argc, char* _argv[]) : Entity()
 
 void GLGame::Run()
 {
-	emitters_.GetRunEmitter()->Signal()();
+	GetEmitters().GetRunEmitter()->Signal()();
 
 	glutMainLoop();
 };
@@ -161,7 +161,7 @@ void GLGame::Display()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	emitters_.GetDrawEmitter()->Signal()(GetGameWindow().GetWidth(), GetGameWindow().GetHeight(), GetGameWindow().GetProjOrthoMatrix(), GetGameWindow().GetProjPerspectiveMatrix());
+	GetEmitters().GetDrawEmitter()->Signal()(GetGameWindow().GetWidth(), GetGameWindow().GetHeight(), GetGameWindow().GetProjOrthoMatrix(), GetGameWindow().GetProjPerspectiveMatrix());
 
 	// RENDER
 	glFlush();
@@ -176,8 +176,6 @@ void GLGame::Reshape(const int _w, const int _h)
 	GLint i;
 	GLdouble projection[16];
 
-	//========================= DEFINE VIEWPORT ==============================*/
-	//glViewport(0, 0, _w, _h);
 	/*========================= ORTHO PROJECTION =============================*/
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -224,31 +222,31 @@ void GLGame::KeyboardUpdateState()
 			switch (i)
 			{
 			case 'x':
-				emitters_.GetXEmitter()->Signal()(); break;
+				GetEmitters().GetXEmitter()->Signal()(); break;
 			case 'y':
-				emitters_.GetYEmitter()->Signal()(); break;
+				GetEmitters().GetYEmitter()->Signal()(); break;
 			case 'z':
-				emitters_.GetZEmitter()->Signal()(); break;
+				GetEmitters().GetZEmitter()->Signal()(); break;
 			case 't':
-				emitters_.GetTEmitter()->Signal()(); 
+				GetEmitters().GetTEmitter()->Signal()(); 
 				keysPressed_[i] = false;
 				break;
 			case 'l':
-				emitters_.GetLEmitter()->Signal()();
+				GetEmitters().GetLEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			case 'X':
-				emitters_.GetXCapEmitter()->Signal()(); break;
+				GetEmitters().GetXCapEmitter()->Signal()(); break;
 			case 'Y':
-				emitters_.GetYCapEmitter()->Signal()(); break;
+				GetEmitters().GetYCapEmitter()->Signal()(); break;
 			case 'Z':
-				emitters_.GetZCapEmitter()->Signal()(); break;
+				GetEmitters().GetZCapEmitter()->Signal()(); break;
 			case 'T':
-				emitters_.GetTCapEmitter()->Signal()(); 
+				GetEmitters().GetTCapEmitter()->Signal()(); 
 				keysPressed_[i] = false;
 				break;
 			case 'L':
-				emitters_.GetLCapEmitter()->Signal()(); 
+				GetEmitters().GetLCapEmitter()->Signal()(); 
 				keysPressed_[i] = false;
 				break;
 			default:
@@ -259,17 +257,17 @@ void GLGame::KeyboardUpdateState()
 }
 
 void GLGame::Pick(const int _x, const int _y, const int _h, const std::string& _viewport) {
-	emitters_.GetPickEmitter()->Signal()(_x, _y, _h, _viewport);
+	GetEmitters().GetPickEmitter()->Signal()(_x, _y, _h, _viewport);
 }
 
 void GLGame::Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h) {
-	emitters_.GetMouseEmitter()->Signal()(_button, _state, _x, _y, _w, _h);
+	GetEmitters().GetMouseEmitter()->Signal()(_button, _state, _x, _y, _w, _h);
 }
 
 void GLGame::MouseMotion(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho) {
-	emitters_.GetMouseMotionEmitter()->Signal()(_x, _y, _w, _h, _projOrtho);
+	GetEmitters().GetMouseMotionEmitter()->Signal()(_x, _y, _w, _h, _projOrtho);
 }
 
 void GLGame::ActionMenu(const int _index) {
-	emitters_.GetActionMenuEmitter()->Signal()(_index);
+	GetEmitters().GetActionMenuEmitter()->Signal()(_index);
 }

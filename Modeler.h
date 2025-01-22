@@ -27,9 +27,21 @@ public:
 	Modeler & operator=(Modeler&&) = delete;
 
 	void Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_, const std::array<GLfloat, 16>& projPerspective_);
+	
 	void Pick(const int _x, const int _y, const int _h, const std::string& _viewport);
+	void SetDragginStateDuringPicking();
+
 	void Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h);
+	void MouseMovingOnClickDown(const int _x, const int _y, const int _w, const int _h);
+	void MouseMovingOnClickUp();
+	void MousePickingOnClickDown(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h);
+	void MousePickingOnClickUp();
+
 	void MouseMotion(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho);
+	void MouseMotionQuadrantTwo(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho);
+	void MouseMotionQuadrantThree(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho);
+	void MouseMotionQuadrantFour(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho);
+	
 	void ActionMenu(const int _index);
 	void ProcessPicks(const GLint _hits, GLuint* _slct_bff);
 
@@ -47,6 +59,10 @@ private:
 	Grid* GetGrid();
 
 	void DrawGameInfo();
+	void DrawBottomLeftViewport(GLint w, GLint h, const std::array<GLfloat, 16>& projOrtho);
+	void DrawTopLeftViewport(GLint w, GLint h, const std::array<GLfloat, 16>& projOrtho);
+	void DrawBottomRightViewport(GLint w, GLint h, const std::array<GLfloat, 16>& projOrtho);
+	void DrawTopRightViewport(GLint w, GLint h, const std::array<GLfloat, 16>& projPerspective);
 
 	boost::asio::thread_pool threadPool_;
 
