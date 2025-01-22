@@ -123,103 +123,111 @@ void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16>& projOrtho_
     glDisable(GL_LIGHTING);
     glDisable(GL_TEXTURE_2D);
 
-    //===================== Display a user interface ===========================
     GetUserInterface()->Draw(w_, h_);
 
     glEnable(GL_SCISSOR_TEST);
 
-    //===================== Draw bottom left viewport ======================
-    glViewport(0, 0, w_ / 2, h_ / 2);
-    glScissor(0, 0, w_ / 2, h_ / 2);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glLoadMatrixf(projOrtho_.data());
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    if (moving_ == true && dragging_ == true && curViewport_ == "top") {
-        topY_ = yo_ + panY_ / 20;
-        topX_ = xo_ - panX_ / 20;
-    }
-    gluLookAt(topX_, topY_, 1, topX_, topY_, 0, 0, 1, 0);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    GetPointLight()->Draw(renderMode_);
-    if (toggleLights_ == true)
-        glEnable(GL_LIGHTING);
-    if (toggleTextures_ == true)
-        glEnable(GL_TEXTURE_2D);
-    GetGrid()->Draw(renderMode_);
-    glLoadIdentity();
-
-    //===================== Draw top left viewport =========================
-    glViewport(0, h_ / 2 + 1, w_ / 2, h_ / 2);
-    glScissor(0, h_ / 2 + 1, w_ / 2, h_ / 2);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glLoadMatrixf(projOrtho_.data());
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    if (moving_ == true && dragging_ == true && curViewport_ == "side") {
-        sideY_ = yo_ + panY_ / 20;
-        sideZ_ = xo_ - panX_ / 20;
-    }
-    gluLookAt(-1, sideY_, sideZ_, 0, sideY_, sideZ_, 0, 1, 0);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    GetPointLight()->Draw(renderMode_);
-    if (toggleLights_ == true)
-        glEnable(GL_LIGHTING);
-    if (toggleTextures_ == true)
-        glEnable(GL_TEXTURE_2D);
-    GetGrid()->Draw(renderMode_);
-    glLoadIdentity();
-
-    //===================== Draw bottom right viewport =====================
-    glViewport(w_ / 2 + 1, 0, w_ / 2, h_ / 2);
-    glScissor(w_ / 2 + 1, 0, w_ / 2, h_ / 2);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glLoadMatrixf(projOrtho_.data());
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    if (moving_ == true && dragging_ == true && curViewport_ == "front") {
-        frontZ_ = yo_ + panY_ / 20;
-        frontX_ = xo_ - panX_ / 20;
-    }
-    gluLookAt(frontX_, -1, frontZ_, frontX_, 0, frontZ_, 0, 0, 1);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    GetPointLight()->Draw(renderMode_);
-    if (toggleLights_ == true)
-        glEnable(GL_LIGHTING);
-    if (toggleTextures_ == true)
-        glEnable(GL_TEXTURE_2D);
-    GetGrid()->Draw(renderMode_);
-    glLoadIdentity();
-
-    //===================== Draw top right viewport ========================
-    glViewport(w_ / 2 + 1, h_ / 2 + 1, w_ / 2, h_ / 2);
-    glScissor(w_ / 2 + 1, h_ / 2 + 1, w_ / 2, h_ / 2);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glLoadMatrixf(projPerspective_.data());
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(-10, 0, -10, 0, 0, 0, 0, 1, 0);
-    glRotatef(zPhi_, 0.0f, 0.0f, 1.0f);
-    glRotatef(yTheta_, 0.0f, 1.0f, 0.0f);
-    glRotatef(xPsi_, 1.0f, 0.0f, 0.0f);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    GetPointLight()->Draw(renderMode_);
-    if (toggleLights_ == true)
-        glEnable(GL_LIGHTING);
-    if (toggleTextures_ == true)
-        glEnable(GL_TEXTURE_2D);
-    GetGrid()->Draw(renderMode_);
-    glLoadIdentity();
+	DrawBottomLeftViewport(w_, h_, projOrtho_);
+	DrawTopLeftViewport(w_, h_, projOrtho_);
+	DrawBottomRightViewport(w_, h_, projOrtho_);
+	DrawTopRightViewport(w_, h_, projPerspective_);
 
     glDisable(GL_SCISSOR_TEST);
+}
+
+void Modeler::DrawTopRightViewport(GLint w, GLint h, const std::array<GLfloat, 16>& projPerspective) {
+	glViewport(w / 2 + 1, h / 2 + 1, w / 2, h / 2);
+	glScissor(w / 2 + 1, h / 2 + 1, w / 2, h / 2);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glLoadMatrixf(projPerspective.data());
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(-10, 0, -10, 0, 0, 0, 0, 1, 0);
+	glRotatef(zPhi_, 0.0f, 0.0f, 1.0f);
+	glRotatef(yTheta_, 0.0f, 1.0f, 0.0f);
+	glRotatef(xPsi_, 1.0f, 0.0f, 0.0f);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+	GetPointLight()->Draw(renderMode_);
+	if (toggleLights_ == true)
+		glEnable(GL_LIGHTING);
+	if (toggleTextures_ == true)
+		glEnable(GL_TEXTURE_2D);
+	GetGrid()->Draw(renderMode_);
+	glLoadIdentity();
+}
+
+void Modeler::DrawBottomRightViewport(GLint w, GLint h, const std::array<GLfloat, 16>& projOrtho) {
+	glViewport(w / 2 + 1, 0, w / 2, h / 2);
+	glScissor(w / 2 + 1, 0, w / 2, h / 2);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glLoadMatrixf(projOrtho.data());
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	if (moving_ == true && dragging_ == true && curViewport_ == "front") {
+		frontZ_ = yo_ + panY_ / 20;
+		frontX_ = xo_ - panX_ / 20;
+	}
+	gluLookAt(frontX_, -1, frontZ_, frontX_, 0, frontZ_, 0, 0, 1);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+	GetPointLight()->Draw(renderMode_);
+	if (toggleLights_ == true)
+		glEnable(GL_LIGHTING);
+	if (toggleTextures_ == true)
+		glEnable(GL_TEXTURE_2D);
+	GetGrid()->Draw(renderMode_);
+	glLoadIdentity();
+}
+
+void Modeler::DrawTopLeftViewport(GLint w, GLint h, const std::array<GLfloat, 16>& projOrtho) {
+	glViewport(0, h / 2 + 1, w / 2, h / 2);
+	glScissor(0, h / 2 + 1, w / 2, h / 2);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glLoadMatrixf(projOrtho.data());
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	if (moving_ == true && dragging_ == true && curViewport_ == "side") {
+		sideY_ = yo_ + panY_ / 20;
+		sideZ_ = xo_ - panX_ / 20;
+	}
+	gluLookAt(-1, sideY_, sideZ_, 0, sideY_, sideZ_, 0, 1, 0);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+	GetPointLight()->Draw(renderMode_);
+	if (toggleLights_ == true)
+		glEnable(GL_LIGHTING);
+	if (toggleTextures_ == true)
+		glEnable(GL_TEXTURE_2D);
+	GetGrid()->Draw(renderMode_);
+	glLoadIdentity();
+}
+
+void Modeler::DrawBottomLeftViewport(GLint w, GLint h, const std::array<GLfloat, 16>& projOrtho) {
+	glViewport(0, 0, w / 2, h / 2);
+	glScissor(0, 0, w / 2, h / 2);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glLoadMatrixf(projOrtho.data());
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	if (moving_ == true && dragging_ == true && curViewport_ == "top") {
+		topY_ = yo_ + panY_ / 20;
+		topX_ = xo_ - panX_ / 20;
+	}
+	gluLookAt(topX_, topY_, 1, topX_, topY_, 0, 0, 1, 0);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+	GetPointLight()->Draw(renderMode_);
+	if (toggleLights_ == true)
+		glEnable(GL_LIGHTING);
+	if (toggleTextures_ == true)
+		glEnable(GL_TEXTURE_2D);
+	GetGrid()->Draw(renderMode_);
+	glLoadIdentity();
 }
 
 void Modeler::Pick(const int _x, const int _y, const int _h, const std::string& _viewport) {
@@ -260,6 +268,7 @@ void Modeler::Pick(const int _x, const int _y, const int _h, const std::string& 
 		glLoadIdentity();
 		gluLookAt(frontX_, -1, frontZ_, frontX_, 0, frontZ_, 0, 0, 1);
 	}
+
 	glInitNames();
 	glPushName(0);
 	GetGrid()->DrawControlPoints(renderMode_);
@@ -274,7 +283,12 @@ void Modeler::Pick(const int _x, const int _y, const int _h, const std::string& 
 	renderMode_ = GL_RENDER;
 	GLint hits = glRenderMode(renderMode_);
 	ProcessPicks(hits, select_buff);
+	SetDragginStateDuringPicking();
 
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void Modeler::SetDragginStateDuringPicking() {
 	GLint i, j;
 	i_ = -1;
 	j_ = -1;
@@ -300,8 +314,6 @@ void Modeler::Pick(const int _x, const int _y, const int _h, const std::string& 
 			break;
 		}
 	}
-
-	glMatrixMode(GL_MODELVIEW);
 }
 
 void Modeler::ProcessPicks(const GLint _hits, GLuint* _slct_bff) {
@@ -331,77 +343,93 @@ void Modeler::ProcessPicks(const GLint _hits, GLuint* _slct_bff) {
 	}
 }
 
+void Modeler::MousePickingOnClickDown(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h) {
+	//========================= Quadrant 1 Click ===========================
+	if (_x > _w / 2 && _y < _h / 2) {
+		//Do Nothing.
+	}
+	//========================= Quadrant 2 Click ===========================
+	else if (_x < _w / 2 && _y < _h / 2) {
+		glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
+		curViewport_ = "side";
+		Pick(_x, _y, _h, "side");
+	}
+	//========================= Quadrant 3 Click ===========================
+	else if (_x < _w / 2 && _y > _h / 2) {
+		glViewport(0, 0, _w / 2, _h / 2);
+		curViewport_ = "top";
+		Pick(_x, _y, _h, "top");
+	}
+	//========================= Quadrant 4 Click ===========================
+	else if (_x > _w / 2 && _y > _h / 2) {
+		glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
+		curViewport_ = "front";
+		Pick(_x, _y, _h, "front");
+	}
+}
+
+void Modeler::MousePickingOnClickUp() {
+	dragging_ = false;
+	curViewport_ = "";
+}
+
+void Modeler::MouseMovingOnClickDown(const int _x, const int _y, const int _w, const int _h) {
+	dragging_ = true;
+	xi_ = _x;
+	yi_ = _y;
+	panX_ = 0;
+	panY_ = 0;
+	//========================= Quadrant 1 Click ===========================
+	if (_x > _w / 2 && _y < _h / 2) {
+		//Do Nothing.
+	}
+	//========================= Quadrant 2 Click ===========================
+	else if (_x < _w / 2 && _y < _h / 2) {
+		glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
+		curViewport_ = "side";
+		xo_ = sideZ_;
+		yo_ = sideY_;
+	}
+	//========================= Quadrant 3 Click ===========================
+	else if (_x < _w / 2 && _y > _h / 2) {
+		glViewport(0, 0, _w / 2, _h / 2);
+		curViewport_ = "top";
+		xo_ = topX_;
+		yo_ = topY_;
+	}
+	//========================= Quadrant 4 Click ===========================
+	else if (_x > _w / 2 && _y > _h / 2) {
+		glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
+		curViewport_ = "front";
+		xo_ = frontX_;
+		yo_ = frontZ_;
+	}
+}
+
+void Modeler::MouseMovingOnClickUp() {
+	dragging_ = false;
+	xi_ = 0;
+	yi_ = 0;
+	xf_ = 0;
+	yf_ = 0;
+	curViewport_ = "";
+}
+
 void Modeler::Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h) {
 	if (picking_ == true && _button == GLUT_LEFT_BUTTON && _state == GLUT_DOWN) {
-		//========================= Quadrant 1 Click ===========================
-		if (_x > _w / 2 && _y < _h / 2) {
-			//Do Nothing.
-		}
-		//========================= Quadrant 2 Click ===========================
-		else if (_x < _w / 2 && _y < _h / 2) {
-			glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
-			curViewport_ = "side";
-			Pick(_x, _y, _h, "side");
-		}
-		//========================= Quadrant 3 Click ===========================
-		else if (_x < _w / 2 && _y > _h / 2) {
-			glViewport(0, 0, _w / 2, _h / 2);
-			curViewport_ = "top";
-			Pick(_x, _y, _h, "top");
-		}
-		//========================= Quadrant 4 Click ===========================
-		else if (_x > _w / 2 && _y > _h / 2) {
-			glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
-			curViewport_ = "front";
-			Pick(_x, _y, _h, "front");
-		}
+		MousePickingOnClickDown(_button, _state, _x, _y, _w, _h);
 	}
 	else if (picking_ == true && dragging_ == true &&
 		_button == GLUT_LEFT_BUTTON && _state == GLUT_UP) {
-		dragging_ = false;
-		curViewport_ = "";
+		MousePickingOnClickUp();
 	}
 	else if (moving_ == true &&
 		_button == GLUT_LEFT_BUTTON && _state == GLUT_DOWN) {
-		dragging_ = true;
-		xi_ = _x;
-		yi_ = _y;
-		panX_ = 0;
-		panY_ = 0;
-		//========================= Quadrant 1 Click ===========================
-		if (_x > _w / 2 && _y < _h / 2) {
-			//Do Nothing.
-		}
-		//========================= Quadrant 2 Click ===========================
-		else if (_x < _w / 2 && _y < _h / 2) {
-			glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
-			curViewport_ = "side";
-			xo_ = sideZ_;
-			yo_ = sideY_;
-		}
-		//========================= Quadrant 3 Click ===========================
-		else if (_x < _w / 2 && _y > _h / 2) {
-			glViewport(0, 0, _w / 2, _h / 2);
-			curViewport_ = "top";
-			xo_ = topX_;
-			yo_ = topY_;
-		}
-		//========================= Quadrant 4 Click ===========================
-		else if (_x > _w / 2 && _y > _h / 2) {
-			glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
-			curViewport_ = "front";
-			xo_ = frontX_;
-			yo_ = frontZ_;
-		}
+		MouseMovingOnClickDown(_x, _y, _w, _h);
 	}
 	else if (moving_ == true && dragging_ == true &&
 		_button == GLUT_LEFT_BUTTON && _state == GLUT_UP) {
-		dragging_ = false;
-		xi_ = 0;
-		yi_ = 0;
-		xf_ = 0;
-		yf_ = 0;
-		curViewport_ = "";
+		MouseMovingOnClickUp();
 	}
 }
 
@@ -414,136 +442,17 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 		//========================= Quadrant 2 Motion ==========================
 		else if (curViewport_ == "side" &&
 			_x < _w / 2 && _y < _h / 2 && _x > 0 && _y > 0) {
-
-			glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
-
-			glMatrixMode(GL_PROJECTION);
-			glLoadMatrixf(_projOrtho.data());
-			GLdouble projection[16];
-			glGetDoublev(GL_PROJECTION_MATRIX, projection);
-			glLoadIdentity();
-
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			gluLookAt(-1, sideY_, sideZ_, 0, sideY_, sideZ_, 0, 1, 0);
-			GLdouble modelView[16];
-			glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
-			glLoadIdentity();
-
-			GLint viewport[4];
-			glGetIntegerv(GL_VIEWPORT, viewport);
-
-			GLdouble mouseX, mouseY, mouseZ;
-
-			GLint success = gluUnProject(_x, _y, 0,
-				modelView, projection, viewport,
-				&mouseX, &mouseY, &mouseZ);
-
-			if (success == 1) {
-				mouseY += 10;
-				mouseY *= -1;
-				mouseY += 2 * sideY_;
-			}
-
-			if (k_ == -1) {
-				GetGrid()->SetControlPoint((GLfloat)mouseY, i_, j_, 1);
-				GetGrid()->SetControlPoint((GLfloat)mouseZ, i_, j_, 2);
-			}
-			else {
-				GetPointLight()->GetPosition()[k_][1] = (GLfloat)mouseY;
-				GetPointLight()->GetPosition()[k_][2] = (GLfloat)mouseZ;
-				glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
-				glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
-			}
+			MouseMotionQuadrantTwo(_x, _y, _w, _h, _projOrtho);
 		}
 		//========================= Quadrant 3 Motion ==========================
 		else if (curViewport_ == "top" &&
 			_x < _w / 2 && _y > _h / 2 && _x > 0 && _y < _h) {
-
-			glViewport(0, 0, _w / 2, _h / 2);
-
-			glMatrixMode(GL_PROJECTION);
-			glLoadMatrixf(_projOrtho.data());
-			GLdouble projection[16];
-			glGetDoublev(GL_PROJECTION_MATRIX, projection);
-			glLoadIdentity();
-
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			gluLookAt(topX_, topY_, 1, topX_, topY_, 0, 0, 1, 0);
-			GLdouble modelView[16];
-			glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
-			glLoadIdentity();
-
-			GLint viewport[4];
-			glGetIntegerv(GL_VIEWPORT, viewport);
-
-			GLdouble mouseX, mouseY, mouseZ;
-
-			GLint success = gluUnProject(_x, _y, 0,
-				modelView, projection, viewport,
-				&mouseX, &mouseY, &mouseZ);
-
-			if (success == 1) {
-				mouseY = 10 - mouseY;
-				mouseY += 2 * topY_;
-			}
-
-			if (k_ == -1) {
-				GetGrid()->SetControlPoint((GLfloat)mouseX, i_, j_, 0);
-				GetGrid()->SetControlPoint((GLfloat)mouseY, i_, j_, 1);
-			}
-			else {
-				GetPointLight()->GetPosition()[k_][0] = (GLfloat)mouseX;
-				GetPointLight()->GetPosition()[k_][1] = (GLfloat)mouseY;
-				glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
-				glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
-			}
+			MouseMotionQuadrantThree(_x, _y, _w, _h, _projOrtho);
 		}
 		//========================= Quadrant 4 Motion ==========================
 		else if (curViewport_ == "front" &&
 			_x > _w / 2 && _y > _h / 2 && _x < _w && _y < _h) {
-
-			glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
-
-			glMatrixMode(GL_PROJECTION);
-			glLoadMatrixf(_projOrtho.data());
-			GLdouble projection[16];
-			glGetDoublev(GL_PROJECTION_MATRIX, projection);
-			glLoadIdentity();
-
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			gluLookAt(frontX_, -1, frontZ_, frontX_, 0, frontZ_, 0, 0, 1);
-			GLdouble modelView[16];
-			glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
-			glLoadIdentity();
-
-			GLint viewport[4];
-			glGetIntegerv(GL_VIEWPORT, viewport);
-
-			GLdouble mouseX, mouseY, mouseZ;
-
-			GLint success = gluUnProject(_x, _y, 0,
-				modelView, projection, viewport,
-				&mouseX, &mouseY, &mouseZ);
-
-			if (success == 1) {
-				mouseZ -= 10;
-				mouseZ *= -1;
-				mouseZ += 2 * frontZ_;
-			}
-
-			if (k_ == -1) {
-				GetGrid()->SetControlPoint((GLfloat)mouseX, i_, j_, 0);
-				GetGrid()->SetControlPoint((GLfloat)mouseZ, i_, j_, 2);
-			}
-			else {
-				GetPointLight()->GetPosition()[k_][0] = (GLfloat)mouseX;
-				GetPointLight()->GetPosition()[k_][2] = (GLfloat)mouseZ;
-				glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
-				glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
-			}
+			MouseMotionQuadrantFour(_x, _y, _w, _h, _projOrtho);
 		}
 	}
 	else if (moving_ == true && dragging_ == true) {
@@ -551,6 +460,132 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 		yf_ = _y;
 		panX_ = xf_ - xi_;
 		panY_ = yf_ - yi_;
+	}
+}
+
+void Modeler::MouseMotionQuadrantTwo(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho) {
+	glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(_projOrtho.data());
+	GLdouble projection[16];
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(-1, sideY_, sideZ_, 0, sideY_, sideZ_, 0, 1, 0);
+	GLdouble modelView[16];
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
+	glLoadIdentity();
+
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	GLdouble mouseX, mouseY, mouseZ;
+
+	GLint success = gluUnProject(_x, _y, 0,
+		modelView, projection, viewport,
+		&mouseX, &mouseY, &mouseZ);
+
+	if (success == 1) {
+		mouseY += 10;
+		mouseY *= -1;
+		mouseY += 2 * sideY_;
+	}
+
+	if (k_ == -1) {
+		GetGrid()->SetControlPoint((GLfloat)mouseY, i_, j_, 1);
+		GetGrid()->SetControlPoint((GLfloat)mouseZ, i_, j_, 2);
+	}
+	else {
+		GetPointLight()->GetPosition()[k_][1] = (GLfloat)mouseY;
+		GetPointLight()->GetPosition()[k_][2] = (GLfloat)mouseZ;
+		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
+		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
+	}
+}
+void Modeler::MouseMotionQuadrantThree(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho) {
+	glViewport(0, 0, _w / 2, _h / 2);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(_projOrtho.data());
+	GLdouble projection[16];
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(topX_, topY_, 1, topX_, topY_, 0, 0, 1, 0);
+	GLdouble modelView[16];
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
+	glLoadIdentity();
+
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	GLdouble mouseX, mouseY, mouseZ;
+
+	GLint success = gluUnProject(_x, _y, 0,
+		modelView, projection, viewport,
+		&mouseX, &mouseY, &mouseZ);
+
+	if (success == 1) {
+		mouseY = 10 - mouseY;
+		mouseY += 2 * topY_;
+	}
+
+	if (k_ == -1) {
+		GetGrid()->SetControlPoint((GLfloat)mouseX, i_, j_, 0);
+		GetGrid()->SetControlPoint((GLfloat)mouseY, i_, j_, 1);
+	}
+	else {
+		GetPointLight()->GetPosition()[k_][0] = (GLfloat)mouseX;
+		GetPointLight()->GetPosition()[k_][1] = (GLfloat)mouseY;
+		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
+		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
+	}
+}
+void Modeler::MouseMotionQuadrantFour(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho) {
+	glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(_projOrtho.data());
+	GLdouble projection[16];
+	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glLoadIdentity();
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(frontX_, -1, frontZ_, frontX_, 0, frontZ_, 0, 0, 1);
+	GLdouble modelView[16];
+	glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
+	glLoadIdentity();
+
+	GLint viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+
+	GLdouble mouseX, mouseY, mouseZ;
+
+	GLint success = gluUnProject(_x, _y, 0,
+		modelView, projection, viewport,
+		&mouseX, &mouseY, &mouseZ);
+
+	if (success == 1) {
+		mouseZ -= 10;
+		mouseZ *= -1;
+		mouseZ += 2 * frontZ_;
+	}
+
+	if (k_ == -1) {
+		GetGrid()->SetControlPoint((GLfloat)mouseX, i_, j_, 0);
+		GetGrid()->SetControlPoint((GLfloat)mouseZ, i_, j_, 2);
+	}
+	else {
+		GetPointLight()->GetPosition()[k_][0] = (GLfloat)mouseX;
+		GetPointLight()->GetPosition()[k_][2] = (GLfloat)mouseZ;
+		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
+		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
 	}
 }
 
