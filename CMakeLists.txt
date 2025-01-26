@@ -12,34 +12,18 @@ find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
 endif()
 
-if (MSVC)
 include_directories(
 "$ENV{X_INCL_DIR}"
 "$ENV{BOOST_INCL_DIR}"
 "$ENV{FREEGLUT_INCL_DIR}"
 )
-elseif (APPLE)
-include_directories(
-"$ENV{X_INCL_DIR}"
-"$ENV{BOOST_INCL_DIR}"
-"${OPENGL_INCLUDE_DIR}"
-"${GLUT_INCLUDE_DIR}"
-)
-endif()
 
-if (MSVC)
 link_directories(
 "$ENV{X_LINK_DIR}"
 "$ENV{BOOST_LINK_DIR}" 
 "$ENV{FREEGLUT_LINK_BIN}"
 "$ENV{FREEGLUT_LINK_LIB}"
 )
-elseif (APPLE)
-link_directories(
-"$ENV{X_LINK_DIR}"
-"$ENV{BOOST_LINK_DIR}" 
-)
-endif()
 
 add_executable("${PROJECT_NAME}" 
 "main.cpp" 
@@ -47,8 +31,13 @@ add_executable("${PROJECT_NAME}"
 "GLEntity.cpp" 
 "GLEntityTask.cpp"
 "Modeler.cpp"
-
- "Grid.cpp" "Grid.h"   "PointLight.cpp" "PointLight.h" "UserInterface.cpp" "UserInterface.h" "GLGameEmitters.h" "GLGameEmitters.cpp" "ModelerConsumers.h" "ModelerConsumers.cpp" "GLGameWindow.h" "GLGameWindow.cpp")
+"Grid.cpp" "Grid.h"   
+"PointLight.cpp" "PointLight.h" 
+"UserInterface.cpp" "UserInterface.h" 
+"GLGameEmitters.h" "GLGameEmitters.cpp" 
+"ModelerConsumers.h" "ModelerConsumers.cpp" 
+"GLGameWindow.h" "GLGameWindow.cpp"
+)
 
 if (MSVC)
 target_link_libraries("${PROJECT_NAME}" 
@@ -69,8 +58,8 @@ target_link_libraries("${PROJECT_NAME}"
 "FilesystemAdapters" 
 "DatabaseAdapters"
 "boost_filesystem$ENV{BOOST_LIB_SUFFIX}"
-"${OPENGL_LIBRARIES}"
-"${GLUT_LIBRARY}"
+"GLUT::GLUT" 
+"OpenGL::GL"
 )
 endif()
 
