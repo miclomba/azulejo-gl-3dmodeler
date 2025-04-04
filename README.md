@@ -2,6 +2,10 @@
 
 ![GL3DModeler.png](./GL3DModeler.png)
 
+## Demo
+
+https://bit.ly/azulejo-gl-3dmodeler
+
 ## Prerequisites
 
 Checkout [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib) adjacent to this package.

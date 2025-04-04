@@ -5,3 +5,5 @@
 .vs
 out/
 vcpkg_installed/
+
+.DS_Store
