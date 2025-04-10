@@ -1,10 +1,6 @@
 ﻿# azulejo-gl-3dmodeler
 
-![GL3DModeler.png](./GL3DModeler.png)
-
-## Demo
-
-https://bit.ly/azulejo-gl-3dmodeler
+![GL3DModeler.gif](./assets/GL3DModeler.gif)
 
 ## Prerequisites
 
