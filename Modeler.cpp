@@ -11,7 +11,8 @@
 #include <boost/asio/post.hpp>
 #include <boost/asio/thread_pool.hpp>
 
-#include "Common.h"
+#include "configuration/config.h"
+#include "configuration/filesystem.h"
 #include "gl/GLEntityTask.h"
 
 using _3dmodeler::GLEntityTask;

@@ -6,56 +6,58 @@
 #ifndef _3dmodeler_userinterface_h
 #define _3dmodeler_userinterface_h
 
-#include "config.h"
+#include "configuration/config.h"
 #include "Entities/Entity.h"
 
-namespace _3dmodeler {
-
-/**
- * @class UserInterface
- * @brief A class representing a simple user interface for the 3D modeler application.
- *
- * This class provides functionality to render UI elements such as windows and axis labels.
- */
-class _3DMODELER_DLL_EXPORT UserInterface : public entity::Entity {
-public:
-    /**
-     * @brief Default constructor for the UserInterface class.
-     */
-    UserInterface();
+namespace _3dmodeler
+{
 
     /**
-     * @brief Default destructor for the UserInterface class.
+     * @class UserInterface
+     * @brief A class representing a simple user interface for the 3D modeler application.
+     *
+     * This class provides functionality to render UI elements such as windows and axis labels.
      */
-    virtual ~UserInterface() = default;
+    class _3DMODELER_DLL_EXPORT UserInterface : public entity::Entity
+    {
+    public:
+        /**
+         * @brief Default constructor for the UserInterface class.
+         */
+        UserInterface();
 
-    /**
-     * @brief Draw the user interface.
-     * @param _w Width of the UI.
-     * @param _h Height of the UI.
-     */
-    void Draw(GLint _w, GLint _h);
+        /**
+         * @brief Default destructor for the UserInterface class.
+         */
+        virtual ~UserInterface() = default;
 
-    /**
-     * @brief Get the unique key associated with the user interface.
-     * @return The UI key as a string.
-     */
-    static std::string UserInterfaceKey();
+        /**
+         * @brief Draw the user interface.
+         * @param _w Width of the UI.
+         * @param _h Height of the UI.
+         */
+        void Draw(GLint _w, GLint _h);
 
-private:
-    GLint w_ = 0; /**< Width of the user interface. */
-    GLint h_ = 0; /**< Height of the user interface. */
+        /**
+         * @brief Get the unique key associated with the user interface.
+         * @return The UI key as a string.
+         */
+        static std::string UserInterfaceKey();
 
-    /**
-     * @brief Draw the windows of the UI.
-     */
-    void DrawWindows();
+    private:
+        GLint w_ = 0; /**< Width of the user interface. */
+        GLint h_ = 0; /**< Height of the user interface. */
 
-    /**
-     * @brief Draw axis labels on the UI.
-     */
-    void DrawLabelAxis();
-};
+        /**
+         * @brief Draw the windows of the UI.
+         */
+        void DrawWindows();
+
+        /**
+         * @brief Draw axis labels on the UI.
+         */
+        void DrawLabelAxis();
+    };
 
 } // end namespace _3dmodeler
 

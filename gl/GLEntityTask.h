@@ -10,43 +10,44 @@
 #include <future>
 #include <memory>
 
-#include "config.h"
+#include "configuration/config.h"
 
-namespace _3dmodeler {
-
-class GLEntity;
-
-/**
- * @struct GLEntityTask
- * @brief A struct for managing asynchronous tasks that produce GLEntity instances.
- *
- * This struct wraps an asynchronous task and provides mechanisms to execute and retrieve the result.
- */
-struct _3DMODELER_DLL_EXPORT GLEntityTask
+namespace _3dmodeler
 {
-    /**
-     * @brief Constructs a GLEntityTask with a given function.
-     * @param lambda A function returning a pointer to a GLEntity instance.
-     */
-    GLEntityTask(std::function<GLEntity*()> lambda);
+
+    class GLEntity;
 
     /**
-     * @brief Executes the stored task.
+     * @struct GLEntityTask
+     * @brief A struct for managing asynchronous tasks that produce GLEntity instances.
+     *
+     * This struct wraps an asynchronous task and provides mechanisms to execute and retrieve the result.
      */
-    void operator()();
+    struct _3DMODELER_DLL_EXPORT GLEntityTask
+    {
+        /**
+         * @brief Constructs a GLEntityTask with a given function.
+         * @param lambda A function returning a pointer to a GLEntity instance.
+         */
+        GLEntityTask(std::function<GLEntity *()> lambda);
 
-    /**
-     * @brief Retrieves the future result of the task.
-     * @return A future object holding the GLEntity pointer result.
-     */
-    std::future<GLEntity*> GetFuture();
+        /**
+         * @brief Executes the stored task.
+         */
+        void operator()();
 
-private:
-    /**
-     * @brief Packaged task encapsulating the asynchronous operation.
-     */
-    std::shared_ptr<std::packaged_task<GLEntity*()>> task_;
-};
+        /**
+         * @brief Retrieves the future result of the task.
+         * @return A future object holding the GLEntity pointer result.
+         */
+        std::future<GLEntity *> GetFuture();
+
+    private:
+        /**
+         * @brief Packaged task encapsulating the asynchronous operation.
+         */
+        std::shared_ptr<std::packaged_task<GLEntity *()>> task_;
+    };
 
 } // namespace _3dmodeler
 

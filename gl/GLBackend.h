@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "Entities/Entity.h"
-#include "config.h"
+#include "configuration/config.h"
 #include "gl/GLBackendEmitters.h"
 #include "gl/GLBackendWindow.h"
 

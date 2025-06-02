@@ -15,7 +15,7 @@
 
 #include <boost/asio/thread_pool.hpp>
 
-#include "config.h"
+#include "configuration/config.h"
 #include "gl/GLEntity.h"
 #include "Grid.h"
 #include "PointLight.h"

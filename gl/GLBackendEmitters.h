@@ -12,7 +12,7 @@
 
 #include "Entities/Entity.h"
 #include "Events/EventEmitter.h"
-#include "config.h"
+#include "configuration/config.h"
 
 namespace _3dmodeler
 {

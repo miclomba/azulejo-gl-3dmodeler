@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "Entities/Entity.h"
-#include "config.h"
+#include "configuration/config.h"
 
 namespace _3dmodeler
 {
