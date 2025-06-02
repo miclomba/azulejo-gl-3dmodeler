@@ -5,8 +5,8 @@
 
 #include "Modeler.h"
 #include "ModelerConsumers.h"
-#include "GLBackend.h"
-#include "GLBackendEmitters.h"
+#include "gl/GLBackend.h"
+#include "gl/GLBackendEmitters.h"
 
 using _3dmodeler::GLBackend;
 using _3dmodeler::GLBackendEmitters;

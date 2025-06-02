@@ -28,16 +28,16 @@ link_directories(
 
 add_executable("${PROJECT_NAME}" 
 "main.cpp" 
-"GLBackend.cpp" 
-"GLEntity.cpp" 
-"GLEntityTask.cpp"
+"gl/GLBackend.cpp" 
+"gl/GLEntity.cpp" 
+"gl/GLEntityTask.cpp"
 "Modeler.cpp"
 "Grid.cpp" "Grid.h"   
 "PointLight.cpp" "PointLight.h" 
 "UserInterface.cpp" "UserInterface.h" 
-"GLBackendEmitters.h" "GLBackendEmitters.cpp" 
+"gl/GLBackendEmitters.h" "gl/GLBackendEmitters.cpp" 
 "ModelerConsumers.h" "ModelerConsumers.cpp" 
-"GLBackendWindow.h" "GLBackendWindow.cpp"
+"gl/GLBackendWindow.h" "gl/GLBackendWindow.cpp"
 )
 
 if (MSVC)
