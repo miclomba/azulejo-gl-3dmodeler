@@ -5,13 +5,13 @@
 
 #include "Entities/Entity.h"
 #include "GLGameEmitters.h"
-#include "GLGameWindow.h"
+#include "GLBackendWindow.h"
 
 using entity::Entity;
 
 using _3dmodeler::GLBackend;
+using _3dmodeler::GLBackendWindow;
 using _3dmodeler::GLGameEmitters;
-using _3dmodeler::GLGameWindow;
 
 namespace
 {
@@ -70,7 +70,7 @@ GLGameEmitters &GLBackend::GetEmitters()
 	return emitters_;
 }
 
-GLGameWindow &GLBackend::GetGameWindow()
+GLBackendWindow &GLBackend::GetGameWindow()
 {
 	return gameWindow_;
 }

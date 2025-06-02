@@ -37,7 +37,7 @@ add_executable("${PROJECT_NAME}"
 "UserInterface.cpp" "UserInterface.h" 
 "GLGameEmitters.h" "GLGameEmitters.cpp" 
 "ModelerConsumers.h" "ModelerConsumers.cpp" 
-"GLGameWindow.h" "GLGameWindow.cpp"
+"GLBackendWindow.h" "GLBackendWindow.cpp"
 )
 
 if (MSVC)

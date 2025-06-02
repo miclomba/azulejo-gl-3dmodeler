@@ -12,7 +12,7 @@
 #include "Entities/Entity.h"
 #include "config.h"
 #include "GLGameEmitters.h"
-#include "GLGameWindow.h"
+#include "GLBackendWindow.h"
 
 namespace _3dmodeler
 {
@@ -63,9 +63,9 @@ namespace _3dmodeler
 
         /**
          * @brief Get the game window instance.
-         * @return Reference to the GLGameWindow instance.
+         * @return Reference to the GLBackendWindow instance.
          */
-        GLGameWindow &GetGameWindow();
+        GLBackendWindow &GetGameWindow();
 
         static GLBackend *callbackInstance_; /**< Static instance for callback functions. */
 
@@ -163,7 +163,7 @@ namespace _3dmodeler
         void KeyboardUpdateState();
 
         // Members
-        GLGameWindow gameWindow_;           /**< Handles window properties. */
+        GLBackendWindow gameWindow_;        /**< Handles window properties. */
         std::array<bool, 256> keysPressed_; /**< Tracks the state of pressed keys. */
     };
 
