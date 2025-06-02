@@ -35,7 +35,7 @@ add_executable("${PROJECT_NAME}"
 "Grid.cpp" "Grid.h"   
 "PointLight.cpp" "PointLight.h" 
 "UserInterface.cpp" "UserInterface.h" 
-"GLGameEmitters.h" "GLGameEmitters.cpp" 
+"GLBackendEmitters.h" "GLBackendEmitters.cpp" 
 "ModelerConsumers.h" "ModelerConsumers.cpp" 
 "GLBackendWindow.h" "GLBackendWindow.cpp"
 )

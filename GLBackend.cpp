@@ -4,14 +4,14 @@
 #include <string>
 
 #include "Entities/Entity.h"
-#include "GLGameEmitters.h"
+#include "GLBackendEmitters.h"
 #include "GLBackendWindow.h"
 
 using entity::Entity;
 
 using _3dmodeler::GLBackend;
+using _3dmodeler::GLBackendEmitters;
 using _3dmodeler::GLBackendWindow;
-using _3dmodeler::GLGameEmitters;
 
 namespace
 {
@@ -65,7 +65,7 @@ void GLBackend::Run()
 	glutMainLoop();
 };
 
-GLGameEmitters &GLBackend::GetEmitters()
+GLBackendEmitters &GLBackend::GetEmitters()
 {
 	return emitters_;
 }

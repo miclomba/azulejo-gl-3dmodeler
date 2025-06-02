@@ -11,7 +11,7 @@
 
 #include "Entities/Entity.h"
 #include "config.h"
-#include "GLGameEmitters.h"
+#include "GLBackendEmitters.h"
 #include "GLBackendWindow.h"
 
 namespace _3dmodeler
@@ -57,9 +57,9 @@ namespace _3dmodeler
 
         /**
          * @brief Get the event emitters associated with the game.
-         * @return Reference to the GLGameEmitters instance.
+         * @return Reference to the GLBackendEmitters instance.
          */
-        GLGameEmitters &GetEmitters();
+        GLBackendEmitters &GetEmitters();
 
         /**
          * @brief Get the game window instance.
@@ -70,7 +70,7 @@ namespace _3dmodeler
         static GLBackend *callbackInstance_; /**< Static instance for callback functions. */
 
     private:
-        GLGameEmitters emitters_; /**< Handles input events and actions. */
+        GLBackendEmitters emitters_; /**< Handles input events and actions. */
 
         // GLUT Initialization
         /**

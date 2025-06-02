@@ -6,10 +6,10 @@
 #include "Modeler.h"
 #include "ModelerConsumers.h"
 #include "GLBackend.h"
-#include "GLGameEmitters.h"
+#include "GLBackendEmitters.h"
 
 using _3dmodeler::GLBackend;
-using _3dmodeler::GLGameEmitters;
+using _3dmodeler::GLBackendEmitters;
 using _3dmodeler::Modeler;
 using _3dmodeler::ModelerConsumers;
 using events::EventChannel;
@@ -53,7 +53,7 @@ namespace
 	const std::string RUN_ACTION = "run_action";
 }
 
-void RegisterEvents(ModelerConsumers &consumers, GLGameEmitters &emitters, EventChannel &channel)
+void RegisterEvents(ModelerConsumers &consumers, GLBackendEmitters &emitters, EventChannel &channel)
 {
 	channel.RegisterEmitter(X_EVENT, emitters.GetXEmitter());
 	channel.RegisterConsumer(X_ACTION, X_EVENT, consumers.GetXConsumer());
@@ -96,12 +96,12 @@ int main(int _argc, char *_argv[])
 {
 	GLBackend backend(_argc, _argv);
 	glutTimerFunc(TIME, backend.TimerCallback, VAL);
-	GLGameEmitters &emitters = backend.GetEmitters();
+	GLBackendEmitters &emitters = backend.GetEmitters();
 
 	auto frontend = std::make_shared<Modeler>();
 	ModelerConsumers frontendConsumers(frontend);
 
-	GLGameEmitters &backendEmitters = backend.GetEmitters();
+	GLBackendEmitters &backendEmitters = backend.GetEmitters();
 
 	EventChannel channel;
 
