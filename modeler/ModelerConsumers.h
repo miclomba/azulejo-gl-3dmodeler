@@ -13,7 +13,7 @@
 #include "Entities/Entity.h"
 #include "Events/EventConsumer.h"
 #include "configuration/config.h"
-#include "Modeler.h"
+#include "modeler/Modeler.h"
 
 namespace _3dmodeler
 {

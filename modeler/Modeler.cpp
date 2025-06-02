@@ -1,4 +1,4 @@
-#include "Modeler.h"
+#include "modeler/Modeler.h"
 
 #include <array>
 #include <future>

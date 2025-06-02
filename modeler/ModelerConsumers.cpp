@@ -1,4 +1,4 @@
-#include "ModelerConsumers.h"
+#include "modeler/ModelerConsumers.h"
 
 #include <array>
 #include <memory>
@@ -9,7 +9,7 @@
 
 #include "configuration/config.h"
 #include "configuration/filesystem.h"
-#include "Modeler.h"
+#include "modeler/Modeler.h"
 
 using _3dmodeler::Modeler;
 using _3dmodeler::ModelerConsumers;

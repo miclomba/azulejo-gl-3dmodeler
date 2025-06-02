@@ -17,9 +17,9 @@
 
 #include "configuration/config.h"
 #include "gl/GLEntity.h"
-#include "Grid.h"
-#include "PointLight.h"
-#include "UserInterface.h"
+#include "modeler/Grid.h"
+#include "modeler/PointLight.h"
+#include "modeler/UserInterface.h"
 
 namespace _3dmodeler
 {

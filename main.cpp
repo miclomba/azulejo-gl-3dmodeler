@@ -3,8 +3,8 @@
 
 #include "Events/EventChannel.h"
 
-#include "Modeler.h"
-#include "ModelerConsumers.h"
+#include "modeler/Modeler.h"
+#include "modeler/ModelerConsumers.h"
 #include "gl/GLBackend.h"
 #include "gl/GLBackendEmitters.h"
 
