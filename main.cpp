@@ -3,10 +3,10 @@
 
 #include "Events/EventChannel.h"
 
-#include "modeler/Modeler.h"
-#include "modeler/ModelerConsumers.h"
 #include "gl/GLBackend.h"
 #include "gl/GLBackendEmitters.h"
+#include "modeler/Modeler.h"
+#include "modeler/ModelerConsumers.h"
 
 using _3dmodeler::GLBackend;
 using _3dmodeler::GLBackendEmitters;

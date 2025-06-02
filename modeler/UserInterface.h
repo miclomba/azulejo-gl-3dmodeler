@@ -6,8 +6,9 @@
 #ifndef _3dmodeler_userinterface_h
 #define _3dmodeler_userinterface_h
 
-#include "configuration/config.h"
 #include "Entities/Entity.h"
+
+#include "configuration/config.h"
 
 namespace _3dmodeler
 {

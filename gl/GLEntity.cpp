@@ -2,9 +2,9 @@
 
 #include "test_filesystem_adapters/ContainerResource2D.h"
 
+#include "GLEntity.h"
 #include "configuration/config.h"
 #include "configuration/filesystem.h"
-#include "GLEntity.h"
 
 using _3dmodeler::GLEntity;
 using entity::Entity;

@@ -6,10 +6,10 @@
 #ifndef _3dmodeler_glentity_h
 #define _3dmodeler_glentity_h
 
-#include "configuration/config.h"
-
 #include "Entities/Entity.h"
 #include "test_filesystem_adapters/ContainerResource2D.h"
+
+#include "configuration/config.h"
 
 namespace _3dmodeler
 {

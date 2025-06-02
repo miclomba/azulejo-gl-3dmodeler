@@ -8,8 +8,9 @@
 
 #include <array>
 
-#include "configuration/config.h"
 #include "Entities/Entity.h"
+
+#include "configuration/config.h"
 
 namespace _3dmodeler
 {
