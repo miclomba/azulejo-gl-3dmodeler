@@ -29,38 +29,38 @@ link_directories(
 add_executable("${PROJECT_NAME}" 
 "main.cpp" 
 "gl/GLBackend.cpp" 
+"gl/GLBackendEmitters.h" "gl/GLBackendEmitters.cpp" 
+"gl/GLBackendWindow.h" "gl/GLBackendWindow.cpp"
 "gl/GLEntity.cpp" 
 "gl/GLEntityTask.cpp"
 "modeler/Modeler.cpp"
 "modeler/Grid.cpp" "modeler/Grid.h"   
 "modeler/PointLight.cpp" "modeler/PointLight.h" 
 "modeler/UserInterface.cpp" "modeler/UserInterface.h" 
-"gl/GLBackendEmitters.h" "gl/GLBackendEmitters.cpp" 
 "modeler/ModelerConsumers.h" "modeler/ModelerConsumers.cpp" 
-"gl/GLBackendWindow.h" "gl/GLBackendWindow.cpp"
 )
 
 if (MSVC)
 target_link_libraries("${PROJECT_NAME}" 
+"DatabaseAdapters"
 "Entities" 
-"Resources" 
 "Events"
 "FilesystemAdapters" 
-"DatabaseAdapters"
+"Resources" 
+"bcrypt"
 "boost_filesystem$ENV{BOOST_LIB_SUFFIX}"
 "freeglutd"
-"bcrypt"
 )
 elseif (APPLE)
 target_link_libraries("${PROJECT_NAME}" 
+"DatabaseAdapters"
 "Entities" 
-"Resources" 
 "Events"
 "FilesystemAdapters" 
-"DatabaseAdapters"
-"boost_filesystem$ENV{BOOST_LIB_SUFFIX}"
 "GLUT::GLUT" 
 "OpenGL::GL"
+"Resources" 
+"boost_filesystem$ENV{BOOST_LIB_SUFFIX}"
 )
 endif()
 
