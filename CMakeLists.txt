@@ -13,6 +13,7 @@ find_package(GLUT REQUIRED)
 endif()
 
 include_directories(
+"${CMAKE_SOURCE_DIR}"
 "$ENV{X_INCL_DIR}"
 "$ENV{BOOST_INCL_DIR}"
 "$ENV{FREEGLUT_INCL_DIR}"
@@ -27,7 +28,7 @@ link_directories(
 
 add_executable("${PROJECT_NAME}" 
 "main.cpp" 
-"GLGame.cpp" 
+"GLBackend.cpp" 
 "GLEntity.cpp" 
 "GLEntityTask.cpp"
 "Modeler.cpp"

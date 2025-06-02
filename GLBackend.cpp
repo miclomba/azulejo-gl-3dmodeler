@@ -1,4 +1,4 @@
-#include "GLGame.h"
+#include "GLBackend.h"
 
 #include <algorithm>
 #include <string>
@@ -9,27 +9,27 @@
 
 using entity::Entity;
 
-using _3dmodeler::GLGame;
+using _3dmodeler::GLBackend;
 using _3dmodeler::GLGameEmitters;
 using _3dmodeler::GLGameWindow;
 
 namespace
 {
-const int WIN_WIDTH = 600;
-const int WIN_HEIGHT = 480;
-const int NUMBER_KEYS = 256;
-const int INIT_WIN_X = 100;
-const int INIT_WIN_Y = 100;
-const std::string _3DMODELER_TITLE = "3DModeler";
+	const int WIN_WIDTH = 600;
+	const int WIN_HEIGHT = 480;
+	const int NUMBER_KEYS = 256;
+	const int INIT_WIN_X = 100;
+	const int INIT_WIN_Y = 100;
+	const std::string _3DMODELER_TITLE = "3DModeler";
 } // end namespace
 
 /*======================== CALLBACK POINTER ==================================*/
-GLGame* GLGame::callbackInstance_(nullptr);
+GLBackend *GLBackend::callbackInstance_(nullptr);
 /*============================================================================*/
 
-GLGame::~GLGame() = default;
+GLBackend::~GLBackend() = default;
 
-void GLGame::TimerCallback(int _idx)
+void GLBackend::TimerCallback(int _idx)
 {
 	switch (_idx)
 	{
@@ -42,7 +42,7 @@ void GLGame::TimerCallback(int _idx)
 	}
 }
 
-GLGame::GLGame(int _argc, char* _argv[]) : Entity()
+GLBackend::GLBackend(int _argc, char *_argv[]) : Entity()
 {
 	SetKey(_3DMODELER_TITLE);
 
@@ -58,32 +58,34 @@ GLGame::GLGame(int _argc, char* _argv[]) : Entity()
 	InitClient();
 }
 
-void GLGame::Run()
+void GLBackend::Run()
 {
 	GetEmitters().GetRunEmitter()->Signal()();
 
 	glutMainLoop();
 };
 
-GLGameEmitters& GLGame::GetEmitters() {
+GLGameEmitters &GLBackend::GetEmitters()
+{
 	return emitters_;
 }
 
-GLGameWindow& GLGame::GetGameWindow() {
+GLGameWindow &GLBackend::GetGameWindow()
+{
 	return gameWindow_;
 }
 
-void GLGame::RegisterCallbacks() const
+void GLBackend::RegisterCallbacks() const
 {
-	glutDisplayFunc(DisplayWrapper);   
+	glutDisplayFunc(DisplayWrapper);
 	glutReshapeFunc(ReshapeWrapper);
-	glutKeyboardFunc(KeyboardWrapper); 
+	glutKeyboardFunc(KeyboardWrapper);
 	glutKeyboardUpFunc(KeyboardUpWrapper);
 	glutMouseFunc(MouseWrapper);
 	glutMotionFunc(MouseMotionWrapper);
 }
 
-void GLGame::InitGlut(int _argc, char* _argv[]) const
+void GLBackend::InitGlut(int _argc, char *_argv[]) const
 {
 	glutInit(&_argc, _argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -92,70 +94,74 @@ void GLGame::InitGlut(int _argc, char* _argv[]) const
 	glutCreateWindow(_3DMODELER_TITLE.c_str());
 }
 
-void GLGame::InitActionMenu() const
+void GLBackend::InitActionMenu() const
 {
 	glutCreateMenu(ActionMenuWrapper);
-		glutAddMenuEntry("Toggle Pick/Pan", 0);
-		glutAddMenuEntry("Quit", 1);
+	glutAddMenuEntry("Toggle Pick/Pan", 0);
+	glutAddMenuEntry("Quit", 1);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
-void GLGame::InitServer() const
+void GLBackend::InitServer() const
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_SCISSOR_TEST);
 	glEnable(GL_DEPTH_TEST);
-		glDepthRange(0, 1);
+	glDepthRange(0, 1);
 	glEnable(GL_AUTO_NORMAL);
-		glEnable(GL_NORMALIZE);
+	glEnable(GL_NORMALIZE);
 	glFrontFace(GL_CCW);
-		glEnable(GL_CULL_FACE);
-			glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 }
 
-void GLGame::InitClient() const
+void GLBackend::InitClient() const
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 }
 
-void GLGame::DisplayWrapper()
+void GLBackend::DisplayWrapper()
 {
 	callbackInstance_->Display();
 }
 
-void GLGame::ReshapeWrapper(const int _w, const int _h)
+void GLBackend::ReshapeWrapper(const int _w, const int _h)
 {
 	callbackInstance_->Reshape(_w, _h);
 }
 
-void GLGame::KeyboardWrapper(const unsigned char _chr, const int _x, const int _y)
+void GLBackend::KeyboardWrapper(const unsigned char _chr, const int _x, const int _y)
 {
 	callbackInstance_->Keyboard(_chr, _x, _y);
 }
 
-void GLGame::KeyboardUpWrapper(const unsigned char _chr, const int _x, const int _y)
+void GLBackend::KeyboardUpWrapper(const unsigned char _chr, const int _x, const int _y)
 {
 	callbackInstance_->KeyboardUp(_chr, _x, _y);
 }
 
-void GLGame::PickWrapper(const int _x, const int _y, const std::string& _viewport) {
+void GLBackend::PickWrapper(const int _x, const int _y, const std::string &_viewport)
+{
 	callbackInstance_->Pick(_x, _y, callbackInstance_->GetGameWindow().GetHeight(), _viewport);
 }
 
-void GLGame::MouseWrapper(const int _button, const int _state, const int _x, const int _y) {
+void GLBackend::MouseWrapper(const int _button, const int _state, const int _x, const int _y)
+{
 	callbackInstance_->Mouse(_button, _state, _x, _y, callbackInstance_->GetGameWindow().GetWidth(), callbackInstance_->GetGameWindow().GetHeight());
 }
 
-void GLGame::MouseMotionWrapper(const int _x, const int _y) {
+void GLBackend::MouseMotionWrapper(const int _x, const int _y)
+{
 	callbackInstance_->MouseMotion(_x, _y, callbackInstance_->GetGameWindow().GetWidth(), callbackInstance_->GetGameWindow().GetHeight(), callbackInstance_->GetGameWindow().GetProjOrthoMatrix());
 }
 
-void GLGame::ActionMenuWrapper(const int _index) {
+void GLBackend::ActionMenuWrapper(const int _index)
+{
 	callbackInstance_->ActionMenu(_index);
 }
 
-void GLGame::Display()
+void GLBackend::Display()
 {
 	KeyboardUpdateState();
 
@@ -168,7 +174,7 @@ void GLGame::Display()
 	glutSwapBuffers();
 }
 
-void GLGame::Reshape(const int _w, const int _h)
+void GLBackend::Reshape(const int _w, const int _h)
 {
 	GetGameWindow().SetWidth(_w);
 	GetGameWindow().SetHeight(_h);
@@ -182,20 +188,22 @@ void GLGame::Reshape(const int _w, const int _h)
 
 	if (_w / 2 <= _h / 2)
 		glOrtho(-5.0, 5.0, -5.0 * ((GLfloat)(_h / 2) / (GLfloat)(_w / 2)),
-			5.0 * ((GLfloat)(_h / 2) / (GLfloat)(_w / 2)), 10.0, -200.0);
+				5.0 * ((GLfloat)(_h / 2) / (GLfloat)(_w / 2)), 10.0, -200.0);
 	else
 		glOrtho(-5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)),
-			5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)), -5.0, 5.0, 10.0, -200.0);
+				5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)), -5.0, 5.0, 10.0, -200.0);
 
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	for (i = 0; i < 16; i++) GetGameWindow().SetProjOrthoMatrix(projection[i], i);
+	for (i = 0; i < 16; i++)
+		GetGameWindow().SetProjOrthoMatrix(projection[i], i);
 
 	glLoadIdentity();
 	//========================= Perspective Projection =====================
 	gluPerspective(40.0, (GLdouble)_w / (GLdouble)_h, 0.5, 200.0);
 
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	for (i = 0; i < 16; i++) GetGameWindow().SetProjPerspectiveMatrix(projection[i], i);
+	for (i = 0; i < 16; i++)
+		GetGameWindow().SetProjPerspectiveMatrix(projection[i], i);
 	glLoadIdentity();
 
 	/*========================= REDISPLAY ====================================*/
@@ -203,32 +211,35 @@ void GLGame::Reshape(const int _w, const int _h)
 	glutPostRedisplay();
 }
 
-void GLGame::Keyboard(const unsigned char _chr, const int _x, const int _y)
+void GLBackend::Keyboard(const unsigned char _chr, const int _x, const int _y)
 {
 	keysPressed_[_chr] = true;
 }
 
-void GLGame::KeyboardUp(const unsigned char _chr, const int _x, const int _y)
+void GLBackend::KeyboardUp(const unsigned char _chr, const int _x, const int _y)
 {
 	keysPressed_[_chr] = false;
 }
 
-void GLGame::KeyboardUpdateState()
+void GLBackend::KeyboardUpdateState()
 {
 	for (int i = 0; i < NUMBER_KEYS; i++)
 	{
-		if (keysPressed_[i]) 
+		if (keysPressed_[i])
 		{
 			switch (i)
 			{
 			case 'x':
-				GetEmitters().GetXEmitter()->Signal()(); break;
+				GetEmitters().GetXEmitter()->Signal()();
+				break;
 			case 'y':
-				GetEmitters().GetYEmitter()->Signal()(); break;
+				GetEmitters().GetYEmitter()->Signal()();
+				break;
 			case 'z':
-				GetEmitters().GetZEmitter()->Signal()(); break;
+				GetEmitters().GetZEmitter()->Signal()();
+				break;
 			case 't':
-				GetEmitters().GetTEmitter()->Signal()(); 
+				GetEmitters().GetTEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			case 'l':
@@ -236,17 +247,20 @@ void GLGame::KeyboardUpdateState()
 				keysPressed_[i] = false;
 				break;
 			case 'X':
-				GetEmitters().GetXCapEmitter()->Signal()(); break;
+				GetEmitters().GetXCapEmitter()->Signal()();
+				break;
 			case 'Y':
-				GetEmitters().GetYCapEmitter()->Signal()(); break;
+				GetEmitters().GetYCapEmitter()->Signal()();
+				break;
 			case 'Z':
-				GetEmitters().GetZCapEmitter()->Signal()(); break;
+				GetEmitters().GetZCapEmitter()->Signal()();
+				break;
 			case 'T':
-				GetEmitters().GetTCapEmitter()->Signal()(); 
+				GetEmitters().GetTCapEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			case 'L':
-				GetEmitters().GetLCapEmitter()->Signal()(); 
+				GetEmitters().GetLCapEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			default:
@@ -256,18 +270,22 @@ void GLGame::KeyboardUpdateState()
 	}
 }
 
-void GLGame::Pick(const int _x, const int _y, const int _h, const std::string& _viewport) {
+void GLBackend::Pick(const int _x, const int _y, const int _h, const std::string &_viewport)
+{
 	GetEmitters().GetPickEmitter()->Signal()(_x, _y, _h, _viewport);
 }
 
-void GLGame::Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h) {
+void GLBackend::Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
+{
 	GetEmitters().GetMouseEmitter()->Signal()(_button, _state, _x, _y, _w, _h);
 }
 
-void GLGame::MouseMotion(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16>& _projOrtho) {
+void GLBackend::MouseMotion(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16> &_projOrtho)
+{
 	GetEmitters().GetMouseMotionEmitter()->Signal()(_x, _y, _w, _h, _projOrtho);
 }
 
-void GLGame::ActionMenu(const int _index) {
+void GLBackend::ActionMenu(const int _index)
+{
 	GetEmitters().GetActionMenuEmitter()->Signal()(_index);
 }

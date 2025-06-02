@@ -5,55 +5,55 @@
 
 #include "Modeler.h"
 #include "ModelerConsumers.h"
-#include "GLGame.h"
+#include "GLBackend.h"
 #include "GLGameEmitters.h"
 
+using _3dmodeler::GLBackend;
+using _3dmodeler::GLGameEmitters;
 using _3dmodeler::Modeler;
 using _3dmodeler::ModelerConsumers;
-using _3dmodeler::GLGame;
-using _3dmodeler::GLGameEmitters;
 using events::EventChannel;
 
 namespace
 {
-const int TIME = 25;
-const int VAL = 0;
-const std::string X_EVENT = "x_event";
-const std::string X_ACTION = "x_action";
-const std::string Y_EVENT = "y_event";
-const std::string Y_ACTION = "y_action";
-const std::string Z_EVENT = "z_event";
-const std::string Z_ACTION = "z_action";
-const std::string T_EVENT = "t_event";
-const std::string T_ACTION = "t_action";
-const std::string L_EVENT = "l_event";
-const std::string L_ACTION = "l_action";
-const std::string X_CAP_EVENT = "x_cap_event";
-const std::string X_CAP_ACTION = "x_cap_action";
-const std::string Y_CAP_EVENT = "y_cap_event";
-const std::string Y_CAP_ACTION = "y_cap_action";
-const std::string Z_CAP_EVENT = "z_cap_event";
-const std::string Z_CAP_ACTION = "z_cap_action";
-const std::string T_CAP_EVENT = "t_cap_event";
-const std::string T_CAP_ACTION = "t_cap_action";
-const std::string L_CAP_EVENT = "l_cap_event";
-const std::string L_CAP_ACTION = "l_cap_action";
+	const int TIME = 25;
+	const int VAL = 0;
+	const std::string X_EVENT = "x_event";
+	const std::string X_ACTION = "x_action";
+	const std::string Y_EVENT = "y_event";
+	const std::string Y_ACTION = "y_action";
+	const std::string Z_EVENT = "z_event";
+	const std::string Z_ACTION = "z_action";
+	const std::string T_EVENT = "t_event";
+	const std::string T_ACTION = "t_action";
+	const std::string L_EVENT = "l_event";
+	const std::string L_ACTION = "l_action";
+	const std::string X_CAP_EVENT = "x_cap_event";
+	const std::string X_CAP_ACTION = "x_cap_action";
+	const std::string Y_CAP_EVENT = "y_cap_event";
+	const std::string Y_CAP_ACTION = "y_cap_action";
+	const std::string Z_CAP_EVENT = "z_cap_event";
+	const std::string Z_CAP_ACTION = "z_cap_action";
+	const std::string T_CAP_EVENT = "t_cap_event";
+	const std::string T_CAP_ACTION = "t_cap_action";
+	const std::string L_CAP_EVENT = "l_cap_event";
+	const std::string L_CAP_ACTION = "l_cap_action";
 
-const std::string DRAW_EVENT = "draw_event";
-const std::string DRAW_ACTION = "draw_action";
-const std::string PICK_EVENT = "pick_event";
-const std::string PICK_ACTION = "pick_action";
-const std::string MOUS_EVENT = "mouse_event";
-const std::string MOUS_ACTION = "mouse_action";
-const std::string MOUSE_MOTION_EVENT = "mouse_motion_event";
-const std::string MOUSE_MOTION_ACTION = "mouse_motion_action";
-const std::string ACTION_MENU_EVENT = "action_menu_event";
-const std::string ACTION_MENU_ACTION = "action_menu_action";
-const std::string RUN_EVENT = "run_event";
-const std::string RUN_ACTION = "run_action";
+	const std::string DRAW_EVENT = "draw_event";
+	const std::string DRAW_ACTION = "draw_action";
+	const std::string PICK_EVENT = "pick_event";
+	const std::string PICK_ACTION = "pick_action";
+	const std::string MOUS_EVENT = "mouse_event";
+	const std::string MOUS_ACTION = "mouse_action";
+	const std::string MOUSE_MOTION_EVENT = "mouse_motion_event";
+	const std::string MOUSE_MOTION_ACTION = "mouse_motion_action";
+	const std::string ACTION_MENU_EVENT = "action_menu_event";
+	const std::string ACTION_MENU_ACTION = "action_menu_action";
+	const std::string RUN_EVENT = "run_event";
+	const std::string RUN_ACTION = "run_action";
 }
 
-void RegisterEvents(ModelerConsumers& consumers, GLGameEmitters& emitters, EventChannel& channel)
+void RegisterEvents(ModelerConsumers &consumers, GLGameEmitters &emitters, EventChannel &channel)
 {
 	channel.RegisterEmitter(X_EVENT, emitters.GetXEmitter());
 	channel.RegisterConsumer(X_ACTION, X_EVENT, consumers.GetXConsumer());
@@ -92,17 +92,20 @@ void RegisterEvents(ModelerConsumers& consumers, GLGameEmitters& emitters, Event
 	channel.RegisterConsumer(RUN_ACTION, RUN_EVENT, consumers.GetRunConsumer());
 }
 
-int main(int _argc, char* _argv[]) 
+int main(int _argc, char *_argv[])
 {
-	GLGame game(_argc,_argv);
-	glutTimerFunc(TIME,game.TimerCallback,VAL);
-	GLGameEmitters& emitters = game.GetEmitters();
+	GLBackend backend(_argc, _argv);
+	glutTimerFunc(TIME, backend.TimerCallback, VAL);
+	GLGameEmitters &emitters = backend.GetEmitters();
 
-	auto modeler = std::make_shared<Modeler>();
-	ModelerConsumers consumers(modeler);
+	auto frontend = std::make_shared<Modeler>();
+	ModelerConsumers frontendConsumers(frontend);
+
+	GLGameEmitters &backendEmitters = backend.GetEmitters();
+
 	EventChannel channel;
 
-	RegisterEvents(consumers, game.GetEmitters(), channel);
+	RegisterEvents(frontendConsumers, backendEmitters, channel);
 
-	game.Run();
+	backend.Run();
 }
