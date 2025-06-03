@@ -21,7 +21,7 @@ Checkout [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib) ad
 
 Checkout [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib) adjacent to this package.
 
-#### VSCode
+### VSCode
 
 0. Install `VSCode`
 1. Install VSCode extensions:
@@ -29,7 +29,7 @@ Checkout [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib) ad
 - CMake Tools (by Microsoft)
 - C/C++ (by Microsoft)
 
-#### Install VCPKG Dependencies
+### Install VCPKG Dependencies
 
 Install [vcpkg](https://github.com/microsoft/vcpkg).
 
