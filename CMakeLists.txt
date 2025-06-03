@@ -13,6 +13,7 @@ find_package(GLUT REQUIRED)
 elseif(UNIX)
 find_package(OpenGL REQUIRED)
 find_package(X11 REQUIRED)
+find_library(GLU_LIBRARY GLU)
 endif()
 
 message(STATUS "FREEGLUT_LINK_BIN: $ENV{FREEGLUT_LINK_BIN}")
@@ -102,6 +103,7 @@ target_link_libraries("${PROJECT_NAME}"
 "${COMMON_DEPENDENCIES}" 
 "glut"
 "GL"
+"${GLU_LIBRARY}"
 "boost_filesystem"
 "${X11_LIBRARIES}"
 "m"

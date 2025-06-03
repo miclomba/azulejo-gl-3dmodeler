@@ -29,7 +29,7 @@ Checkout [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib) ad
 - CMake Tools (by Microsoft)
 - C/C++ (by Microsoft)
 
-### Install VCPKG Dependencies
+### VCPKG
 
 Install [vcpkg](https://github.com/microsoft/vcpkg).
 
