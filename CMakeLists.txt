@@ -27,7 +27,7 @@ message(STATUS "X11_LIBRARIES: ${X11_LIBRARIES}")
 message(STATUS "X11_INCLUDE_DIR: ${X11_INCLUDE_DIR}")
 
 set(COMMON_INCLUDES
-"${CMAKE_SOURCE_DIR}"
+"${CMAKE_SOURCE_DIR}/include"
 "$ENV{X_INCL_DIR}"
 "$ENV{BOOST_INCL_DIR}"
 "$ENV{FREEGLUT_INCL_DIR}"
@@ -63,17 +63,17 @@ link_directories(
 endif()
 
 add_executable("${PROJECT_NAME}" 
-"gl/GLBackend.cpp" 
-"gl/GLBackendEmitters.h" "gl/GLBackendEmitters.cpp" 
-"gl/GLBackendWindow.h" "gl/GLBackendWindow.cpp"
-"gl/GLEntity.cpp" 
-"gl/GLEntityTask.cpp"
+"src/gl/GLBackend.cpp" 
+"src/gl/GLBackendEmitters.cpp" 
+"src/gl/GLBackendWindow.cpp"
+"src/gl/GLEntity.cpp" 
+"src/gl/GLEntityTask.cpp"
 "main.cpp" 
-"modeler/Modeler.cpp"
-"modeler/Grid.cpp" "modeler/Grid.h"   
-"modeler/PointLight.cpp" "modeler/PointLight.h" 
-"modeler/UserInterface.cpp" "modeler/UserInterface.h" 
-"modeler/ModelerConsumers.h" "modeler/ModelerConsumers.cpp" 
+"src/modeler/Modeler.cpp"
+"src/modeler/Grid.cpp"   
+"src/modeler/PointLight.cpp" 
+"src/modeler/UserInterface.cpp" 
+"src/modeler/ModelerConsumers.cpp" 
 )
 
 set(COMMON_DEPENDENCIES
