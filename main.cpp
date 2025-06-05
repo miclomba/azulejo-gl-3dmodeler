@@ -16,8 +16,6 @@ using events::EventChannel;
 
 namespace
 {
-	const int TIME = 25;
-	const int VAL = 0;
 	const std::string X_EVENT = "x_event";
 	const std::string X_ACTION = "x_action";
 	const std::string Y_EVENT = "y_event";
@@ -95,7 +93,6 @@ void RegisterEvents(ModelerConsumers &consumers, GLBackendEmitters &emitters, Ev
 int main(int _argc, char *_argv[])
 {
 	GLBackend backend(_argc, _argv);
-	glutTimerFunc(TIME, backend.TimerCallback, VAL);
 	GLBackendEmitters &emitters = backend.GetEmitters();
 
 	auto frontend = std::make_shared<Modeler>();
