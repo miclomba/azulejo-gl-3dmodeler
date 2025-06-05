@@ -67,9 +67,9 @@ namespace _3dmodeler
          */
         GLBackendWindow &GetGameWindow();
 
+    private:
         static GLBackend *callbackInstance_; /**< Static instance for callback functions. */
 
-    private:
         GLBackendEmitters emitters_; /**< Handles input events and actions. */
 
         // GLUT Initialization

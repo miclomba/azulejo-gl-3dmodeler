@@ -24,7 +24,7 @@ namespace
 } // end namespace
 
 /*======================== CALLBACK POINTER ==================================*/
-GLBackend *GLBackend::callbackInstance_(nullptr);
+GLBackend *GLBackend::callbackInstance_ = nullptr;
 /*============================================================================*/
 
 GLBackend::~GLBackend() = default;
@@ -148,12 +148,14 @@ void GLBackend::PickWrapper(const int _x, const int _y, const std::string &_view
 
 void GLBackend::MouseWrapper(const int _button, const int _state, const int _x, const int _y)
 {
-	callbackInstance_->Mouse(_button, _state, _x, _y, callbackInstance_->GetGameWindow().GetWidth(), callbackInstance_->GetGameWindow().GetHeight());
+	GLBackendWindow &window = callbackInstance_->GetGameWindow();
+	callbackInstance_->Mouse(_button, _state, _x, _y, window.GetWidth(), window.GetHeight());
 }
 
 void GLBackend::MouseMotionWrapper(const int _x, const int _y)
 {
-	callbackInstance_->MouseMotion(_x, _y, callbackInstance_->GetGameWindow().GetWidth(), callbackInstance_->GetGameWindow().GetHeight(), callbackInstance_->GetGameWindow().GetProjOrthoMatrix());
+	GLBackendWindow &window = callbackInstance_->GetGameWindow();
+	callbackInstance_->MouseMotion(_x, _y, window.GetWidth(), window.GetHeight(), window.GetProjOrthoMatrix());
 }
 
 void GLBackend::ActionMenuWrapper(const int _index)
@@ -167,7 +169,8 @@ void GLBackend::Display()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	GetEmitters().GetDrawEmitter()->Signal()(GetGameWindow().GetWidth(), GetGameWindow().GetHeight(), GetGameWindow().GetProjOrthoMatrix(), GetGameWindow().GetProjPerspectiveMatrix());
+	GLBackendWindow &window = GetGameWindow();
+	GetEmitters().GetDrawEmitter()->Signal()(window.GetWidth(), window.GetHeight(), window.GetProjOrthoMatrix(), window.GetProjPerspectiveMatrix());
 
 	// RENDER
 	glFlush();
@@ -176,8 +179,9 @@ void GLBackend::Display()
 
 void GLBackend::Reshape(const int _w, const int _h)
 {
-	GetGameWindow().SetWidth(_w);
-	GetGameWindow().SetHeight(_h);
+	GLBackendWindow &window = GetGameWindow();
+	window.SetWidth(_w);
+	window.SetHeight(_h);
 
 	GLint i;
 	GLdouble projection[16];
@@ -195,7 +199,7 @@ void GLBackend::Reshape(const int _w, const int _h)
 
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
 	for (i = 0; i < 16; i++)
-		GetGameWindow().SetProjOrthoMatrix(projection[i], i);
+		window.SetProjOrthoMatrix(projection[i], i);
 
 	glLoadIdentity();
 	//========================= Perspective Projection =====================
@@ -203,7 +207,7 @@ void GLBackend::Reshape(const int _w, const int _h)
 
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
 	for (i = 0; i < 16; i++)
-		GetGameWindow().SetProjPerspectiveMatrix(projection[i], i);
+		window.SetProjPerspectiveMatrix(projection[i], i);
 	glLoadIdentity();
 
 	/*========================= REDISPLAY ====================================*/
@@ -223,6 +227,7 @@ void GLBackend::KeyboardUp(const unsigned char _chr, const int _x, const int _y)
 
 void GLBackend::KeyboardUpdateState()
 {
+	GLBackendEmitters &emitters = GetEmitters();
 	for (int i = 0; i < NUMBER_KEYS; i++)
 	{
 		if (keysPressed_[i])
@@ -230,37 +235,37 @@ void GLBackend::KeyboardUpdateState()
 			switch (i)
 			{
 			case 'x':
-				GetEmitters().GetXEmitter()->Signal()();
+				emitters.GetXEmitter()->Signal()();
 				break;
 			case 'y':
-				GetEmitters().GetYEmitter()->Signal()();
+				emitters.GetYEmitter()->Signal()();
 				break;
 			case 'z':
-				GetEmitters().GetZEmitter()->Signal()();
+				emitters.GetZEmitter()->Signal()();
 				break;
 			case 't':
-				GetEmitters().GetTEmitter()->Signal()();
+				emitters.GetTEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			case 'l':
-				GetEmitters().GetLEmitter()->Signal()();
+				emitters.GetLEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			case 'X':
-				GetEmitters().GetXCapEmitter()->Signal()();
+				emitters.GetXCapEmitter()->Signal()();
 				break;
 			case 'Y':
-				GetEmitters().GetYCapEmitter()->Signal()();
+				emitters.GetYCapEmitter()->Signal()();
 				break;
 			case 'Z':
-				GetEmitters().GetZCapEmitter()->Signal()();
+				emitters.GetZCapEmitter()->Signal()();
 				break;
 			case 'T':
-				GetEmitters().GetTCapEmitter()->Signal()();
+				emitters.GetTCapEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			case 'L':
-				GetEmitters().GetLCapEmitter()->Signal()();
+				emitters.GetLCapEmitter()->Signal()();
 				keysPressed_[i] = false;
 				break;
 			default:
