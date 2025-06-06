@@ -150,7 +150,6 @@ namespace _3dmodeler
         void KeyboardUpdateState();
 
         // Members
-        std::unique_ptr<GL> gl_;             /**< Graphics library wrapper. */
         std::array<bool, 256> keysPressed_;  /**< Tracks the state of pressed keys. */
         GLBackendEmitters emitters_;         /**< Handles input events and actions. */
         static GLBackend *callbackInstance_; /**< Static instance for callback functions. */

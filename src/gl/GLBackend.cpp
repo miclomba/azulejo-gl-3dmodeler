@@ -36,14 +36,15 @@ GLBackend::GLBackend(int _argc, char *_argv[]) : Entity()
 
 	std::fill(keysPressed_.begin(), keysPressed_.end(), false);
 
-	gl_ = std::make_unique<GL>(_argc, _argv);
+	// Initialize the graphics library singleton
+	GL::Get(_argc, _argv);
 }
 
 void GLBackend::Run()
 {
 	emitters_.GetRunEmitter()->Signal()();
 
-	gl_->Run();
+	GL::Get().Run();
 };
 
 GLBackendEmitters &GLBackend::GetEmitters()
@@ -73,18 +74,18 @@ void GLBackend::KeyboardUpCallback(const unsigned char _chr, const int _x, const
 
 void GLBackend::PickCallback(const int _x, const int _y, const std::string &_viewport)
 {
-	callbackInstance_->Pick(_x, _y, callbackInstance_->gl_->GetGameWindow().GetHeight(), _viewport);
+	callbackInstance_->Pick(_x, _y, GL::Get().GetGameWindow().GetHeight(), _viewport);
 }
 
 void GLBackend::MouseCallback(const int _button, const int _state, const int _x, const int _y)
 {
-	GLWindow &window = callbackInstance_->gl_->GetGameWindow();
+	GLWindow &window = GL::Get().GetGameWindow();
 	callbackInstance_->Mouse(_button, _state, _x, _y, window.GetWidth(), window.GetHeight());
 }
 
 void GLBackend::MouseMotionCallback(const int _x, const int _y)
 {
-	GLWindow &window = callbackInstance_->gl_->GetGameWindow();
+	GLWindow &window = GL::Get().GetGameWindow();
 	callbackInstance_->MouseMotion(_x, _y, window.GetWidth(), window.GetHeight(), window.GetProjOrthoMatrix());
 }
 
@@ -97,17 +98,18 @@ void GLBackend::Display()
 {
 	KeyboardUpdateState();
 
-	gl_->DisplayClear();
+	GL &gl = GL::Get();
+	gl.DisplayClear();
 
-	GLWindow &gameWindow = gl_->GetGameWindow();
+	GLWindow &gameWindow = gl.GetGameWindow();
 	emitters_.GetDrawEmitter()->Signal()(gameWindow.GetWidth(), gameWindow.GetHeight(), gameWindow.GetProjOrthoMatrix(), gameWindow.GetProjPerspectiveMatrix());
 
-	gl_->DisplayFlush();
+	gl.DisplayFlush();
 }
 
 void GLBackend::Reshape(const int _w, const int _h)
 {
-	gl_->Reshape(_w, _h);
+	GL::Get().Reshape(_w, _h);
 }
 
 void GLBackend::Keyboard(const unsigned char _chr, const int _x, const int _y)
