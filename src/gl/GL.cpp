@@ -117,7 +117,6 @@ void GL::Reshape(const int _w, const int _h)
 	gameWindow_.SetWidth(_w);
 	gameWindow_.SetHeight(_h);
 
-	GLint i;
 	GLdouble projection[16];
 
 	/*========================= ORTHO PROJECTION =============================*/
@@ -132,7 +131,7 @@ void GL::Reshape(const int _w, const int _h)
 				5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)), -5.0, 5.0, 10.0, -200.0);
 
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	for (i = 0; i < 16; i++)
+	for (GLint i = 0; i < 16; i++)
 		gameWindow_.SetProjOrthoMatrix(projection[i], i);
 
 	glLoadIdentity();
@@ -140,7 +139,7 @@ void GL::Reshape(const int _w, const int _h)
 	gluPerspective(40.0, (GLdouble)_w / (GLdouble)_h, 0.5, 200.0);
 
 	glGetDoublev(GL_PROJECTION_MATRIX, projection);
-	for (i = 0; i < 16; i++)
+	for (GLint i = 0; i < 16; i++)
 		gameWindow_.SetProjPerspectiveMatrix(projection[i], i);
 	glLoadIdentity();
 

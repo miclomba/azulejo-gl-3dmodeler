@@ -13,6 +13,7 @@
 #include "configuration/config.h"
 #include "gl/GL.h"
 #include "gl/GLBackendEmitters.h"
+#include "gl/GLBackendWindow.h"
 
 namespace _3dmodeler
 {
