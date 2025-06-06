@@ -1,10 +1,10 @@
 /**
- * @file GLWindow.h
- * @brief Declaration of the GLWindow class for managing window properties in the 3D modeler application.
+ * @file GLProjectionInfo.h
+ * @brief Declaration of the GLProjectionInfo class for managing window properties in the 3D modeler application.
  */
 
-#ifndef _3dmodeler_glgame_window_h
-#define _3dmodeler_glgame_window_h
+#ifndef _3dmodeler_gl_projection_info_h
+#define _3dmodeler_gl_projection_info_h
 
 #include <array>
 #include <memory>
@@ -16,28 +16,28 @@ namespace _3dmodeler
 {
 
     /**
-     * @class GLWindow
+     * @class GLProjectionInfo
      * @brief A class for managing the properties of the game window in the 3D modeler application.
      *
      * This class provides methods for retrieving and modifying window dimensions and projection matrices.
      */
-    class _3DMODELER_DLL_EXPORT GLWindow : public entity::Entity
+    class _3DMODELER_DLL_EXPORT GLProjectionInfo : public entity::Entity
     {
     public:
         /**
-         * @brief Default constructor for GLWindow.
+         * @brief Default constructor for GLProjectionInfo.
          */
-        GLWindow();
+        GLProjectionInfo();
 
         /**
-         * @brief Destructor for GLWindow.
+         * @brief Destructor for GLProjectionInfo.
          */
-        virtual ~GLWindow();
+        virtual ~GLProjectionInfo();
 
-        GLWindow(const GLWindow &) = delete;
-        GLWindow(GLWindow &&) = delete;
-        GLWindow &operator=(const GLWindow &) = delete;
-        GLWindow &operator=(GLWindow &&) = delete;
+        GLProjectionInfo(const GLProjectionInfo &) = delete;
+        GLProjectionInfo(GLProjectionInfo &&) = delete;
+        GLProjectionInfo &operator=(const GLProjectionInfo &) = delete;
+        GLProjectionInfo &operator=(GLProjectionInfo &&) = delete;
 
         /**
          * @brief Get the width of the window.
@@ -110,4 +110,4 @@ namespace _3dmodeler
 
 } // end _3dmodeler
 
-#endif // _3dmodeler_glgame_window_h
+#endif // _3dmodeler_gl_projection_info_h

@@ -6,14 +6,14 @@
 #include "Entities/Entity.h"
 #include "gl/GL.h"
 #include "gl/GLBackendEmitters.h"
-#include "gl/GLWindow.h"
+#include "gl/GLProjectionInfo.h"
 
 using entity::Entity;
 
 using _3dmodeler::GL;
 using _3dmodeler::GLBackend;
 using _3dmodeler::GLBackendEmitters;
-using _3dmodeler::GLWindow;
+using _3dmodeler::GLProjectionInfo;
 
 namespace
 {
@@ -78,19 +78,19 @@ void GLBackend::KeyboardUpCallback(const unsigned char _chr, const int _x, const
 
 void GLBackend::PickCallback(const int _x, const int _y, const std::string &_viewport)
 {
-	callbackInstance_->Pick(_x, _y, GL::Get().GetGameWindow().GetHeight(), _viewport);
+	callbackInstance_->Pick(_x, _y, GL::Get().GetGameProjectionInfo().GetHeight(), _viewport);
 }
 
 void GLBackend::MouseCallback(const int _button, const int _state, const int _x, const int _y)
 {
-	GLWindow &window = GL::Get().GetGameWindow();
-	callbackInstance_->Mouse(_button, _state, _x, _y, window.GetWidth(), window.GetHeight());
+	GLProjectionInfo &gameProjInfo = GL::Get().GetGameProjectionInfo();
+	callbackInstance_->Mouse(_button, _state, _x, _y, gameProjInfo.GetWidth(), gameProjInfo.GetHeight());
 }
 
 void GLBackend::MouseMotionCallback(const int _x, const int _y)
 {
-	GLWindow &window = GL::Get().GetGameWindow();
-	callbackInstance_->MouseMotion(_x, _y, window.GetWidth(), window.GetHeight(), window.GetProjOrthoMatrix());
+	GLProjectionInfo &gameProjInfo = GL::Get().GetGameProjectionInfo();
+	callbackInstance_->MouseMotion(_x, _y, gameProjInfo.GetWidth(), gameProjInfo.GetHeight(), gameProjInfo.GetProjOrthoMatrix());
 }
 
 void GLBackend::ActionMenuCallback(const int _index)
@@ -105,8 +105,8 @@ void GLBackend::Display()
 	GL &gl = GL::Get();
 	gl.DisplayClear();
 
-	GLWindow &gameWindow = gl.GetGameWindow();
-	emitters_.GetDrawEmitter()->Signal()(gameWindow.GetWidth(), gameWindow.GetHeight(), gameWindow.GetProjOrthoMatrix(), gameWindow.GetProjPerspectiveMatrix());
+	GLProjectionInfo &gameProjInfo = gl.GetGameProjectionInfo();
+	emitters_.GetDrawEmitter()->Signal()(gameProjInfo.GetWidth(), gameProjInfo.GetHeight(), gameProjInfo.GetProjOrthoMatrix(), gameProjInfo.GetProjPerspectiveMatrix());
 
 	gl.DisplayFlush();
 }
