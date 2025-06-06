@@ -21,18 +21,22 @@ namespace
 	const std::string _3DMODELER_TITLE = "3DModeler";
 } // end namespace
 
-/*======================== CALLBACK POINTER ==================================*/
-GLBackend *GLBackend::callbackInstance_ = nullptr;
-/*============================================================================*/
+std::unique_ptr<GLBackend> GLBackend::callbackInstance_ = nullptr;
+
+GLBackend &GLBackend::Get(int _argc, char *_argv[])
+{
+	if (!GLBackend::callbackInstance_)
+	{
+		GLBackend::callbackInstance_.reset(new GLBackend(_argc, _argv));
+	}
+	return *GLBackend::callbackInstance_;
+}
 
 GLBackend::~GLBackend() = default;
 
 GLBackend::GLBackend(int _argc, char *_argv[]) : Entity()
 {
 	SetKey(_3DMODELER_TITLE);
-
-	if (!callbackInstance_)
-		callbackInstance_ = this;
 
 	std::fill(keysPressed_.begin(), keysPressed_.end(), false);
 

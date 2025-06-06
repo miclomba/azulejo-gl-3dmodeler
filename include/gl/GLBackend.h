@@ -28,11 +28,11 @@ namespace _3dmodeler
     {
     public:
         /**
-         * @brief Constructor for GLBackend.
+         * @brief Singleton Get function.
          * @param _argc Number of command-line arguments.
          * @param _argv Command-line argument values.
          */
-        GLBackend(int _argc, char *_argv[]);
+        static GLBackend &Get(int _argc = 0, char *_argv[] = nullptr);
 
         /**
          * @brief Destructor for GLBackend.
@@ -97,6 +97,13 @@ namespace _3dmodeler
 
     private:
         /**
+         * @brief Constructor for GLBackend.
+         * @param _argc Number of command-line arguments.
+         * @param _argv Command-line argument values.
+         */
+        GLBackend(int _argc, char *_argv[]);
+
+        /**
          * @brief GLUT display function.
          */
         void Display();
@@ -150,9 +157,10 @@ namespace _3dmodeler
         void KeyboardUpdateState();
 
         // Members
-        std::array<bool, 256> keysPressed_;  /**< Tracks the state of pressed keys. */
-        GLBackendEmitters emitters_;         /**< Handles input events and actions. */
-        static GLBackend *callbackInstance_; /**< Static instance for callback functions. */
+        std::array<bool, 256> keysPressed_; /**< Tracks the state of pressed keys. */
+        GLBackendEmitters emitters_;        /**< Handles input events and actions. */
+        /** @brief Pointer to the callback instance for static functions. */
+        static std::unique_ptr<GLBackend> callbackInstance_;
     };
 
 } // end _3dmodeler
