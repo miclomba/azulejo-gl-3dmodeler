@@ -8,6 +8,7 @@ using entity::Entity;
 namespace
 {
     const std::string UI_KEY = "UI";
+    const std::string MESSAGE = "Press x,X,y,Y,z,Z to rotate; t,T to texture; l to light.";
 }
 
 std::string UserInterface::UserInterfaceKey()
@@ -104,7 +105,6 @@ void UserInterface::DrawLabelAxis()
     //=============== Draw labels for the "perspective" viewport ===============
     glColor3f(0.0f, 1.0f, 0.0f);
     glRasterPos2i(13 + w_ / 2, 15 + h_ / 2);
-    char *c = (char *)"Press x,X,y,Y,z,Z to rotate; t,T to texture; l to light.";
-    for (c = c; *c; c++)
-        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+    for (size_t i = 0; i < MESSAGE.size(); ++i)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, MESSAGE[i]);
 }

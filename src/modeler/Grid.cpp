@@ -85,11 +85,9 @@ void Grid::DrawControlPoints(GLenum _mode)
     glPointSize(5.0);
     glColor3f(1.0f, 1.0f, 0.0f);
 
-    GLint i, j;
-
-    for (i = 0; i < 4; i++)
+    for (GLint i = 0; i < 4; i++)
     {
-        for (j = 0; j < 4; j++)
+        for (GLint j = 0; j < 4; j++)
         {
             if (_mode == GL_SELECT)
             {
@@ -104,59 +102,22 @@ void Grid::DrawControlPoints(GLenum _mode)
 
 void Grid::InitGridPoints()
 {
-
-    GLfloat controlPoints[4][4][3] = {{{-2.0, -2.0, 0.0},
-                                       {-0.5, -2.0, 0.0},
-                                       {0.5, -2.0, 0.0},
-                                       {2.0, -2.0, -2.0}},
-
-                                      {{-2.0, -0.5, 0.0},
-                                       {-0.5, -0.5, 0.0},
-                                       {0.5, -0.5, 0.0},
-                                       {2.0, -0.5, 0.0}},
-
-                                      {{-2.0, 0.5, 0.0},
-                                       {-0.5, 0.5, 0.0},
-                                       {0.5, 0.5, 0.0},
-                                       {2.0, 0.5, 0.0}},
-
-                                      {{-2.0, 2.0, 0.0},
-                                       {-0.5, 2.0, 0.0},
-                                       {0.5, 2.0, 0.0},
-                                       {2.0, 2.0, 0.0}}};
-
-    GLfloat texturePoints[2][2][2] = {{{0.0f, 0.0f}, {0.0f, 1.0f}},
-                                      {{1.0f, 0.0f}, {1.0f, 1.0f}}};
-
-    GLint i, j, k;
-    for (i = 0; i < 4; i++)
-    {
-        for (j = 0; j < 4; j++)
-        {
-            for (k = 0; k < 3; k++)
-                controlPoints_[i][j][k] = controlPoints[i][j][k];
-        }
-    }
-
-    for (i = 0; i < 2; i++)
-    {
-        for (j = 0; j < 2; j++)
-        {
-            for (k = 0; k < 2; k++)
-                texturePoints_[i][j][k] = texturePoints[i][j][k];
-        }
-    }
+    controlPoints_ = {{{{{-2.0, -2.0, 0.0}, {-0.5, -2.0, 0.0}, {0.5, -2.0, 0.0}, {2.0, -2.0, -2.0}}},
+                       {{{-2.0, -0.5, 0.0}, {-0.5, -0.5, 0.0}, {0.5, -0.5, 0.0}, {2.0, -0.5, 0.0}}},
+                       {{{-2.0, 0.5, 0.0}, {-0.5, 0.5, 0.0}, {0.5, 0.5, 0.0}, {2.0, 0.5, 0.0}}},
+                       {{{-2.0, 2.0, 0.0}, {-0.5, 2.0, 0.0}, {0.5, 2.0, 0.0}, {2.0, 2.0, 0.0}}}}};
+    texturePoints_ = {{{{{0.0f, 0.0f}, {0.0f, 1.0f}}},
+                       {{{1.0f, 0.0f}, {1.0f, 1.0f}}}}};
 }
 
 void Grid::MakeTexImage1()
 {
-    GLint i, j;
     GLfloat ti, tj;
 
-    for (i = 0; i < IMG_WIDTH; i++)
+    for (GLint i = 0; i < IMG_WIDTH; i++)
     {
         ti = 2.0 * M_PI * i / IMG_WIDTH;
-        for (j = 0; j < IMG_HEIGHT; j++)
+        for (GLint j = 0; j < IMG_HEIGHT; j++)
         {
             tj = 2.0 * M_PI * j / IMG_WIDTH;
             image_[3 * (IMG_HEIGHT * i + j)] = (GLubyte)(127 * (1.0 + cos(ti)));
@@ -168,13 +129,12 @@ void Grid::MakeTexImage1()
 
 void Grid::MakeTexImage2()
 {
-    GLint i, j;
     GLfloat ti, tj;
 
-    for (i = 0; i < IMG_WIDTH; i++)
+    for (GLint i = 0; i < IMG_WIDTH; i++)
     {
         ti = 2.0 * M_PI * i / IMG_WIDTH;
-        for (j = 0; j < IMG_HEIGHT; j++)
+        for (GLint j = 0; j < IMG_HEIGHT; j++)
         {
             tj = 2.0 * M_PI * j / IMG_WIDTH;
             image_[3 * (IMG_HEIGHT * i + j)] = (GLubyte)(127 * (1.0 + sin(ti)));
@@ -204,7 +164,6 @@ Grid::Grid() : Entity()
     InitGridPoints();
 
     //===================== Initialize member variables ========================
-
     curTexture_ = 1;
 
     gridSubdivs_ = 16.0f;
@@ -219,26 +178,13 @@ Grid::Grid() : Entity()
     vRangeHigh_ = 1;
     vStride_ = uStride_ * 4;
 
-    GLfloat gold_Ka[4] = {0.24725f, 0.1995f, 0.0745f, 1.0f};
-    GLfloat gold_Kd[4] = {0.75164f, 0.60648f, 0.22648f, 1.0f};
-    GLfloat gold_Ks[4] = {0.628281f, 0.555802f, 0.366065f, 1.0f};
-    GLfloat gold_Ke = 41.2f;
-    GLfloat silver_Ka[4] = {0.05f, 0.05f, 0.05f, 1.0f};
-    GLfloat silver_Kd[4] = {0.4f, 0.4f, 0.4f, 1.0f};
-    GLfloat silver_Ks[4] = {0.7f, 0.7f, 0.7f, 1.0f};
-    GLfloat silver_Ke = 12.0f;
+    gold_Ka_ = {0.24725f, 0.1995f, 0.0745f, 1.0f};
+    gold_Kd_ = {0.75164f, 0.60648f, 0.22648f, 1.0f};
+    gold_Ks_ = {0.628281f, 0.555802f, 0.366065f, 1.0f};
+    silver_Ka_ = {0.05f, 0.05f, 0.05f, 1.0f};
+    silver_Kd_ = {0.4f, 0.4f, 0.4f, 1.0f};
+    silver_Ks_ = {0.7f, 0.7f, 0.7f, 1.0f};
 
-    GLint i;
-    for (i = 0; i < 4; i++)
-    {
-        gold_Ka_[i] = gold_Ka[i];
-        gold_Kd_[i] = gold_Kd[i];
-        gold_Ks_[i] = gold_Ks[i];
-        silver_Ka_[i] = silver_Ka[i];
-        silver_Kd_[i] = silver_Kd[i];
-        silver_Ks_[i] = silver_Ks[i];
-    }
-
-    gold_Ke_ = gold_Ke;
-    silver_Ke_ = silver_Ke;
+    gold_Ke_ = 41.2f;
+    silver_Ke_ = 12.0f;
 }

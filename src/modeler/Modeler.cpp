@@ -26,6 +26,11 @@ namespace
 {
 	const std::string _3DMODELER_KEY = "3DModeler";
 	const int NUMBER_KEYS = 256;
+	const std::string RESET_MESSAGE = "Press X to RESET";
+	GLdouble PROJECTION[16];
+	GLdouble MODELVIEW[16];
+	GLint VIEWPORT[4];
+	GLdouble MOUSEX, MOUSEY, MOUSEZ;
 } // end namespace
 
 Modeler::Modeler() : GLEntity(),
@@ -107,13 +112,9 @@ Grid *Modeler::GetGrid()
 void Modeler::DrawGameInfo()
 {
 	glColor3f(0.0f, 1.0f, 1.0f);
-
-	GLint i;
 	glRasterPos3f(7.5f, -9.0f, 0.0f);
-	char reset[16] = {'P', 'r', 'e', 's', 's', ' ', 'X', ' ', 't', 'o', ' ',
-					  'R', 'E', 'S', 'E', 'T'};
-	for (i = 0; i < 16; i++)
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, reset[i]);
+	for (size_t i = 0; i < RESET_MESSAGE.size(); ++i)
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, RESET_MESSAGE[i]);
 }
 
 void Modeler::Draw(GLint w_, GLint h_, const std::array<GLfloat, 16> &projOrtho_, const std::array<GLfloat, 16> &projPerspective_)
@@ -239,10 +240,9 @@ void Modeler::DrawBottomLeftViewport(GLint w, GLint h, const std::array<GLfloat,
 
 void Modeler::Pick(const int _x, const int _y, const int _h, const std::string &_viewport)
 {
-	GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
+	glGetIntegerv(GL_VIEWPORT, VIEWPORT);
 
-	GLuint select_buff[NUMBER_KEYS];
+	static GLuint select_buff[NUMBER_KEYS];
 	glSelectBuffer(NUMBER_KEYS, select_buff);
 
 	renderMode_ = GL_SELECT;
@@ -251,16 +251,16 @@ void Modeler::Pick(const int _x, const int _y, const int _h, const std::string &
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	gluPickMatrix((GLdouble)_x, (GLdouble)(_h - _y), 8, 8, viewport);
+	gluPickMatrix((GLdouble)_x, (GLdouble)(_h - _y), 8, 8, VIEWPORT);
 
-	if ((viewport[2]) <= (viewport[3]))
+	if ((VIEWPORT[2]) <= (VIEWPORT[3]))
 		glOrtho(-5.0, 5.0,
-				-5.0 * ((GLfloat)(viewport[3]) / (GLfloat)(viewport[2])),
-				5.0 * ((GLfloat)(viewport[3]) / (GLfloat)(viewport[2])),
+				-5.0 * ((GLfloat)(VIEWPORT[3]) / (GLfloat)(VIEWPORT[2])),
+				5.0 * ((GLfloat)(VIEWPORT[3]) / (GLfloat)(VIEWPORT[2])),
 				5.0, -200.0);
 	else
-		glOrtho(-5.0 * ((GLfloat)(viewport[2]) / (GLfloat)(viewport[3])),
-				5.0 * ((GLfloat)(viewport[2]) / (GLfloat)(viewport[3])),
+		glOrtho(-5.0 * ((GLfloat)(VIEWPORT[2]) / (GLfloat)(VIEWPORT[3])),
+				5.0 * ((GLfloat)(VIEWPORT[2]) / (GLfloat)(VIEWPORT[3])),
 				-5.0, 5.0, 5.0, -200.0);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -301,12 +301,12 @@ void Modeler::Pick(const int _x, const int _y, const int _h, const std::string &
 
 void Modeler::SetDragginStateDuringPicking()
 {
-	GLint i, j;
 	i_ = -1;
 	j_ = -1;
 	k_ = -1;
-	for (i = 0; i < 4; i++)
+	for (GLint i = 0; i < 4; i++)
 	{
+		GLint j;
 		for (j = 0; j < 4; j++)
 		{
 			if ((GLfloat)(i * 4 + j + 1) == pickIdx_)
@@ -322,7 +322,7 @@ void Modeler::SetDragginStateDuringPicking()
 		if (i * 4 + j + 1 == pickIdx_)
 			break;
 	}
-	for (i = 1; i <= lightIdxCount_; i++)
+	for (GLint i = 1; i <= lightIdxCount_; i++)
 	{
 		if (pickIdx_ == ctrlPntIdxCount_ + i)
 		{
@@ -343,12 +343,11 @@ void Modeler::ProcessPicks(const GLint _hits, GLuint *_slct_bff)
 
 	pickIdx_ = 0;
 
-	GLint i, j, k;
-	for (i = 0; i < _hits; i++)
+	for (GLint i = 0; i < _hits; i++)
 	{
-		for (j = 0; j < (GLint)names; j++)
+		for (GLint j = 0; j < (GLint)names; j++)
 		{
-			for (k = 1; k <= ctrlPntIdxCount_ + lightIdxCount_; k++)
+			for (GLint k = 1; k <= ctrlPntIdxCount_ + lightIdxCount_; k++)
 			{
 				if (*select_buff == (GLuint)k)
 				{
@@ -513,42 +512,37 @@ void Modeler::MouseMotionQuadrantTwo(const int _x, const int _y, const int _w, c
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(_projOrtho.data());
-	GLdouble projection[16];
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glGetDoublev(GL_PROJECTION_MATRIX, PROJECTION);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(-1, sideY_, sideZ_, 0, sideY_, sideZ_, 0, 1, 0);
-	GLdouble modelView[16];
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
+	glGetDoublev(GL_MODELVIEW_MATRIX, MODELVIEW);
 	glLoadIdentity();
 
-	GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-
-	GLdouble mouseX, mouseY, mouseZ;
+	glGetIntegerv(GL_VIEWPORT, VIEWPORT);
 
 	GLint success = gluUnProject(_x, _y, 0,
-								 modelView, projection, viewport,
-								 &mouseX, &mouseY, &mouseZ);
+								 MODELVIEW, PROJECTION, VIEWPORT,
+								 &MOUSEX, &MOUSEY, &MOUSEZ);
 
 	if (success == 1)
 	{
-		mouseY += 10;
-		mouseY *= -1;
-		mouseY += 2 * sideY_;
+		MOUSEY += 10;
+		MOUSEY *= -1;
+		MOUSEY += 2 * sideY_;
 	}
 
 	if (k_ == -1)
 	{
-		GetGrid()->SetControlPoint((GLfloat)mouseY, i_, j_, 1);
-		GetGrid()->SetControlPoint((GLfloat)mouseZ, i_, j_, 2);
+		GetGrid()->SetControlPoint((GLfloat)MOUSEY, i_, j_, 1);
+		GetGrid()->SetControlPoint((GLfloat)MOUSEZ, i_, j_, 2);
 	}
 	else
 	{
-		GetPointLight()->GetPosition()[k_][1] = (GLfloat)mouseY;
-		GetPointLight()->GetPosition()[k_][2] = (GLfloat)mouseZ;
+		GetPointLight()->GetPosition()[k_][1] = (GLfloat)MOUSEY;
+		GetPointLight()->GetPosition()[k_][2] = (GLfloat)MOUSEZ;
 		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
 		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
 	}
@@ -559,41 +553,36 @@ void Modeler::MouseMotionQuadrantThree(const int _x, const int _y, const int _w,
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(_projOrtho.data());
-	GLdouble projection[16];
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glGetDoublev(GL_PROJECTION_MATRIX, PROJECTION);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(topX_, topY_, 1, topX_, topY_, 0, 0, 1, 0);
-	GLdouble modelView[16];
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
+	glGetDoublev(GL_MODELVIEW_MATRIX, MODELVIEW);
 	glLoadIdentity();
 
-	GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-
-	GLdouble mouseX, mouseY, mouseZ;
+	glGetIntegerv(GL_VIEWPORT, VIEWPORT);
 
 	GLint success = gluUnProject(_x, _y, 0,
-								 modelView, projection, viewport,
-								 &mouseX, &mouseY, &mouseZ);
+								 MODELVIEW, PROJECTION, VIEWPORT,
+								 &MOUSEX, &MOUSEY, &MOUSEZ);
 
 	if (success == 1)
 	{
-		mouseY = 10 - mouseY;
-		mouseY += 2 * topY_;
+		MOUSEY = 10 - MOUSEY;
+		MOUSEY += 2 * topY_;
 	}
 
 	if (k_ == -1)
 	{
-		GetGrid()->SetControlPoint((GLfloat)mouseX, i_, j_, 0);
-		GetGrid()->SetControlPoint((GLfloat)mouseY, i_, j_, 1);
+		GetGrid()->SetControlPoint((GLfloat)MOUSEX, i_, j_, 0);
+		GetGrid()->SetControlPoint((GLfloat)MOUSEY, i_, j_, 1);
 	}
 	else
 	{
-		GetPointLight()->GetPosition()[k_][0] = (GLfloat)mouseX;
-		GetPointLight()->GetPosition()[k_][1] = (GLfloat)mouseY;
+		GetPointLight()->GetPosition()[k_][0] = (GLfloat)MOUSEX;
+		GetPointLight()->GetPosition()[k_][1] = (GLfloat)MOUSEY;
 		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
 		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
 	}
@@ -604,42 +593,37 @@ void Modeler::MouseMotionQuadrantFour(const int _x, const int _y, const int _w, 
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(_projOrtho.data());
-	GLdouble projection[16];
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glGetDoublev(GL_PROJECTION_MATRIX, PROJECTION);
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(frontX_, -1, frontZ_, frontX_, 0, frontZ_, 0, 0, 1);
-	GLdouble modelView[16];
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelView);
+	glGetDoublev(GL_MODELVIEW_MATRIX, MODELVIEW);
 	glLoadIdentity();
 
-	GLint viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-
-	GLdouble mouseX, mouseY, mouseZ;
+	glGetIntegerv(GL_VIEWPORT, VIEWPORT);
 
 	GLint success = gluUnProject(_x, _y, 0,
-								 modelView, projection, viewport,
-								 &mouseX, &mouseY, &mouseZ);
+								 MODELVIEW, PROJECTION, VIEWPORT,
+								 &MOUSEX, &MOUSEY, &MOUSEZ);
 
 	if (success == 1)
 	{
-		mouseZ -= 10;
-		mouseZ *= -1;
-		mouseZ += 2 * frontZ_;
+		MOUSEZ -= 10;
+		MOUSEZ *= -1;
+		MOUSEZ += 2 * frontZ_;
 	}
 
 	if (k_ == -1)
 	{
-		GetGrid()->SetControlPoint((GLfloat)mouseX, i_, j_, 0);
-		GetGrid()->SetControlPoint((GLfloat)mouseZ, i_, j_, 2);
+		GetGrid()->SetControlPoint((GLfloat)MOUSEX, i_, j_, 0);
+		GetGrid()->SetControlPoint((GLfloat)MOUSEZ, i_, j_, 2);
 	}
 	else
 	{
-		GetPointLight()->GetPosition()[k_][0] = (GLfloat)mouseX;
-		GetPointLight()->GetPosition()[k_][2] = (GLfloat)mouseZ;
+		GetPointLight()->GetPosition()[k_][0] = (GLfloat)MOUSEX;
+		GetPointLight()->GetPosition()[k_][2] = (GLfloat)MOUSEZ;
 		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
 		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
 	}

@@ -43,15 +43,8 @@ PointLight::PointLight() : Entity()
 {
     SetKey(POINT_LIGHT_KEY);
 
-    position_[0][0] = -3;
-    position_[0][1] = 3;
-    position_[0][2] = 1;
-    position_[0][3] = 1;
-
-    position_[1][0] = 3;
-    position_[1][1] = -3;
-    position_[1][2] = 1;
-    position_[1][3] = 1;
+    position_ = {{{{-3, 3, 1, 1}},
+                  {{3, -3, 1, 1}}}};
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glLightfv(GL_LIGHT0, GL_POSITION, position_[0].data());
