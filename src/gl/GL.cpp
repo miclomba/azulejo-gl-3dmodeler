@@ -67,12 +67,12 @@ GLWindow &GL::GetGameWindow()
 
 void GL::RegisterCallbacks() const
 {
-	glutDisplayFunc(GLBackend::DisplayWrapper);
-	glutReshapeFunc(GLBackend::ReshapeWrapper);
-	glutKeyboardFunc(GLBackend::KeyboardWrapper);
-	glutKeyboardUpFunc(GLBackend::KeyboardUpWrapper);
-	glutMouseFunc(GLBackend::MouseWrapper);
-	glutMotionFunc(GLBackend::MouseMotionWrapper);
+	glutDisplayFunc(GLBackend::DisplayCallback);
+	glutReshapeFunc(GLBackend::ReshapeCallback);
+	glutKeyboardFunc(GLBackend::KeyboardCallback);
+	glutKeyboardUpFunc(GLBackend::KeyboardUpCallback);
+	glutMouseFunc(GLBackend::MouseCallback);
+	glutMotionFunc(GLBackend::MouseMotionCallback);
 }
 
 void GL::InitGlut(int _argc, char *_argv[]) const
@@ -87,7 +87,7 @@ void GL::InitGlut(int _argc, char *_argv[]) const
 
 void GL::InitActionMenu() const
 {
-	glutCreateMenu(GLBackend::ActionMenuWrapper);
+	glutCreateMenu(GLBackend::ActionMenuCallback);
 	glutAddMenuEntry("Toggle Pick/Pan", 0);
 	glutAddMenuEntry("Quit", 1);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);

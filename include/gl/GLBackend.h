@@ -55,14 +55,45 @@ namespace _3dmodeler
          */
         GLBackendEmitters &GetEmitters();
 
-        static void DisplayWrapper();
-        static void ReshapeWrapper(const int _w, const int _h);
-        static void KeyboardWrapper(unsigned char _chr, int _x, int _y);
-        static void KeyboardUpWrapper(const unsigned char _chr, const int _x, const int _y);
-        static void ActionMenuWrapper(const int _index);
-        static void PickWrapper(const int _x, const int _y, const std::string &_viewport);
-        static void MouseWrapper(const int _button, const int _state, const int _x, const int _y);
-        static void MouseMotionWrapper(const int _x, const int _y);
+        /**
+         * @brief Display callback for the underlying GL library.
+         */
+        static void DisplayCallback();
+
+        /**
+         * @brief Reshape callback for the underlying GL library.
+         */
+        static void ReshapeCallback(const int _w, const int _h);
+
+        /**
+         * @brief Keyboard callback for the underlying GL library.
+         */
+        static void KeyboardCallback(unsigned char _chr, int _x, int _y);
+
+        /**
+         * @brief KeyboardUp callback for the underlying GL library.
+         */
+        static void KeyboardUpCallback(const unsigned char _chr, const int _x, const int _y);
+
+        /**
+         * @brief Action Menu callback for the underlying GL library.
+         */
+        static void ActionMenuCallback(const int _index);
+
+        /**
+         * @brief Pick callback for the underlying GL library.
+         */
+        static void PickCallback(const int _x, const int _y, const std::string &_viewport);
+
+        /**
+         * @brief Mouse callback for the underlying GL library.
+         */
+        static void MouseCallback(const int _button, const int _state, const int _x, const int _y);
+
+        /**
+         * @brief Mouse Motion callback for the underlying GL library.
+         */
+        static void MouseMotionCallback(const int _x, const int _y);
 
     private:
         /**
