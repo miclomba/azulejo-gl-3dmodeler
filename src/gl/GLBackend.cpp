@@ -6,14 +6,14 @@
 #include "Entities/Entity.h"
 #include "gl/GL.h"
 #include "gl/GLBackendEmitters.h"
-#include "gl/GLBackendWindow.h"
+#include "gl/GLWindow.h"
 
 using entity::Entity;
 
 using _3dmodeler::GL;
 using _3dmodeler::GLBackend;
 using _3dmodeler::GLBackendEmitters;
-using _3dmodeler::GLBackendWindow;
+using _3dmodeler::GLWindow;
 
 namespace
 {
@@ -78,13 +78,13 @@ void GLBackend::PickWrapper(const int _x, const int _y, const std::string &_view
 
 void GLBackend::MouseWrapper(const int _button, const int _state, const int _x, const int _y)
 {
-	GLBackendWindow &window = callbackInstance_->gl_->GetGameWindow();
+	GLWindow &window = callbackInstance_->gl_->GetGameWindow();
 	callbackInstance_->Mouse(_button, _state, _x, _y, window.GetWidth(), window.GetHeight());
 }
 
 void GLBackend::MouseMotionWrapper(const int _x, const int _y)
 {
-	GLBackendWindow &window = callbackInstance_->gl_->GetGameWindow();
+	GLWindow &window = callbackInstance_->gl_->GetGameWindow();
 	callbackInstance_->MouseMotion(_x, _y, window.GetWidth(), window.GetHeight(), window.GetProjOrthoMatrix());
 }
 
@@ -99,7 +99,7 @@ void GLBackend::Display()
 
 	gl_->DisplayClear();
 
-	GLBackendWindow &gameWindow = gl_->GetGameWindow();
+	GLWindow &gameWindow = gl_->GetGameWindow();
 	emitters_.GetDrawEmitter()->Signal()(gameWindow.GetWidth(), gameWindow.GetHeight(), gameWindow.GetProjOrthoMatrix(), gameWindow.GetProjPerspectiveMatrix());
 
 	gl_->DisplayFlush();

@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "configuration/config.h"
-#include "gl/GLBackendWindow.h"
+#include "gl/GLWindow.h"
 
 namespace _3dmodeler
 {
@@ -65,9 +65,9 @@ namespace _3dmodeler
 
         /**
          * @brief Get the game window instance.
-         * @return Reference to the GLBackendWindow instance.
+         * @return Reference to the GLWindow instance.
          */
-        GLBackendWindow &GetGameWindow();
+        GLWindow &GetGameWindow();
 
     private:
         /**
@@ -106,7 +106,7 @@ namespace _3dmodeler
         void RegisterCallbacks() const;
 
         // Members
-        GLBackendWindow gameWindow_; /**< Handles window properties. */
+        GLWindow gameWindow_; /**< Handles window properties. */
     };
 
 } // end _3dmodeler

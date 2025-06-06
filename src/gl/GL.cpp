@@ -1,13 +1,13 @@
 #include "gl/GL.h"
 #include "gl/GLBackend.h"
-#include "gl/GLBackendWindow.h"
+#include "gl/GLWindow.h"
 
 #include <algorithm>
 #include <string>
 
 using _3dmodeler::GL;
 using _3dmodeler::GLBackend;
-using _3dmodeler::GLBackendWindow;
+using _3dmodeler::GLWindow;
 
 namespace
 {
@@ -60,7 +60,7 @@ void GL::DisplayFlush()
 	glutSwapBuffers();
 }
 
-GLBackendWindow &GL::GetGameWindow()
+GLWindow &GL::GetGameWindow()
 {
 	return gameWindow_;
 }
