@@ -68,7 +68,6 @@ sudo apt install -y \
 
 - Clang (on macOS)
 - GCC (on Linux)
-- Visual Studio (on Windows)
 
 1. Run `CMake: Build`
 
