@@ -51,11 +51,6 @@ GLBackendEmitters &GLBackend::GetEmitters()
 	return emitters_;
 }
 
-GLBackendWindow &GLBackend::GetGameWindow()
-{
-	return gl_->GetGameWindow();
-}
-
 void GLBackend::DisplayWrapper()
 {
 	callbackInstance_->Display();
@@ -78,18 +73,18 @@ void GLBackend::KeyboardUpWrapper(const unsigned char _chr, const int _x, const 
 
 void GLBackend::PickWrapper(const int _x, const int _y, const std::string &_viewport)
 {
-	callbackInstance_->Pick(_x, _y, callbackInstance_->GetGameWindow().GetHeight(), _viewport);
+	callbackInstance_->Pick(_x, _y, callbackInstance_->gl_->GetGameWindow().GetHeight(), _viewport);
 }
 
 void GLBackend::MouseWrapper(const int _button, const int _state, const int _x, const int _y)
 {
-	GLBackendWindow &window = callbackInstance_->GetGameWindow();
+	GLBackendWindow &window = callbackInstance_->gl_->GetGameWindow();
 	callbackInstance_->Mouse(_button, _state, _x, _y, window.GetWidth(), window.GetHeight());
 }
 
 void GLBackend::MouseMotionWrapper(const int _x, const int _y)
 {
-	GLBackendWindow &window = callbackInstance_->GetGameWindow();
+	GLBackendWindow &window = callbackInstance_->gl_->GetGameWindow();
 	callbackInstance_->MouseMotion(_x, _y, window.GetWidth(), window.GetHeight(), window.GetProjOrthoMatrix());
 }
 

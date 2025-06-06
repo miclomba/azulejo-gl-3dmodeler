@@ -13,7 +13,6 @@
 #include "configuration/config.h"
 #include "gl/GL.h"
 #include "gl/GLBackendEmitters.h"
-#include "gl/GLBackendWindow.h"
 
 namespace _3dmodeler
 {
@@ -66,16 +65,6 @@ namespace _3dmodeler
         static void MouseMotionWrapper(const int _x, const int _y);
 
     private:
-        /**
-         * @brief Get the game window instance.
-         * @return Reference to the GLBackendWindow instance.
-         */
-        GLBackendWindow &GetGameWindow();
-
-        static GLBackend *callbackInstance_; /**< Static instance for callback functions. */
-
-        GLBackendEmitters emitters_; /**< Handles input events and actions. */
-
         /**
          * @brief GLUT display function.
          */
@@ -130,8 +119,10 @@ namespace _3dmodeler
         void KeyboardUpdateState();
 
         // Members
-        std::unique_ptr<GL> gl_;            /**< Graphics library wrapper. */
-        std::array<bool, 256> keysPressed_; /**< Tracks the state of pressed keys. */
+        std::unique_ptr<GL> gl_;             /**< Graphics library wrapper. */
+        std::array<bool, 256> keysPressed_;  /**< Tracks the state of pressed keys. */
+        GLBackendEmitters emitters_;         /**< Handles input events and actions. */
+        static GLBackend *callbackInstance_; /**< Static instance for callback functions. */
     };
 
 } // end _3dmodeler
