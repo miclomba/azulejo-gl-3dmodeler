@@ -17,6 +17,7 @@ namespace
 	const int WIN_HEIGHT = 480;
 	const int INIT_WIN_X = 100;
 	const int INIT_WIN_Y = 100;
+	GLdouble PROJECTION_BUFFER[16];
 	const std::string _3DMODELER_TITLE = "3DModeler";
 } // end namespace
 
@@ -128,8 +129,6 @@ void GL::Reshape(const int _w, const int _h)
 	gameProjectionInfo_.SetWidth(_w);
 	gameProjectionInfo_.SetHeight(_h);
 
-	GLdouble projection[16];
-
 	/*========================= ORTHO PROJECTION =============================*/
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -141,17 +140,17 @@ void GL::Reshape(const int _w, const int _h)
 		glOrtho(-5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)),
 				5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)), -5.0, 5.0, 10.0, -200.0);
 
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glGetDoublev(GL_PROJECTION_MATRIX, PROJECTION_BUFFER);
 	for (GLint i = 0; i < 16; i++)
-		gameProjectionInfo_.SetProjOrthoMatrix(projection[i], i);
+		gameProjectionInfo_.SetProjOrthoMatrix(PROJECTION_BUFFER[i], i);
 
 	glLoadIdentity();
 	//========================= Perspective Projection =====================
 	gluPerspective(40.0, (GLdouble)_w / (GLdouble)_h, 0.5, 200.0);
 
-	glGetDoublev(GL_PROJECTION_MATRIX, projection);
+	glGetDoublev(GL_PROJECTION_MATRIX, PROJECTION_BUFFER);
 	for (GLint i = 0; i < 16; i++)
-		gameProjectionInfo_.SetProjPerspectiveMatrix(projection[i], i);
+		gameProjectionInfo_.SetProjPerspectiveMatrix(PROJECTION_BUFFER[i], i);
 	glLoadIdentity();
 
 	/*========================= REDISPLAY ====================================*/
