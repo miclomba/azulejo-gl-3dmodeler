@@ -8,7 +8,8 @@
 using _3dmodeler::GLEntity;
 using _3dmodeler::GLEntityTask;
 
-GLEntityTask::GLEntityTask(std::function<GLEntity *()> lambda) : task_(std::make_shared<std::packaged_task<GLEntity *()>>(lambda))
+GLEntityTask::GLEntityTask(
+	std::function<GLEntity *()> lambda) : task_(std::make_shared<std::packaged_task<GLEntity *()>>(lambda))
 {
 }
 

@@ -24,7 +24,9 @@ GLEntity::GLEntity() : Entity(),
 												 {0.0, 0.0, 0.0, 0.0},
 												 {0.0, 0.0, 0.0, 0.0},
 												 {0.0, 0.0, 0.0, 0.0}})),
-					   S_(frame_), R_(frame_), T_(frame_)
+					   S_(frame_),
+					   R_(frame_),
+					   T_(frame_)
 {
 }
 

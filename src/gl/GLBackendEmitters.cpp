@@ -19,28 +19,30 @@ namespace
 
 GLBackendEmitters::~GLBackendEmitters() = default;
 
-GLBackendEmitters::GLBackendEmitters() : Entity(),
-										 xEmitter_(std::make_shared<StdEmitter>()),
-										 yEmitter_(std::make_shared<StdEmitter>()),
-										 zEmitter_(std::make_shared<StdEmitter>()),
-										 tEmitter_(std::make_shared<StdEmitter>()),
-										 lEmitter_(std::make_shared<StdEmitter>()),
-										 xCapEmitter_(std::make_shared<StdEmitter>()),
-										 yCapEmitter_(std::make_shared<StdEmitter>()),
-										 zCapEmitter_(std::make_shared<StdEmitter>()),
-										 tCapEmitter_(std::make_shared<StdEmitter>()),
-										 lCapEmitter_(std::make_shared<StdEmitter>()),
-										 runEmitter_(std::make_shared<StdEmitter>()),
-										 drawEmitter_(std::make_shared<events::EventEmitter<
-														  void(GLint w_, GLint h_, const std::array<GLfloat, 16> &projOrtho_, const std::array<GLfloat, 16> &projPerspective_)>>()),
-										 pickEmitter_(std::make_shared<events::EventEmitter<
-														  void(const int _x, const int _y, const int _h, const std::string &_viewport)>>()),
-										 mouseEmitter_(std::make_shared<events::EventEmitter<
-														   void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)>>()),
-										 mouseMotionEmitter_(std::make_shared<events::EventEmitter<
-																 void(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16> &_projOrtho)>>()),
-										 actionMenuEmitter_(std::make_shared<events::EventEmitter<
-																void(const int _index)>>())
+GLBackendEmitters::GLBackendEmitters(
+
+	) : Entity(),
+		xEmitter_(std::make_shared<StdEmitter>()),
+		yEmitter_(std::make_shared<StdEmitter>()),
+		zEmitter_(std::make_shared<StdEmitter>()),
+		tEmitter_(std::make_shared<StdEmitter>()),
+		lEmitter_(std::make_shared<StdEmitter>()),
+		xCapEmitter_(std::make_shared<StdEmitter>()),
+		yCapEmitter_(std::make_shared<StdEmitter>()),
+		zCapEmitter_(std::make_shared<StdEmitter>()),
+		tCapEmitter_(std::make_shared<StdEmitter>()),
+		lCapEmitter_(std::make_shared<StdEmitter>()),
+		runEmitter_(std::make_shared<StdEmitter>()),
+		drawEmitter_(std::make_shared<events::EventEmitter<
+						 void(GLint w_, GLint h_, const std::array<GLfloat, 16> &projOrtho_, const std::array<GLfloat, 16> &projPerspective_)>>()),
+		pickEmitter_(std::make_shared<events::EventEmitter<
+						 void(const int _x, const int _y, const int _h, const std::string &_viewport)>>()),
+		mouseEmitter_(std::make_shared<events::EventEmitter<
+						  void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)>>()),
+		mouseMotionEmitter_(std::make_shared<events::EventEmitter<
+								void(const int _x, const int _y, const int _w, const int _h, const std::array<GLfloat, 16> &_projOrtho)>>()),
+		actionMenuEmitter_(std::make_shared<events::EventEmitter<
+							   void(const int _index)>>())
 {
 	SetKey(GL_GAME_EMITTERS_KEY);
 }
