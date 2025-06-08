@@ -105,13 +105,13 @@ namespace _3dmodeler
          */
         void SetFrame(const Resource2DGLfloat &frame);
 
+    private:
+        Resource2DGLfloat frame_; /**< Matrix representing entity geometry. */
+
     protected:
         Resource2DGLfloat S_; /**< Scale transformation matrix. */
         Resource2DGLfloat T_; /**< Translation transformation matrix. */
         Resource2DGLfloat R_; /**< Rotation transformation matrix. */
-
-    private:
-        Resource2DGLfloat frame_; /**< Matrix representing entity geometry. */
     };
 
 } // end namespace _3dmodeler

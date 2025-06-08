@@ -20,15 +20,9 @@ namespace
 
 GLProjectionInfo::~GLProjectionInfo() = default;
 
-GLProjectionInfo::GLProjectionInfo() : Entity()
+GLProjectionInfo::GLProjectionInfo() : Entity(), projOrtho_({}), projPerspective_({}), w_(WIN_WIDTH), h_(WIN_HEIGHT)
 {
 	SetKey(GAME_PROJ_INFO_KEY);
-
-	std::fill(projOrtho_.begin(), projOrtho_.end(), 0.0f);
-	std::fill(projPerspective_.begin(), projPerspective_.end(), 0.0f);
-
-	w_ = WIN_WIDTH;
-	h_ = WIN_HEIGHT;
 }
 
 void GLProjectionInfo::SetHeight(const GLint h)

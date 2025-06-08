@@ -34,11 +34,9 @@ GLBackend &GLBackend::Get(int _argc, char *_argv[])
 
 GLBackend::~GLBackend() = default;
 
-GLBackend::GLBackend(int _argc, char *_argv[]) : Entity()
+GLBackend::GLBackend(int _argc, char *_argv[]) : Entity(), keysPressed_({})
 {
 	SetKey(_3DMODELER_TITLE);
-
-	std::fill(keysPressed_.begin(), keysPressed_.end(), false);
 
 	// Initialize the graphics library singleton
 	GL::Get(_argc, _argv);
