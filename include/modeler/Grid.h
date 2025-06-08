@@ -69,11 +69,6 @@ namespace _3dmodeler
 
     private:
         /**
-         * @brief Initialize the grid's control points.
-         */
-        void InitGridPoints();
-
-        /**
          * @brief Create the first texture image.
          */
         void MakeTexImage1();
@@ -87,29 +82,29 @@ namespace _3dmodeler
         std::array<std::array<std::array<GLfloat, 3>, 4>, 4> controlPoints_; /**< Control points for the grid. */
         std::array<std::array<std::array<GLfloat, 2>, 2>, 2> texturePoints_; /**< Texture points for the grid. */
 
-        GLint curTexture_; /**< Current active texture. */
+        GLint curTexture_ = 1; /**< Current active texture. */
 
-        GLint uOrder_;     /**< Order of the grid in the u-direction. */
-        GLint uRangeLow_;  /**< Lower bound for the u-direction. */
-        GLint uRangeHigh_; /**< Upper bound for the u-direction. */
-        GLint uStride_;    /**< Stride value for the u-direction. */
+        GLint uOrder_ = 4;     /**< Order of the grid in the u-direction. */
+        GLint uRangeLow_ = 0;  /**< Lower bound for the u-direction. */
+        GLint uRangeHigh_ = 1; /**< Upper bound for the u-direction. */
+        GLint uStride_;        /**< Stride value for the u-direction. */
 
-        GLint vOrder_;     /**< Order of the grid in the v-direction. */
-        GLint vRangeLow_;  /**< Lower bound for the v-direction. */
-        GLint vRangeHigh_; /**< Upper bound for the v-direction. */
-        GLint vStride_;    /**< Stride value for the v-direction. */
+        GLint vOrder_ = 4;     /**< Order of the grid in the v-direction. */
+        GLint vRangeLow_ = 0;  /**< Lower bound for the v-direction. */
+        GLint vRangeHigh_ = 1; /**< Upper bound for the v-direction. */
+        GLint vStride_;        /**< Stride value for the v-direction. */
 
-        GLint gridSubdivs_; /**< Number of subdivisions in the grid. */
+        GLint gridSubdivs_ = 16.0f; /**< Number of subdivisions in the grid. */
 
-        std::array<GLfloat, 4> gold_Ka_; /**< Ambient reflection properties for gold material. */
-        std::array<GLfloat, 4> gold_Kd_; /**< Diffuse reflection properties for gold material. */
-        std::array<GLfloat, 4> gold_Ks_; /**< Specular reflection properties for gold material. */
-        GLfloat gold_Ke_;                /**< Emissive property for gold material. */
+        std::array<GLfloat, 4> gold_Ka_ = {0.24725f, 0.1995f, 0.0745f, 1.0f};      /**< Ambient reflection properties for gold material. */
+        std::array<GLfloat, 4> gold_Kd_ = {0.75164f, 0.60648f, 0.22648f, 1.0f};    /**< Diffuse reflection properties for gold material. */
+        std::array<GLfloat, 4> gold_Ks_ = {0.628281f, 0.555802f, 0.366065f, 1.0f}; /**< Specular reflection properties for gold material. */
+        GLfloat gold_Ke_ = 41.2f;                                                  /**< Emissive property for gold material. */
 
-        std::array<GLfloat, 4> silver_Ka_; /**< Ambient reflection properties for silver material. */
-        std::array<GLfloat, 4> silver_Kd_; /**< Diffuse reflection properties for silver material. */
-        std::array<GLfloat, 4> silver_Ks_; /**< Specular reflection properties for silver material. */
-        GLfloat silver_Ke_;                /**< Emissive property for silver material. */
+        std::array<GLfloat, 4> silver_Ka_ = {0.05f, 0.05f, 0.05f, 1.0f}; /**< Ambient reflection properties for silver material. */
+        std::array<GLfloat, 4> silver_Kd_ = {0.4f, 0.4f, 0.4f, 1.0f};    /**< Diffuse reflection properties for silver material. */
+        std::array<GLfloat, 4> silver_Ks_ = {0.7f, 0.7f, 0.7f, 1.0f};    /**< Specular reflection properties for silver material. */
+        GLfloat silver_Ke_ = 12.0f;                                      /**< Emissive property for silver material. */
 
         static const int IMG_WIDTH = 64;  /**< Texture image width. */
         static const int IMG_HEIGHT = 64; /**< Texture image height. */

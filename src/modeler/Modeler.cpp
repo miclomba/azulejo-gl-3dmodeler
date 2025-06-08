@@ -49,40 +49,6 @@ Modeler::Modeler() : GLEntity(),
 	SharedEntity grid = std::make_shared<Grid>();
 	grid->SetKey(Grid::GridKey());
 	AggregateMember(grid);
-
-	toggleLights_ = true;
-	toggleTextures_ = true;
-
-	curViewport_ = "";
-	picking_ = true;
-	dragging_ = false;
-	i_ = -1;
-	j_ = -1;
-	k_ = -1;
-	pickIdx_ = 0;
-	ctrlPntIdxCount_ = 16;
-	lightIdxCount_ = 2;
-	renderMode_ = GL_RENDER;
-
-	moving_ = false;
-	xo_ = 0;
-	yo_ = 0;
-	xi_ = 0;
-	yi_ = 0;
-	xf_ = 0;
-	yf_ = 0;
-	panX_ = 0;
-	panY_ = 0;
-	frontX_ = 0;
-	frontZ_ = 0;
-	sideZ_ = 0;
-	sideY_ = 0;
-	topX_ = 0;
-	topY_ = 0;
-
-	zPhi_ = 0;
-	yTheta_ = 45;
-	xPsi_ = 225;
 }
 
 Modeler::~Modeler() = default;

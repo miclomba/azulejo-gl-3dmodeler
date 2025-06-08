@@ -100,16 +100,6 @@ void Grid::DrawControlPoints(GLenum _mode)
     }
 }
 
-void Grid::InitGridPoints()
-{
-    controlPoints_ = {{{{{-2.0, -2.0, 0.0}, {-0.5, -2.0, 0.0}, {0.5, -2.0, 0.0}, {2.0, -2.0, -2.0}}},
-                       {{{-2.0, -0.5, 0.0}, {-0.5, -0.5, 0.0}, {0.5, -0.5, 0.0}, {2.0, -0.5, 0.0}}},
-                       {{{-2.0, 0.5, 0.0}, {-0.5, 0.5, 0.0}, {0.5, 0.5, 0.0}, {2.0, 0.5, 0.0}}},
-                       {{{-2.0, 2.0, 0.0}, {-0.5, 2.0, 0.0}, {0.5, 2.0, 0.0}, {2.0, 2.0, 0.0}}}}};
-    texturePoints_ = {{{{{0.0f, 0.0f}, {0.0f, 1.0f}}},
-                       {{{1.0f, 0.0f}, {1.0f, 1.0f}}}}};
-}
-
 void Grid::MakeTexImage1()
 {
     GLfloat ti, tj;
@@ -152,7 +142,13 @@ void Grid::ChangeTextures()
         curTexture_ = 1;
 }
 
-Grid::Grid() : Entity()
+Grid::Grid() : Entity(),
+               controlPoints_({{{{{-2.0, -2.0, 0.0}, {-0.5, -2.0, 0.0}, {0.5, -2.0, 0.0}, {2.0, -2.0, -2.0}}},
+                                {{{-2.0, -0.5, 0.0}, {-0.5, -0.5, 0.0}, {0.5, -0.5, 0.0}, {2.0, -0.5, 0.0}}},
+                                {{{-2.0, 0.5, 0.0}, {-0.5, 0.5, 0.0}, {0.5, 0.5, 0.0}, {2.0, 0.5, 0.0}}},
+                                {{{-2.0, 2.0, 0.0}, {-0.5, 2.0, 0.0}, {0.5, 2.0, 0.0}, {2.0, 2.0, 0.0}}}}}),
+               texturePoints_({{{{{0.0f, 0.0f}, {0.0f, 1.0f}}},
+                                {{{1.0f, 0.0f}, {1.0f, 1.0f}}}}})
 {
     SetKey(GRID_KEY);
 
@@ -161,30 +157,8 @@ Grid::Grid() : Entity()
     //================== Create textures and init mesh points ==================
     MakeTexImage1();
     MakeTexImage2();
-    InitGridPoints();
 
     //===================== Initialize member variables ========================
-    curTexture_ = 1;
-
-    gridSubdivs_ = 16.0f;
-
-    uOrder_ = 4;
-    uRangeLow_ = 0;
-    uRangeHigh_ = 1;
     uStride_ = 3;
-
-    vOrder_ = 4;
-    vRangeLow_ = 0;
-    vRangeHigh_ = 1;
     vStride_ = uStride_ * 4;
-
-    gold_Ka_ = {0.24725f, 0.1995f, 0.0745f, 1.0f};
-    gold_Kd_ = {0.75164f, 0.60648f, 0.22648f, 1.0f};
-    gold_Ks_ = {0.628281f, 0.555802f, 0.366065f, 1.0f};
-    silver_Ka_ = {0.05f, 0.05f, 0.05f, 1.0f};
-    silver_Kd_ = {0.4f, 0.4f, 0.4f, 1.0f};
-    silver_Ks_ = {0.7f, 0.7f, 0.7f, 1.0f};
-
-    gold_Ke_ = 41.2f;
-    silver_Ke_ = 12.0f;
 }

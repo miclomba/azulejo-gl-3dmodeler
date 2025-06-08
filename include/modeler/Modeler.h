@@ -258,19 +258,38 @@ namespace _3dmodeler
 
         boost::asio::thread_pool threadPool_; /**< Thread pool for parallel processing. */
 
-        bool toggleLights_;   /**< Toggle for lights. */
-        bool toggleTextures_; /**< Toggle for textures. */
+        bool toggleLights_ = true;   /**< Toggle for lights. */
+        bool toggleTextures_ = true; /**< Toggle for textures. */
 
         std::string curViewport_; /**< Current active viewport. */
-        bool picking_;            /**< Picking state. */
-        bool dragging_;           /**< Dragging state. */
-        GLint i_, j_, k_, pickIdx_, ctrlPntIdxCount_, lightIdxCount_;
-        GLenum renderMode_;
+        bool picking_ = true;     /**< Picking state. */
+        bool dragging_ = false;   /**< Dragging state. */
+        GLint i_ = -1;
+        GLint j_ = -1;
+        GLint k_ = -1;
+        GLint pickIdx_ = 0;
+        GLint ctrlPntIdxCount_ = 16;
+        GLint lightIdxCount_ = 2;
+        GLenum renderMode_ = GL_RENDER;
 
-        bool moving_;
-        GLfloat xo_, yo_, xi_, yi_, xf_, yf_, panX_, panY_;
-        GLfloat frontX_, frontZ_, sideZ_, sideY_, topX_, topY_;
-        GLfloat zPhi_, yTheta_, xPsi_;
+        bool moving_ = false;
+        GLfloat xo_ = 0;
+        GLfloat yo_ = 0;
+        GLfloat xi_ = 0;
+        GLfloat yi_ = 0;
+        GLfloat xf_ = 0;
+        GLfloat yf_ = 0;
+        GLfloat panX_ = 0;
+        GLfloat panY_ = 0;
+        GLfloat frontX_ = 0;
+        GLfloat frontZ_ = 0;
+        GLfloat sideZ_ = 0;
+        GLfloat sideY_ = 0;
+        GLfloat topX_ = 0;
+        GLfloat topY_ = 0;
+        GLfloat zPhi_ = 0;
+        GLfloat yTheta_ = 45;
+        GLfloat xPsi_ = 225;
     };
 
 } // end namespace _3dmodeler

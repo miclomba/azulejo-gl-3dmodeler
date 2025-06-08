@@ -9,6 +9,9 @@ using entity::Entity;
 namespace
 {
     const std::string POINT_LIGHT_KEY = "PointLight";
+    GLfloat SPECULAR[] = {0.0f, 0.0f, 1.0f};
+    GLfloat AMBIENT[] = {0.0f, 0.0f, 1.0f};
+    GLfloat DIFFUSE[] = {1.0f, 1.0f, 1.0f};
 }
 
 std::string PointLight::PointLightKey()
@@ -39,28 +42,22 @@ void PointLight::Draw(GLenum _renderMode)
     glEnd();
 }
 
-PointLight::PointLight() : Entity()
+PointLight::PointLight() : Entity(), position_({{{{-3, 3, 1, 1}}, {{3, -3, 1, 1}}}})
 {
     SetKey(POINT_LIGHT_KEY);
-
-    position_ = {{{{-3, 3, 1, 1}},
-                  {{3, -3, 1, 1}}}};
 
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glLightfv(GL_LIGHT0, GL_POSITION, position_[0].data());
     glLightfv(GL_LIGHT1, GL_POSITION, position_[1].data());
 
-    GLfloat specular[] = {0.0f, 0.0f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-    glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, SPECULAR);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, SPECULAR);
 
-    GLfloat ambient[] = {0.0f, 0.0f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-    glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, AMBIENT);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, AMBIENT);
 
-    GLfloat diffuse[] = {1.0f, 1.0f, 1.0f};
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, DIFFUSE);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, DIFFUSE);
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
