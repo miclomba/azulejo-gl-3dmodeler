@@ -19,10 +19,11 @@ namespace
 	const std::string R_KEY = "R";
 } // end namespace
 
-GLEntity::GLEntity() : Entity(), frame_(Resource2DGLfloat({{0.0, 0.0, 0.0, 0.0}, // NOTE: make sure frame_ appears first in the class
-														   {0.0, 0.0, 0.0, 0.0},
-														   {0.0, 0.0, 0.0, 0.0},
-														   {0.0, 0.0, 0.0, 0.0}})),
+GLEntity::GLEntity() : Entity(),
+					   frame_(Resource2DGLfloat({{0.0, 0.0, 0.0, 0.0}, // NOTE: make sure frame_ appears first in the class
+												 {0.0, 0.0, 0.0, 0.0},
+												 {0.0, 0.0, 0.0, 0.0},
+												 {0.0, 0.0, 0.0, 0.0}})),
 					   S_(frame_), R_(frame_), T_(frame_)
 {
 }

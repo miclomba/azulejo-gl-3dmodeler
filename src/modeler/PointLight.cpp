@@ -42,7 +42,8 @@ void PointLight::Draw(GLenum _renderMode)
     glEnd();
 }
 
-PointLight::PointLight() : Entity(), position_({{{{-3, 3, 1, 1}}, {{3, -3, 1, 1}}}})
+PointLight::PointLight() : Entity(),
+                           position_({{{{-3, 3, 1, 1}}, {{3, -3, 1, 1}}}})
 {
     SetKey(POINT_LIGHT_KEY);
 

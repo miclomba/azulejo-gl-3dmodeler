@@ -20,7 +20,11 @@ namespace
 
 GLProjectionInfo::~GLProjectionInfo() = default;
 
-GLProjectionInfo::GLProjectionInfo() : Entity(), projOrtho_({}), projPerspective_({}), w_(WIN_WIDTH), h_(WIN_HEIGHT)
+GLProjectionInfo::GLProjectionInfo() : Entity(),
+									   projOrtho_({}),
+									   projPerspective_({}),
+									   w_(WIN_WIDTH),
+									   h_(WIN_HEIGHT)
 {
 	SetKey(GAME_PROJ_INFO_KEY);
 }
