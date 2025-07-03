@@ -16,11 +16,8 @@ find_package(X11 REQUIRED)
 find_library(GLU_LIBRARY GLU)
 endif()
 
-message(STATUS "FREEGLUT_LINK_BIN: $ENV{FREEGLUT_LINK_BIN}")
-message(STATUS "FREEGLUT_LINK_LIB: $ENV{FREEGLUT_LINK_LIB}")
-message(STATUS "FREEGLUT_INCL_DIR: $ENV{FREEGLUT_INCL_DIR}")
-message(STATUS "BOOST_INCL_DIR: $ENV{BOOST_INCL_DIR}")
-message(STATUS "BOOST_LINK_DIR: $ENV{BOOST_LINK_DIR}")
+message(STATUS "VCPKG_INCL_DIR: $ENV{VCPKG_INCL_DIR}")
+message(STATUS "VCPKG_LINK_DIR: $ENV{VCPKG_LINK_DIR}")
 message(STATUS "X_INCL_DIR: $ENV{X_INCL_DIR}")
 message(STATUS "X_LINK_DIR: $ENV{X_LINK_DIR}")
 message(STATUS "X11_LIBRARIES: ${X11_LIBRARIES}")
@@ -29,15 +26,12 @@ message(STATUS "X11_INCLUDE_DIR: ${X11_INCLUDE_DIR}")
 set(COMMON_INCLUDES
 "${CMAKE_SOURCE_DIR}/include"
 "$ENV{X_INCL_DIR}"
-"$ENV{BOOST_INCL_DIR}"
-"$ENV{FREEGLUT_INCL_DIR}"
+"$ENV{VCPKG_INCL_DIR}"
 )
 
 set(COMMON_LINK_DIRS
 "$ENV{X_LINK_DIR}"
-"$ENV{BOOST_LINK_DIR}" 
-"$ENV{FREEGLUT_LINK_BIN}"
-"$ENV{FREEGLUT_LINK_LIB}"
+"$ENV{VCPKG_LINK_DIR}" 
 )
 
 if (MSVC OR APPLE)
@@ -89,7 +83,7 @@ if (MSVC)
 target_link_libraries("${PROJECT_NAME}" 
 "${COMMON_DEPENDENCIES}" 
 "bcrypt"
-"boost_filesystem$ENV{BOOST_LIB_SUFFIX}"
+"boost_filesystem"
 "freeglutd"
 )
 elseif (APPLE)
@@ -97,7 +91,7 @@ target_link_libraries("${PROJECT_NAME}"
 "${COMMON_DEPENDENCIES}"
 "GLUT::GLUT" 
 "OpenGL::GL"
-"boost_filesystem$ENV{BOOST_LIB_SUFFIX}"
+"boost_filesystem"
 )
 elseif (UNIX)
 target_link_libraries("${PROJECT_NAME}" 
