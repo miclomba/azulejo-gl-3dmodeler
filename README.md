@@ -33,7 +33,7 @@ Note: You can uninstall via: `azulejo-common-lib/uninstall.sh`
 
 ### VCPKG
 
-Install [vcpkg](https://github.com/microsoft/vcpkg).
+Install [vcpkg](https://github.com/microsoft/vcpkg) adjacent to this repository directory.
 
 ### Mac OS
 
