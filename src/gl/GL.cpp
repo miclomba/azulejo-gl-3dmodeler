@@ -134,11 +134,11 @@ void GL::Reshape(const int _w, const int _h)
 	glLoadIdentity();
 
 	if (_w / 2 <= _h / 2)
-		glOrtho(-5.0, 5.0, -5.0 * ((GLfloat)(_h / 2) / (GLfloat)(_w / 2)),
-				5.0 * ((GLfloat)(_h / 2) / (GLfloat)(_w / 2)), 10.0, -200.0);
+		glOrtho(-5.0, 5.0, -5.0 * (static_cast<GLfloat>(_h / 2) / static_cast<GLfloat>(_w / 2)),
+				5.0 * (static_cast<GLfloat>(_h / 2) / static_cast<GLfloat>(_w / 2)), 10.0, -200.0);
 	else
-		glOrtho(-5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)),
-				5.0 * ((GLfloat)(_w / 2) / (GLfloat)(_h / 2)), -5.0, 5.0, 10.0, -200.0);
+		glOrtho(-5.0 * (static_cast<GLfloat>(_w / 2) / static_cast<GLfloat>(_h / 2)),
+				5.0 * (static_cast<GLfloat>(_w / 2) / static_cast<GLfloat>(_h / 2)), -5.0, 5.0, 10.0, -200.0);
 
 	glGetDoublev(GL_PROJECTION_MATRIX, PROJECTION_BUFFER);
 	for (GLint i = 0; i < 16; i++)
@@ -146,7 +146,7 @@ void GL::Reshape(const int _w, const int _h)
 
 	glLoadIdentity();
 	//========================= Perspective Projection =====================
-	gluPerspective(40.0, (GLdouble)_w / (GLdouble)_h, 0.5, 200.0);
+	gluPerspective(40.0, static_cast<GLdouble>(_w) / static_cast<GLdouble>(_h), 0.5, 200.0);
 
 	glGetDoublev(GL_PROJECTION_MATRIX, PROJECTION_BUFFER);
 	for (GLint i = 0; i < 16; i++)

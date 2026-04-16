@@ -217,16 +217,16 @@ void Modeler::Pick(const int _x, const int _y, const int _h, const std::string &
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	gluPickMatrix((GLdouble)_x, (GLdouble)(_h - _y), 8, 8, VIEWPORT);
+	gluPickMatrix(static_cast<GLdouble>(_x), static_cast<GLdouble>(_h - _y), 8, 8, VIEWPORT);
 
 	if ((VIEWPORT[2]) <= (VIEWPORT[3]))
 		glOrtho(-5.0, 5.0,
-				-5.0 * ((GLfloat)(VIEWPORT[3]) / (GLfloat)(VIEWPORT[2])),
-				5.0 * ((GLfloat)(VIEWPORT[3]) / (GLfloat)(VIEWPORT[2])),
+				-5.0 * (static_cast<GLfloat>(VIEWPORT[3]) / static_cast<GLfloat>(VIEWPORT[2])),
+				5.0 * (static_cast<GLfloat>(VIEWPORT[3]) / static_cast<GLfloat>(VIEWPORT[2])),
 				5.0, -200.0);
 	else
-		glOrtho(-5.0 * ((GLfloat)(VIEWPORT[2]) / (GLfloat)(VIEWPORT[3])),
-				5.0 * ((GLfloat)(VIEWPORT[2]) / (GLfloat)(VIEWPORT[3])),
+		glOrtho(-5.0 * (static_cast<GLfloat>(VIEWPORT[2]) / static_cast<GLfloat>(VIEWPORT[3])),
+				5.0 * (static_cast<GLfloat>(VIEWPORT[2]) / static_cast<GLfloat>(VIEWPORT[3])),
 				-5.0, 5.0, 5.0, -200.0);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -275,7 +275,7 @@ void Modeler::SetDragginStateDuringPicking()
 		GLint j;
 		for (j = 0; j < 4; j++)
 		{
-			if ((GLfloat)(i * 4 + j + 1) == pickIdx_)
+			if (static_cast<GLfloat>(i * 4 + j + 1) == pickIdx_)
 			{
 				dragging_ = true;
 				i_ = i;
@@ -502,13 +502,13 @@ void Modeler::MouseMotionQuadrantTwo(const int _x, const int _y, const int _w, c
 
 	if (k_ == -1)
 	{
-		GetGrid()->SetControlPoint((GLfloat)MOUSEY, i_, j_, 1);
-		GetGrid()->SetControlPoint((GLfloat)MOUSEZ, i_, j_, 2);
+		GetGrid()->SetControlPoint(static_cast<GLfloat>(MOUSEY), i_, j_, 1);
+		GetGrid()->SetControlPoint(static_cast<GLfloat>(MOUSEZ), i_, j_, 2);
 	}
 	else
 	{
-		GetPointLight()->GetPosition()[k_][1] = (GLfloat)MOUSEY;
-		GetPointLight()->GetPosition()[k_][2] = (GLfloat)MOUSEZ;
+		GetPointLight()->GetPosition()[k_][1] = static_cast<GLfloat>(MOUSEY);
+		GetPointLight()->GetPosition()[k_][2] = static_cast<GLfloat>(MOUSEZ);
 		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
 		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
 	}
@@ -542,13 +542,13 @@ void Modeler::MouseMotionQuadrantThree(const int _x, const int _y, const int _w,
 
 	if (k_ == -1)
 	{
-		GetGrid()->SetControlPoint((GLfloat)MOUSEX, i_, j_, 0);
-		GetGrid()->SetControlPoint((GLfloat)MOUSEY, i_, j_, 1);
+		GetGrid()->SetControlPoint(static_cast<GLfloat>(MOUSEX), i_, j_, 0);
+		GetGrid()->SetControlPoint(static_cast<GLfloat>(MOUSEY), i_, j_, 1);
 	}
 	else
 	{
-		GetPointLight()->GetPosition()[k_][0] = (GLfloat)MOUSEX;
-		GetPointLight()->GetPosition()[k_][1] = (GLfloat)MOUSEY;
+		GetPointLight()->GetPosition()[k_][0] = static_cast<GLfloat>(MOUSEX);
+		GetPointLight()->GetPosition()[k_][1] = static_cast<GLfloat>(MOUSEY);
 		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
 		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
 	}
@@ -583,13 +583,13 @@ void Modeler::MouseMotionQuadrantFour(const int _x, const int _y, const int _w, 
 
 	if (k_ == -1)
 	{
-		GetGrid()->SetControlPoint((GLfloat)MOUSEX, i_, j_, 0);
-		GetGrid()->SetControlPoint((GLfloat)MOUSEZ, i_, j_, 2);
+		GetGrid()->SetControlPoint(static_cast<GLfloat>(MOUSEX), i_, j_, 0);
+		GetGrid()->SetControlPoint(static_cast<GLfloat>(MOUSEZ), i_, j_, 2);
 	}
 	else
 	{
-		GetPointLight()->GetPosition()[k_][0] = (GLfloat)MOUSEX;
-		GetPointLight()->GetPosition()[k_][2] = (GLfloat)MOUSEZ;
+		GetPointLight()->GetPosition()[k_][0] = static_cast<GLfloat>(MOUSEX);
+		GetPointLight()->GetPosition()[k_][2] = static_cast<GLfloat>(MOUSEZ);
 		glLightfv(GL_LIGHT0, GL_POSITION, GetPointLight()->GetPosition()[0].data());
 		glLightfv(GL_LIGHT1, GL_POSITION, GetPointLight()->GetPosition()[1].data());
 	}
