@@ -5,11 +5,13 @@
 #include <string>
 
 #include "Events/EventEmitter.h"
+#include "gl/GLViewport.h"
 
 using entity::Entity;
 using events::EventEmitter;
 
 using _3dmodeler::GLBackendEmitters;
+using _3dmodeler::GLViewport;
 using StdEmitter = EventEmitter<void(void)>;
 
 namespace
@@ -36,7 +38,7 @@ GLBackendEmitters::GLBackendEmitters(
 		drawEmitter_(std::make_shared<events::EventEmitter<
 						 void(GLint w_, GLint h_, const std::array<GLfloat, 16> &projOrtho_, const std::array<GLfloat, 16> &projPerspective_)>>()),
 		pickEmitter_(std::make_shared<events::EventEmitter<
-						 void(const int _x, const int _y, const int _h, const std::string &_viewport)>>()),
+						 void(const int _x, const int _y, const int _h, const GLViewport _viewport)>>()),
 		mouseEmitter_(std::make_shared<events::EventEmitter<
 						  void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)>>()),
 		mouseMotionEmitter_(std::make_shared<events::EventEmitter<
@@ -105,7 +107,7 @@ GLBackendEmitters::GetDrawEmitter()
 }
 
 std::shared_ptr<EventEmitter<
-	void(const int _x, const int _y, const int _h, const std::string &_viewport)>>
+	void(const int _x, const int _y, const int _h, const GLViewport _viewport)>>
 GLBackendEmitters::GetPickEmitter()
 {
 	return pickEmitter_;

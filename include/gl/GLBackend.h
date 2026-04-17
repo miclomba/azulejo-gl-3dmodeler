@@ -13,6 +13,7 @@
 #include "configuration/config.h"
 #include "gl/GL.h"
 #include "gl/GLBackendEmitters.h"
+#include "gl/GLViewport.h"
 
 namespace _3dmodeler
 {
@@ -83,7 +84,7 @@ namespace _3dmodeler
         /**
          * @brief Pick callback for the underlying GL library.
          */
-        static void PickCallback(const int _x, const int _y, const std::string &_viewport);
+        static void PickCallback(const int _x, const int _y, const GLViewport _viewport);
 
         /**
          * @brief Mouse callback for the underlying GL library.
@@ -134,7 +135,7 @@ namespace _3dmodeler
         /**
          * @brief GLUT picking function.
          */
-        void Pick(const int _x, const int _y, const int _h, const std::string &_viewport);
+        void Pick(const int _x, const int _y, const int _h, const GLViewport _viewport);
 
         /**
          * @brief GLUT mouse input function.

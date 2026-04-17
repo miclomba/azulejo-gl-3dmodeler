@@ -93,7 +93,6 @@ void RegisterEvents(ModelerConsumers &consumers, GLBackendEmitters &emitters, Ev
 int main(int _argc, char *_argv[])
 {
 	GLBackend &backend = GLBackend::Get(_argc, _argv);
-	GLBackendEmitters &emitters = backend.GetEmitters();
 
 	auto frontend = std::make_shared<Modeler>();
 	ModelerConsumers frontendConsumers(frontend);

@@ -14,12 +14,14 @@
 #include "configuration/config.h"
 #include "configuration/filesystem.h"
 #include "gl/GLEntityTask.h"
+#include "gl/GLViewport.h"
 
 using _3dmodeler::GLEntityTask;
 using _3dmodeler::Grid;
 using _3dmodeler::Modeler;
 using _3dmodeler::PointLight;
 using _3dmodeler::UserInterface;
+using _3dmodeler::GLViewport;
 using entity::Entity;
 
 namespace
@@ -135,7 +137,7 @@ void Modeler::DrawBottomRightViewport(GLint w, GLint h, const std::array<GLfloat
 	glLoadMatrixf(projOrtho.data());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	if (moving_ == true && dragging_ == true && curViewport_ == "front")
+	if (moving_ == true && dragging_ == true && curViewport_ == GLViewport::FRONT)
 	{
 		frontZ_ = yo_ + panY_ / 20;
 		frontX_ = xo_ - panX_ / 20;
@@ -161,7 +163,7 @@ void Modeler::DrawTopLeftViewport(GLint w, GLint h, const std::array<GLfloat, 16
 	glLoadMatrixf(projOrtho.data());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	if (moving_ == true && dragging_ == true && curViewport_ == "side")
+	if (moving_ == true && dragging_ == true && curViewport_ == GLViewport::SIDE)
 	{
 		sideY_ = yo_ + panY_ / 20;
 		sideZ_ = xo_ - panX_ / 20;
@@ -187,7 +189,7 @@ void Modeler::DrawBottomLeftViewport(GLint w, GLint h, const std::array<GLfloat,
 	glLoadMatrixf(projOrtho.data());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	if (moving_ == true && dragging_ == true && curViewport_ == "top")
+	if (moving_ == true && dragging_ == true && curViewport_ == GLViewport::TOP)
 	{
 		topY_ = yo_ + panY_ / 20;
 		topX_ = xo_ - panX_ / 20;
@@ -204,7 +206,7 @@ void Modeler::DrawBottomLeftViewport(GLint w, GLint h, const std::array<GLfloat,
 	glLoadIdentity();
 }
 
-void Modeler::Pick(const int _x, const int _y, const int _h, const std::string &_viewport)
+void Modeler::Pick(const int _x, const int _y, const int _h, const GLViewport _viewport)
 {
 	glGetIntegerv(GL_VIEWPORT, VIEWPORT);
 
@@ -230,17 +232,17 @@ void Modeler::Pick(const int _x, const int _y, const int _h, const std::string &
 				-5.0, 5.0, 5.0, -200.0);
 
 	glMatrixMode(GL_MODELVIEW);
-	if (_viewport == "top")
+	if (_viewport == GLViewport::TOP)
 	{
 		glLoadIdentity();
 		gluLookAt(topX_, topY_, 1, topX_, topY_, 0, 0, 1, 0);
 	}
-	else if (_viewport == "side")
+	else if (_viewport == GLViewport::SIDE)
 	{
 		glLoadIdentity();
 		gluLookAt(-1, sideY_, sideZ_, 0, sideY_, sideZ_, 0, 1, 0);
 	}
-	else if (_viewport == "front")
+	else if (_viewport == GLViewport::FRONT)
 	{
 		glLoadIdentity();
 		gluLookAt(frontX_, -1, frontZ_, frontX_, 0, frontZ_, 0, 0, 1);
@@ -334,34 +336,33 @@ void Modeler::MousePickingOnClickDown(const int _button, const int _state, const
 	if (_x > _w / 2 && _y < _h / 2)
 	{
 		// Do Nothing.
+		return;
 	}
 	//========================= Quadrant 2 Click ===========================
 	else if (_x < _w / 2 && _y < _h / 2)
 	{
 		glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
-		curViewport_ = "side";
-		Pick(_x, _y, _h, "side");
+		curViewport_ = GLViewport::SIDE;
 	}
 	//========================= Quadrant 3 Click ===========================
 	else if (_x < _w / 2 && _y > _h / 2)
 	{
 		glViewport(0, 0, _w / 2, _h / 2);
-		curViewport_ = "top";
-		Pick(_x, _y, _h, "top");
+		curViewport_ = GLViewport::TOP;
 	}
 	//========================= Quadrant 4 Click ===========================
 	else if (_x > _w / 2 && _y > _h / 2)
 	{
 		glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
-		curViewport_ = "front";
-		Pick(_x, _y, _h, "front");
+		curViewport_ = GLViewport::FRONT;
 	}
+	Pick(_x, _y, _h, curViewport_);
 }
 
 void Modeler::MousePickingOnClickUp()
 {
 	dragging_ = false;
-	curViewport_ = "";
+	curViewport_ = GLViewport::NONE;
 }
 
 void Modeler::MouseMovingOnClickDown(const int _x, const int _y, const int _w, const int _h)
@@ -380,7 +381,7 @@ void Modeler::MouseMovingOnClickDown(const int _x, const int _y, const int _w, c
 	else if (_x < _w / 2 && _y < _h / 2)
 	{
 		glViewport(0, _h / 2 + 1, _w / 2, _h / 2);
-		curViewport_ = "side";
+		curViewport_ = GLViewport::SIDE;
 		xo_ = sideZ_;
 		yo_ = sideY_;
 	}
@@ -388,7 +389,7 @@ void Modeler::MouseMovingOnClickDown(const int _x, const int _y, const int _w, c
 	else if (_x < _w / 2 && _y > _h / 2)
 	{
 		glViewport(0, 0, _w / 2, _h / 2);
-		curViewport_ = "top";
+		curViewport_ = GLViewport::TOP;
 		xo_ = topX_;
 		yo_ = topY_;
 	}
@@ -396,7 +397,7 @@ void Modeler::MouseMovingOnClickDown(const int _x, const int _y, const int _w, c
 	else if (_x > _w / 2 && _y > _h / 2)
 	{
 		glViewport(_w / 2 + 1, 0, _w / 2, _h / 2);
-		curViewport_ = "front";
+		curViewport_ = GLViewport::FRONT;
 		xo_ = frontX_;
 		yo_ = frontZ_;
 	}
@@ -409,7 +410,7 @@ void Modeler::MouseMovingOnClickUp()
 	yi_ = 0;
 	xf_ = 0;
 	yf_ = 0;
-	curViewport_ = "";
+	curViewport_ = GLViewport::NONE;
 }
 
 void Modeler::Mouse(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)
@@ -445,19 +446,19 @@ void Modeler::MouseMotion(const int _x, const int _y, const int _w, const int _h
 			// Do Nothing
 		}
 		//========================= Quadrant 2 Motion ==========================
-		else if (curViewport_ == "side" &&
+		else if (curViewport_ == GLViewport::SIDE &&
 				 _x < _w / 2 && _y < _h / 2 && _x > 0 && _y > 0)
 		{
 			MouseMotionQuadrantTwo(_x, _y, _w, _h, _projOrtho);
 		}
 		//========================= Quadrant 3 Motion ==========================
-		else if (curViewport_ == "top" &&
+		else if (curViewport_ == GLViewport::TOP &&
 				 _x < _w / 2 && _y > _h / 2 && _x > 0 && _y < _h)
 		{
 			MouseMotionQuadrantThree(_x, _y, _w, _h, _projOrtho);
 		}
 		//========================= Quadrant 4 Motion ==========================
-		else if (curViewport_ == "front" &&
+		else if (curViewport_ == GLViewport::FRONT &&
 				 _x > _w / 2 && _y > _h / 2 && _x < _w && _y < _h)
 		{
 			MouseMotionQuadrantFour(_x, _y, _w, _h, _projOrtho);

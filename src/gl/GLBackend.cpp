@@ -7,6 +7,7 @@
 #include "gl/GL.h"
 #include "gl/GLBackendEmitters.h"
 #include "gl/GLProjectionInfo.h"
+#include "gl/GLViewport.h"
 
 using entity::Entity;
 
@@ -14,6 +15,7 @@ using _3dmodeler::GL;
 using _3dmodeler::GLBackend;
 using _3dmodeler::GLBackendEmitters;
 using _3dmodeler::GLProjectionInfo;
+using _3dmodeler::GLViewport;
 
 namespace
 {
@@ -74,7 +76,7 @@ void GLBackend::KeyboardUpCallback(const unsigned char _chr, const int _x, const
 	callbackInstance_->KeyboardUp(_chr, _x, _y);
 }
 
-void GLBackend::PickCallback(const int _x, const int _y, const std::string &_viewport)
+void GLBackend::PickCallback(const int _x, const int _y, const GLViewport _viewport)
 {
 	callbackInstance_->Pick(_x, _y, GL::Get().GetGameProjectionInfo().GetHeight(), _viewport);
 }
@@ -173,7 +175,7 @@ void GLBackend::KeyboardUpdateState()
 	}
 }
 
-void GLBackend::Pick(const int _x, const int _y, const int _h, const std::string &_viewport)
+void GLBackend::Pick(const int _x, const int _y, const int _h, const GLViewport _viewport)
 {
 	emitters_.GetPickEmitter()->Signal()(_x, _y, _h, _viewport);
 }

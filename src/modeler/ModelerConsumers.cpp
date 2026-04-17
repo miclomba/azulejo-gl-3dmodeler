@@ -6,11 +6,12 @@
 
 #include "Entities/Entity.h"
 #include "Events/EventConsumer.h"
-
+#include "gl/GLViewport.h"
 #include "configuration/config.h"
 #include "configuration/filesystem.h"
 #include "modeler/Modeler.h"
 
+using _3dmodeler::GLViewport;
 using _3dmodeler::Modeler;
 using _3dmodeler::ModelerConsumers;
 using entity::Entity;
@@ -80,8 +81,8 @@ ModelerConsumers::ModelerConsumers(
 
 				   pickConsumer_(
 					   std::make_shared<EventConsumer<
-						   void(const int _x, const int _y, const int _h, const std::string &_viewport)>>(
-						   [this, modeler](const int _x, const int _y, const int _h, const std::string &_viewport)
+						   void(const int _x, const int _y, const int _h, const GLViewport _viewport)>>(
+						   [this, modeler](const int _x, const int _y, const int _h, const GLViewport _viewport)
 						   {
 							   modeler->Pick(_x, _y, _h, _viewport);
 						   })),
@@ -173,7 +174,7 @@ ModelerConsumers::GetDrawConsumer()
 }
 
 std::shared_ptr<EventConsumer<
-	void(const int _x, const int _y, const int _h, const std::string &_viewport)>>
+	void(const int _x, const int _y, const int _h, const GLViewport _viewport)>>
 ModelerConsumers::GetPickConsumer()
 {
 	return pickConsumer_;

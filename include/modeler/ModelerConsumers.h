@@ -13,6 +13,7 @@
 #include "Entities/Entity.h"
 #include "Events/EventConsumer.h"
 #include "configuration/config.h"
+#include "gl/GLViewport.h"
 #include "modeler/Modeler.h"
 
 namespace _3dmodeler
@@ -105,7 +106,7 @@ namespace _3dmodeler
          * @brief Getters for Pick event consumer.
          */
         std::shared_ptr<events::EventConsumer<
-            void(const int _x, const int _y, const int _h, const std::string &_viewport)>>
+            void(const int _x, const int _y, const int _h, const GLViewport _viewport)>>
         GetPickConsumer();
 
         /**
@@ -151,7 +152,7 @@ namespace _3dmodeler
             drawConsumer_;
 
         std::shared_ptr<events::EventConsumer<
-            void(const int _x, const int _y, const int _h, const std::string &_viewport)>>
+            void(const int _x, const int _y, const int _h, const GLViewport _viewport)>>
             pickConsumer_;
 
         std::shared_ptr<events::EventConsumer<

@@ -17,6 +17,7 @@
 
 #include "configuration/config.h"
 #include "gl/GLEntity.h"
+#include "gl/GLViewport.h"
 #include "modeler/Grid.h"
 #include "modeler/PointLight.h"
 #include "modeler/UserInterface.h"
@@ -63,9 +64,9 @@ namespace _3dmodeler
          * @param _x The x coordinate of the mouse
          * @param _y The y coordinate of the mouse
          * @param _h The window height
-         * @param _viewport The name of the viewport
+         * @param _viewport The viewport type
          */
-        void Pick(const int _x, const int _y, const int _h, const std::string &_viewport);
+        void Pick(const int _x, const int _y, const int _h, const GLViewport _viewport);
 
         /**
          * @brief Set dragging state during picking operation.
@@ -261,7 +262,7 @@ namespace _3dmodeler
         bool toggleLights_ = true;   /**< Toggle for lights. */
         bool toggleTextures_ = true; /**< Toggle for textures. */
 
-        std::string curViewport_; /**< Current active viewport. */
+        GLViewport curViewport_{GLViewport::NONE}; /**< Current active viewport. */
         bool picking_ = true;     /**< Picking state. */
         bool dragging_ = false;   /**< Dragging state. */
         GLint i_ = -1;

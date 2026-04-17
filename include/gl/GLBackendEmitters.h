@@ -12,11 +12,11 @@
 
 #include "Entities/Entity.h"
 #include "Events/EventEmitter.h"
+#include "GLViewport.h"
 #include "configuration/config.h"
 
 namespace _3dmodeler
 {
-
     /**
      * @class GLBackendEmitters
      * @brief A class for managing input event emitters in the 3D modeler application.
@@ -103,7 +103,7 @@ namespace _3dmodeler
          * @brief Getter for the Pick event emitters.
          */
         std::shared_ptr<events::EventEmitter<
-            void(const int _x, const int _y, const int _h, const std::string &_viewport)>>
+            void(const int _x, const int _y, const int _h, const GLViewport _viewport)>>
         GetPickEmitter();
 
         /**
@@ -150,7 +150,7 @@ namespace _3dmodeler
             void(GLint w_, GLint h_, const std::array<GLfloat, 16> &projOrtho_, const std::array<GLfloat, 16> &projPerspective_)>>
             drawEmitter_;
         std::shared_ptr<events::EventEmitter<
-            void(const int _x, const int _y, const int _h, const std::string &_viewport)>>
+            void(const int _x, const int _y, const int _h, const GLViewport _viewport)>>
             pickEmitter_;
         std::shared_ptr<events::EventEmitter<
             void(const int _button, const int _state, const int _x, const int _y, const int _w, const int _h)>>
