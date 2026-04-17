@@ -59,22 +59,22 @@ void Modeler::Run()
 {
 }
 
-PointLight *const Modeler::GetPointLight()
+std::shared_ptr<PointLight> Modeler::GetPointLight()
 {
 	SharedEntity &entity = GetAggregatedMember(PointLight::PointLightKey());
-	return dynamic_cast<PointLight *>(entity.get());
+	return dynamic_pointer_cast<PointLight>(entity);
 }
 
-UserInterface *Modeler::GetUserInterface()
+std::shared_ptr<UserInterface> Modeler::GetUserInterface()
 {
 	SharedEntity &entity = GetAggregatedMember(UserInterface::UserInterfaceKey());
-	return dynamic_cast<UserInterface *>(entity.get());
+	return dynamic_pointer_cast<UserInterface>(entity);
 }
 
-Grid *Modeler::GetGrid()
+std::shared_ptr<Grid> Modeler::GetGrid()
 {
 	SharedEntity &entity = GetAggregatedMember(Grid::GridKey());
-	return dynamic_cast<Grid *>(entity.get());
+	return dynamic_pointer_cast<Grid>(entity);
 }
 
 void Modeler::DrawGameInfo()

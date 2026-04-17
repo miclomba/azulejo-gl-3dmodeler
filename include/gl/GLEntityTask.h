@@ -29,7 +29,7 @@ namespace _3dmodeler
          * @brief Constructs a GLEntityTask with a given function.
          * @param lambda A function returning a pointer to a GLEntity instance.
          */
-        GLEntityTask(std::function<GLEntity *()> lambda);
+        GLEntityTask(std::function<std::shared_ptr<GLEntity>()> lambda);
 
         /**
          * @brief Executes the stored task.
@@ -40,13 +40,13 @@ namespace _3dmodeler
          * @brief Retrieves the future result of the task.
          * @return A future object holding the GLEntity pointer result.
          */
-        std::future<GLEntity *> GetFuture();
+        std::future<std::shared_ptr<GLEntity>> GetFuture();
 
     private:
         /**
          * @brief Packaged task encapsulating the asynchronous operation.
          */
-        std::shared_ptr<std::packaged_task<GLEntity *()>> task_;
+        std::shared_ptr<std::packaged_task<std::shared_ptr<GLEntity>()>> task_;
     };
 
 } // namespace _3dmodeler

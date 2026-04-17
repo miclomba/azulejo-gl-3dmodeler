@@ -206,19 +206,19 @@ namespace _3dmodeler
          * @brief Get the Point Light aggregated member.
          * @return PointLight
          */
-        PointLight *const GetPointLight();
+        std::shared_ptr<PointLight> GetPointLight();
 
         /**
          * @brief Get the User Interface aggregated member.
          * @return UserInterface
          */
-        UserInterface *GetUserInterface();
+        std::shared_ptr<UserInterface> GetUserInterface();
 
         /**
          * @brief Get the Grid aggregated member.
          * @return Grid
          */
-        Grid *GetGrid();
+        std::shared_ptr<Grid> GetGrid();
 
         /**
          * @brief Draw the game information in the UI
