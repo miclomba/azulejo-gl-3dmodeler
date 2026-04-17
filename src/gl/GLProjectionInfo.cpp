@@ -11,11 +11,9 @@ using _3dmodeler::GLProjectionInfo;
 
 namespace
 {
-	const std::string GAME_PROJ_INFO_KEY = "GameProjectionInfo";
-	const int WIN_WIDTH = 600;
-	const int WIN_HEIGHT = 480;
-	const int INIT_WIN_X = 100;
-	const int INIT_WIN_Y = 100;
+const std::string GAME_PROJ_INFO_KEY = "GameProjectionInfo";
+const int WIN_WIDTH = 600;
+const int WIN_HEIGHT = 480;
 } // end namespace
 
 GLProjectionInfo::~GLProjectionInfo() = default;

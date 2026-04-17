@@ -19,8 +19,8 @@ using _3dmodeler::GLViewport;
 
 namespace
 {
-	const int NUMBER_KEYS = 256;
-	const std::string _3DMODELER_TITLE = "3DModeler";
+const int NUMBER_KEYS = 256;
+const std::string _3DMODELER_TITLE = "3DModeler";
 } // end namespace
 
 std::unique_ptr<GLBackend> GLBackend::callbackInstance_ = nullptr;

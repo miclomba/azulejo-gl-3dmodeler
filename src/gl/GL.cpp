@@ -11,14 +11,14 @@ using _3dmodeler::GLProjectionInfo;
 
 namespace
 {
-	const int TIME = 25;
-	const int VAL = 0;
-	const int WIN_WIDTH = 600;
-	const int WIN_HEIGHT = 480;
-	const int INIT_WIN_X = 100;
-	const int INIT_WIN_Y = 100;
-	GLdouble PROJECTION_BUFFER[16];
-	const std::string _3DMODELER_TITLE = "3DModeler";
+const int TIME = 25;
+const int VAL = 0;
+const int WIN_WIDTH = 600;
+const int WIN_HEIGHT = 480;
+const int INIT_WIN_X = 100;
+const int INIT_WIN_Y = 100;
+GLdouble PROJECTION_BUFFER[16];
+const std::string _3DMODELER_TITLE = "3DModeler";
 } // end namespace
 
 std::unique_ptr<GL> GL::instance_ = nullptr;

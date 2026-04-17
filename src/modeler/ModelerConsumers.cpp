@@ -20,7 +20,7 @@ using StdConsumer = EventConsumer<void(void)>;
 
 namespace
 {
-	const std::string MODELER_CONSUMERS_KEY = "ModelerConsumers";
+const std::string MODELER_CONSUMERS_KEY = "ModelerConsumers";
 } // end namespace
 
 ModelerConsumers::ModelerConsumers(

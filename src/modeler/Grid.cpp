@@ -1,6 +1,7 @@
 #include "modeler/Grid.h"
 
 #include <math.h>
+#include <numbers>
 #include <string>
 
 #include "Entities/Entity.h"
@@ -10,11 +11,9 @@ using entity::Entity;
 
 namespace
 {
-    const std::string GRID_KEY = "Grid";
-    const int MAX_TEXTURES = 2;
-#ifndef M_PI
-#define M_PI (3.14159265358979323846)
-#endif
+const std::string GRID_KEY = "Grid";
+const int MAX_TEXTURES = 2;
+const double PI = std::numbers::pi;
 }
 
 std::string Grid::GridKey()
@@ -106,10 +105,10 @@ void Grid::MakeTexImage1()
 
     for (GLint i = 0; i < IMG_WIDTH; i++)
     {
-        ti = 2.0 * M_PI * i / IMG_WIDTH;
+        ti = 2.0 * PI * i / IMG_WIDTH;
         for (GLint j = 0; j < IMG_HEIGHT; j++)
         {
-            tj = 2.0 * M_PI * j / IMG_WIDTH;
+            tj = 2.0 * PI * j / IMG_WIDTH;
             image_[3 * (IMG_HEIGHT * i + j)] = (GLubyte)(127 * (1.0 + cos(ti)));
             image_[3 * (IMG_HEIGHT * i + j) + 1] = (GLubyte)(127 * (1.0 + sin(2 * tj)));
             image_[3 * (IMG_HEIGHT * i + j) + 2] = (GLubyte)(127 * (1.0 + sin(ti + tj)));
@@ -123,10 +122,10 @@ void Grid::MakeTexImage2()
 
     for (GLint i = 0; i < IMG_WIDTH; i++)
     {
-        ti = 2.0 * M_PI * i / IMG_WIDTH;
+        ti = 2.0 * PI * i / IMG_WIDTH;
         for (GLint j = 0; j < IMG_HEIGHT; j++)
         {
-            tj = 2.0 * M_PI * j / IMG_WIDTH;
+            tj = 2.0 * PI * j / IMG_WIDTH;
             image_[3 * (IMG_HEIGHT * i + j)] = (GLubyte)(127 * (1.0 + sin(ti)));
             image_[3 * (IMG_HEIGHT * i + j) + 1] = (GLubyte)(127 * (1.0 + tan(2 * tj)));
             image_[3 * (IMG_HEIGHT * i + j) + 2] = (GLubyte)(127 * (1.0 + tan(ti + tj)));

@@ -6,6 +6,8 @@
 
 Checkout [azulejo-common-lib](https://github.com/miclomba/azulejo-common-lib) adjacent to this package.
 
+__NOTE__: This source required C++20 compilers.
+
 ## How to Play
 
 - Use the `LMB` to drag control points, lights, and pan the viewport

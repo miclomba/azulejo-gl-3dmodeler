@@ -8,10 +8,10 @@ using entity::Entity;
 
 namespace
 {
-    const std::string POINT_LIGHT_KEY = "PointLight";
-    GLfloat SPECULAR[] = {0.0f, 0.0f, 1.0f};
-    GLfloat AMBIENT[] = {0.0f, 0.0f, 1.0f};
-    GLfloat DIFFUSE[] = {1.0f, 1.0f, 1.0f};
+const std::string POINT_LIGHT_KEY = "PointLight";
+GLfloat SPECULAR[] = {0.0f, 0.0f, 1.0f};
+GLfloat AMBIENT[] = {0.0f, 0.0f, 1.0f};
+GLfloat DIFFUSE[] = {1.0f, 1.0f, 1.0f};
 }
 
 std::string PointLight::PointLightKey()

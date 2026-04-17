@@ -7,6 +7,7 @@
 #define _3dmodeler_grid_h
 
 #include <array>
+#include <string>
 
 #include "Entities/Entity.h"
 

@@ -1,5 +1,3 @@
-#include <string>
-
 #include "test_filesystem_adapters/ContainerResource2D.h"
 
 #include "gl/GLEntity.h"
@@ -10,14 +8,6 @@ using _3dmodeler::GLEntity;
 using entity::Entity;
 
 using Resource2DGLfloat = ContainerResource2D<GLfloat>;
-
-namespace
-{
-	const std::string FRAME_KEY = "frame";
-	const std::string S_KEY = "S";
-	const std::string T_KEY = "T";
-	const std::string R_KEY = "R";
-} // end namespace
 
 GLEntity::GLEntity() : Entity(),
 					   frame_(Resource2DGLfloat({{0.0, 0.0, 0.0, 0.0}, // NOTE: make sure frame_ appears first in the class

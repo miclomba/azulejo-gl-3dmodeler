@@ -16,7 +16,7 @@ using StdEmitter = EventEmitter<void(void)>;
 
 namespace
 {
-	const std::string GL_GAME_EMITTERS_KEY = "GLBackendEmittersKey";
+const std::string GL_GAME_EMITTERS_KEY = "GLBackendEmittersKey";
 } // end namespace
 
 GLBackendEmitters::~GLBackendEmitters() = default;

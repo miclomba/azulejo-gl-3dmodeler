@@ -7,8 +7,8 @@ using entity::Entity;
 
 namespace
 {
-    const std::string UI_KEY = "UI";
-    const std::string MESSAGE = "Press x,X,y,Y,z,Z to rotate; t,T to texture; l to light.";
+const std::string UI_KEY = "UI";
+const std::string MESSAGE = "Press x,X,y,Y,z,Z to rotate; t,T to texture; l to light.";
 }
 
 std::string UserInterface::UserInterfaceKey()

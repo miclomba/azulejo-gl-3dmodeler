@@ -26,13 +26,13 @@ using entity::Entity;
 
 namespace
 {
-	const std::string _3DMODELER_KEY = "3DModeler";
-	const int NUMBER_KEYS = 256;
-	const std::string RESET_MESSAGE = "Press X to RESET";
-	GLdouble PROJECTION[16];
-	GLdouble MODELVIEW[16];
-	GLint VIEWPORT[4];
-	GLdouble MOUSEX, MOUSEY, MOUSEZ;
+const int NUMBER_KEYS = 256;
+const std::string _3DMODELER_KEY = "3DModeler";
+const std::string RESET_MESSAGE = "Press X to RESET";
+GLdouble PROJECTION[16];
+GLdouble MODELVIEW[16];
+GLint VIEWPORT[4];
+GLdouble MOUSEX, MOUSEY, MOUSEZ;
 } // end namespace
 
 Modeler::Modeler() : GLEntity(),
