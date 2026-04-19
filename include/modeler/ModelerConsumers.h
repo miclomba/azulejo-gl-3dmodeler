@@ -38,7 +38,7 @@ namespace _3dmodeler
         /**
          * @brief Destructor for ModelerConsumers.
          */
-        ~ModelerConsumers();
+        virtual ~ModelerConsumers() noexcept;
 
         ModelerConsumers(const ModelerConsumers &) = delete;
         ModelerConsumers(ModelerConsumers &&) = delete;

@@ -34,7 +34,7 @@ GLBackend &GLBackend::Get(int _argc, char *_argv[])
 	return *GLBackend::callbackInstance_;
 }
 
-GLBackend::~GLBackend() = default;
+GLBackend::~GLBackend() noexcept = default;
 
 GLBackend::GLBackend(int _argc, char *_argv[]) : Entity(), keysPressed_({})
 {

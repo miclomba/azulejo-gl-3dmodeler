@@ -38,7 +38,7 @@ namespace _3dmodeler
         /**
          * @brief Destructor for GLBackend.
          */
-        virtual ~GLBackend();
+        virtual ~GLBackend() noexcept;
 
         GLBackend(const GLBackend &) = delete;
         GLBackend(GLBackend &&) = delete;

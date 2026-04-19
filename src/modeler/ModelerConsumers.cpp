@@ -114,7 +114,7 @@ ModelerConsumers::ModelerConsumers(
 	SetKey(MODELER_CONSUMERS_KEY);
 }
 
-ModelerConsumers::~ModelerConsumers() = default;
+ModelerConsumers::~ModelerConsumers() noexcept = default;
 
 std::shared_ptr<StdConsumer> ModelerConsumers::GetXConsumer()
 {

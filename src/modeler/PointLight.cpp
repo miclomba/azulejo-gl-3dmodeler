@@ -14,6 +14,13 @@ GLfloat AMBIENT[] = {0.0f, 0.0f, 1.0f};
 GLfloat DIFFUSE[] = {1.0f, 1.0f, 1.0f};
 }
 
+PointLight::~PointLight() noexcept = default;
+
+PointLight::PointLight(const PointLight &) = default;
+PointLight::PointLight(PointLight &&) noexcept = default;
+PointLight &PointLight::operator=(const PointLight &) = default;
+PointLight &PointLight::operator=(PointLight &&) noexcept = default;
+
 std::string PointLight::PointLightKey()
 {
     return POINT_LIGHT_KEY;

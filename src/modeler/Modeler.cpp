@@ -53,7 +53,7 @@ Modeler::Modeler() : GLEntity(),
 	AggregateMember(grid);
 }
 
-Modeler::~Modeler() = default;
+Modeler::~Modeler() noexcept = default;
 
 void Modeler::Run()
 {

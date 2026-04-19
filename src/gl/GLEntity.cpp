@@ -20,11 +20,11 @@ GLEntity::GLEntity() : Entity(),
 {
 }
 
-GLEntity::~GLEntity() = default;
+GLEntity::~GLEntity() noexcept = default;
 GLEntity::GLEntity(const GLEntity &) = default;
-GLEntity::GLEntity(GLEntity &&) = default;
+GLEntity::GLEntity(GLEntity &&) noexcept = default;
 GLEntity &GLEntity::operator=(const GLEntity &) = default;
-GLEntity &GLEntity::operator=(GLEntity &&) = default;
+GLEntity &GLEntity::operator=(GLEntity &&) noexcept = default;
 
 void GLEntity::Draw()
 {

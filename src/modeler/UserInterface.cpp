@@ -11,6 +11,13 @@ const std::string UI_KEY = "UI";
 const std::string MESSAGE = "Press x,X,y,Y,z,Z to rotate; t,T to texture; l to light.";
 }
 
+UserInterface::~UserInterface() noexcept = default;
+
+UserInterface::UserInterface(const UserInterface &) = default;
+UserInterface::UserInterface(UserInterface&&) noexcept = default;
+UserInterface &UserInterface::operator=(const UserInterface &) = default;
+UserInterface &UserInterface::operator=(UserInterface &&) noexcept = default;
+
 std::string UserInterface::UserInterfaceKey()
 {
     return UI_KEY;

@@ -32,7 +32,7 @@ GL &GL::Get(int _argc, char *_argv[])
 	return *GL::instance_;
 }
 
-GL::~GL() = default;
+GL::~GL() noexcept = default;
 
 void GL::TimerCallback(int _idx)
 {

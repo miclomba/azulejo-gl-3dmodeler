@@ -43,7 +43,7 @@ namespace _3dmodeler
         /**
          * @brief Destructor for the Modeler class.
          */
-        ~Modeler();
+        virtual ~Modeler() noexcept;
 
         Modeler(const Modeler &) = delete;
         Modeler(Modeler &&) = delete;

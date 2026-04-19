@@ -16,7 +16,7 @@ const int WIN_WIDTH = 600;
 const int WIN_HEIGHT = 480;
 } // end namespace
 
-GLProjectionInfo::~GLProjectionInfo() = default;
+GLProjectionInfo::~GLProjectionInfo() noexcept = default;
 
 GLProjectionInfo::GLProjectionInfo() : Entity(),
 									   projOrtho_({}),

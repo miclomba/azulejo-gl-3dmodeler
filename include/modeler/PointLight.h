@@ -31,7 +31,24 @@ namespace _3dmodeler
         /**
          * @brief Default destructor for the PointLight class.
          */
-        virtual ~PointLight() = default;
+        virtual ~PointLight() noexcept;
+
+        /**
+         * @brief Copy constructor for the PointLight class.
+         */
+        PointLight(const PointLight &);
+        /**
+         * @brief Move constructor for the PointLight class.
+         */
+        PointLight(PointLight &&) noexcept;
+        /**
+         * @brief Copy operator for the PointLight class.
+         */
+        PointLight &operator=(const PointLight &);
+        /**
+         * @brief Move operator for the PointLight class.
+         */
+        PointLight &operator=(PointLight &&) noexcept;
 
         /**
          * @brief Draw the point light in the scene.

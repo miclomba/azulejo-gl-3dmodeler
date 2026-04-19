@@ -34,7 +34,24 @@ namespace _3dmodeler
         /**
          * @brief Default destructor for the Grid class.
          */
-        virtual ~Grid() = default;
+        virtual ~Grid() noexcept;
+
+        /**
+         * @brief Copy constructor for the Grid class.
+         */
+        Grid(const Grid &);
+        /**
+         * @brief Move constructor for the Grid class.
+         */
+        Grid(Grid &&) noexcept;
+        /**
+         * @brief Copy operator for the Grid class.
+         */
+        Grid &operator=(const Grid &);
+        /**
+         * @brief Move operator for the Grid class.
+         */
+        Grid &operator=(Grid &&) noexcept;
 
         /**
          * @brief Draw the grid using the specified rendering mode.

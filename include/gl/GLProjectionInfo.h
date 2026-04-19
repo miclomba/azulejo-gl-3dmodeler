@@ -32,7 +32,7 @@ namespace _3dmodeler
         /**
          * @brief Destructor for GLProjectionInfo.
          */
-        virtual ~GLProjectionInfo();
+        virtual ~GLProjectionInfo() noexcept;
 
         GLProjectionInfo(const GLProjectionInfo &) = delete;
         GLProjectionInfo(GLProjectionInfo &&) = delete;

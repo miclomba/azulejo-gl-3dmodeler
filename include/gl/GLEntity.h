@@ -34,7 +34,7 @@ namespace _3dmodeler
         /**
          * @brief Destructor for the GLEntity class.
          */
-        ~GLEntity();
+        virtual ~GLEntity() noexcept;
 
         /**
          * @brief Copy constructor.
@@ -46,7 +46,7 @@ namespace _3dmodeler
          * @brief Move constructor.
          * @param other The GLEntity instance to move from.
          */
-        GLEntity(GLEntity &&other);
+        GLEntity(GLEntity &&other) noexcept;
 
         /**
          * @brief Copy assignment operator.
@@ -60,7 +60,7 @@ namespace _3dmodeler
          * @param other The GLEntity instance to move from.
          * @return Reference to the updated instance.
          */
-        GLEntity &operator=(GLEntity &&other);
+        GLEntity &operator=(GLEntity &&other) noexcept;
 
         /**
          * @brief Draw the 3D entity.

@@ -16,6 +16,13 @@ const int MAX_TEXTURES = 2;
 const double PI = std::numbers::pi;
 }
 
+Grid::~Grid() noexcept = default;
+
+Grid::Grid(const Grid &) = default;
+Grid::Grid(Grid &&) noexcept = default;
+Grid &Grid::operator=(const Grid &) = default;
+Grid &Grid::operator=(Grid &&) noexcept = default;
+
 std::string Grid::GridKey()
 {
     return GRID_KEY;

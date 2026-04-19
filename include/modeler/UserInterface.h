@@ -30,7 +30,24 @@ namespace _3dmodeler
         /**
          * @brief Default destructor for the UserInterface class.
          */
-        virtual ~UserInterface() = default;
+        virtual ~UserInterface() noexcept;
+
+        /**
+         * @brief Copy constructor for the UserInterface class.
+         */
+        UserInterface(const UserInterface &);
+        /**
+         * @brief Move constructor for the UserInterface class.
+         */
+        UserInterface(UserInterface &&) noexcept;
+        /**
+         * @brief Copy operator for the UserInterface class.
+         */
+        UserInterface &operator=(const UserInterface &);
+        /**
+         * @brief Move operator for the UserInterface class.
+         */
+        UserInterface &operator=(UserInterface &&) noexcept;
 
         /**
          * @brief Draw the user interface.
